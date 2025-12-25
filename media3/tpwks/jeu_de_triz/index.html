@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu de cartes TRIZ & Innovation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Polices Google facultatives -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- ========================= -->
+    <!--        HEADER             -->
+    <!-- ========================= -->
+<header class="app-header">
+  <div class="header-top">
+    <div class="header-brand">
+      <img src="img/logo_titre.png" alt="Logo du jeu TRIZ" class="app-logo">
+      <div class="header-title-block">
+        <h1>La fabrique à idées TRIZ</h1>
+        <p class="header-tagline">Un jeu de cartes pour transformer les problèmes en idées.</p>
+      </div>
+    </div>
+    <button id="btn-rules" class="btn-rules" type="button">Règles du jeu</button>
+  </div>
+  <p class="subtitle">
+    Explorez les principes TRIZ, les lois d’innovation et les concepts de créativité dans un univers d’ingénierie créative.
+  </p>
+  <div class="header-line"></div>
+</header>
+
+
+    <!-- ========================= -->
+    <!--        MAIN               -->
+    <!-- ========================= -->
+    <main class="app-main">
+
+      <!-- ========================= -->
+      <!--   SECTION : PAQUETS       -->
+      <!-- ========================= -->
+      <section class="deck-section" aria-label="Sélection des paquets de cartes">
+
+        <!-- Paquet TRIZ -->
+        <div class="deck deck-triz" id="deck-triz" tabindex="0">
+          <img src="img/triz.png" alt="Paquet de cartes TRIZ" class="deck-visual">
+          <div class="deck-info">
+            <h2>Paquet TRIZ</h2>
+            <p>40 cartes de principes d’innovation pour transformer un problème technique en opportunité créative.</p>
+          </div>
+        </div>
+
+        <!-- Paquet Lois -->
+        <div class="deck deck-lois" id="deck-lois" tabindex="0">
+          <img src="img/lois.png" alt="Paquet de cartes Lois d’innovation" class="deck-visual">
+          <div class="deck-info">
+            <h2>Lois de l’innovation</h2>
+            <p>8 lois d’évolution des systèmes techniques pour comprendre comment les produits évoluent.</p>
+          </div>
+        </div>
+
+        <!-- Paquet Concepts -->
+        <div class="deck deck-concepts" id="deck-concepts" tabindex="0">
+          <img src="img/concept.png" alt="Paquet de cartes Concepts de créativité" class="deck-visual">
+          <div class="deck-info">
+            <h2>Concepts de créativité</h2>
+            <p>Cartes outils et méthodes pour animer des ateliers créatifs et structurer les idées.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================= -->
+      <!--   BOUTONS D’ACTION        -->
+      <!-- ========================= -->
+      <section class="actions-section" aria-label="Modes de tirage">
+
+        <button id="btn-atelier" class="btn-action btn-atelier" type="button">
+          <img src="img/atelier.png" alt="" class="action-icon" aria-hidden="true">
+          Mode Atelier guidé (cas + 5 cartes)
+        </button>
+
+        <button id="btn-random" class="btn-action btn-random" type="button">
+          <img src="img/tirage.png" alt="" class="action-icon" aria-hidden="true">
+          Tirage aléatoire (1 carte)
+        </button>
+
+      </section>
+
+      <!-- ========================= -->
+      <!--   SECTION : CARTES        -->
+      <!-- ========================= -->
+      <section class="cards-section" aria-label="Résultat du tirage">
+        <div class="cards-header">
+          <h2 id="cards-title">Sélectionnez un paquet ou lancez un atelier</h2>
+          <button id="btn-reset" class="btn-reset" type="button" style="display:none;">↩ Retour aux paquets</button>
+        </div>
+
+        <!-- Bandeau atelier guidé -->
+        <div id="atelier-steps" class="atelier-steps" style="display:none;">
+
+          <div class="atelier-cases">
+            <button id="btn-random-case" type="button">Tirer un cas d’étude</button>
+            <select id="case-select">
+              <option value="">— ou choisir un cas —</option>
+              <option value="chaise-ecole">Chaise d’école inconfortable</option>
+              <option value="pc-bruyant">Ventilateur d’ordinateur trop bruyant</option>
+              <option value="lumiere-energie">Lumières laissées allumées</option>
+              <option value="cables-sol">Câbles qui traînent au sol</option>
+              <option value="emballage">Emballage trop volumineux</option>
+              <option value="papier-classe">Impression et photocopies excessives</option>
+              <option value="tableau-visibilite">Tableau peu visible pour certains élèves</option>
+              <option value="robots-rangement">Robots pédagogiques encombrants</option>
+              <option value="couloir-bruit">Couloir trop bruyant aux intercours</option>
+              <option value="recharge-smartphone">Bornes de recharge pour smartphones</option>
+            </select>
+          </div>
+
+          <div class="step-indicator">
+            <span id="step-1" class="step active">1. Cas</span>
+            <span id="step-2" class="step">2. Cartes TRIZ</span>
+            <span id="step-3" class="step">3. Loi &amp; Concept</span>
+            <span id="step-4" class="step">4. Exemple de solution</span>
+          </div>
+
+          <div id="atelier-instructions" class="atelier-instructions"></div>
+
+          <div class="atelier-nav">
+            <button id="atelier-prev" type="button">Étape précédente</button>
+            <button id="atelier-next" type="button">Étape suivante</button>
+          </div>
+        </div>
+
+        <div class="blueprint-grid">
+          <div class="blueprint-grid-lines"></div>
+          <div id="cards-grid" class="cards-grid">
+            <!-- Contenu injecté par script.js -->
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ========================= -->
+    <!--        FOOTER             -->
+    <!-- ========================= -->
+    <footer class="app-footer">
+      <small>
+        Jeu de cartes TRIZ &amp; Innovation – Design « Creative Engineering - Light Mode ».  
+        &copy; 2025 Abdellah CHELOUAH
+      </small>
+    </footer>
+
+  </div>
+
+  <!-- ========================= -->
+  <!--        MODAL ZOOM         -->
+  <!-- ========================= -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-content modal-zoom">
+      <button id="modal-close" class="modal-close" type="button" aria-label="Fermer la carte">&times;</button>
+      <img id="modal-img" src="" alt="Carte zoomée">
+      <div id="modal-label" class="modal-label"></div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!--     MODAL RÈGLES DU JEU   -->
+  <!-- ========================= -->
+  <div id="modal-rules" class="modal" aria-hidden="true">
+    <div class="modal-content rules-content">
+      <button id="modal-rules-close" class="modal-close" type="button" aria-label="Fermer les règles">&times;</button>
+
+      <h2>Règles du jeu – Mode Atelier guidé</h2>
+      <p><strong>Objectif&nbsp;:</strong> partir d’un cas concret, explorer des pistes d’innovation et illustrer l’usage des principes TRIZ pour générer des solutions créatives.</p>
+
+      <h3>Étapes du mode guidé</h3>
+      <ol>
+        <li>Découvrir un cas d’étude illustré.</li>
+        <li>Explorer des principes TRIZ suggérés pour ce cas.</li>
+        <li>Ajouter une loi d’évolution et un concept créatif.</li>
+        <li>Comparer les idées du groupe avec un exemple de solution.</li>
+      </ol>
+
+      <h3>Composition du tirage (Mode Atelier)</h3>
+      <ul>
+        <li>Cas d’étude illustré (problème de créativité).</li>
+        <li>3 cartes TRIZ guidées (principes adaptés au cas).</li>
+        <li>1 carte Loi d’évolution.</li>
+        <li>1 carte Concept créatif.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Script principal -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>QCM autoformatif – Protection différentielle BT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #1e293b;
+      --bg-soft-2: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --accent-strong: #0ea5e9;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #f97373;
+      --success: #4ade80;
+      --border: #111827;
+      --radius-card: 16px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 22px 40px rgba(15, 23, 42, 0.9);
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.24s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #1f2937, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(145deg, #020617, #020617 55%, #0b1120);
+      border-radius: 26px;
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-shell::before,
+    .app-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .app-shell::before {
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15), transparent);
+      top: -120px;
+      right: -80px;
+    }
+
+    .app-shell::after {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.12), transparent);
+      bottom: -100px;
+      left: -60px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 1.5rem);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-pill span.icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent-strong), #0ea5e9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-size: 0.7rem;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: radial-gradient(circle at top left, #020617, #020617);
+    }
+
+    .badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+    }
+
+    .badge.level {
+      border-color: rgba(94, 234, 212, 0.6);
+      color: #a5f3fc;
+    }
+
+    .badge.count {
+      border-color: rgba(129, 140, 248, 0.5);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 860px) {
+      .app-shell {
+        border-radius: 18px;
+        padding: 18px 14px;
+      }
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      background: linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(15, 23, 42, 1);
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.88);
+      padding: 16px 14px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(56, 189, 248, 0.14),
+        transparent 40%,
+        transparent 60%,
+        rgba(52, 211, 153, 0.08)
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+    }
+
+    .panel-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .questions {
+      margin-top: 4px;
+      max-height: min(600px, 68vh);
+      overflow: hidden auto;
+      padding-right: 2px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.7) transparent;
+    }
+
+    .questions::-webkit-scrollbar {
+      width: 6px;
+    }
+    .questions::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .questions::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.45);
+      border-radius: 999px;
+    }
+
+    .question-card {
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(30, 64, 175, 0.85);
+      padding: 10px 12px 11px;
+      margin-bottom: 10px;
+      position: relative;
+      transition: transform var(--transition-fast), border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    .question-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.95);
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .question-index {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .question-status-pill {
+      font-size: 0.7rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .question-status-pill .bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background-color: rgba(148, 163, 184, 0.8);
+    }
+
+    .question-status-pill.correct .bullet {
+      background-color: var(--success);
+      box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.6);
+    }
+
+    .question-status-pill.wrong .bullet {
+      background-color: var(--danger);
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.6);
+    }
+
+    .question-text {
+      font-size: 0.92rem;
+      margin: 0 0 7px;
+      color: #e5e7eb;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .option-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(
+        circle at top left,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.98)
+      );
+      color: var(--text-soft);
+      font-size: 0.8rem;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color var(--transition-fast), background var(--transition-fast),
+        transform 0.08s ease-out, box-shadow 0.08s ease-out, color var(--transition-fast);
+    }
+
+    .option-chip:hover {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: #e5e7eb;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+      transform: translateY(-0.5px);
+    }
+
+    .option-chip input {
+      display: none;
+    }
+
+    .option-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #cbd5f5;
+      background: radial-gradient(circle at top left, #020617, #020617);
+    }
+
+    .option-label {
+      white-space: nowrap;
+    }
+
+    .option-chip.correct {
+      border-color: rgba(74, 222, 128, 0.9);
+      background: radial-gradient(circle at top left, rgba(21, 128, 61, 0.2), #022c22);
+      color: #bbf7d0;
+    }
+
+    .option-chip.wrong {
+      border-color: rgba(248, 113, 113, 0.9);
+      background: radial-gradient(circle at top left, rgba(127, 29, 29, 0.25), #450a0a);
+      color: #fecaca;
+    }
+
+    .option-chip.correct .option-badge {
+      border-color: rgba(74, 222, 128, 0.9);
+      background: radial-gradient(circle at top left, #15803d, #16a34a);
+      color: #e5fbe7;
+    }
+
+    .option-chip.wrong .option-badge {
+      border-color: rgba(248, 113, 113, 0.9);
+      background: radial-gradient(circle at top left, #b91c1c, #ef4444);
+      color: #fee2e2;
+    }
+
+    .feedback {
+      font-size: 0.78rem;
+      padding: 7px 9px;
+      border-radius: 10px;
+      margin-top: 2px;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .feedback.visible {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: rgba(22, 163, 74, 0.15);
+      border: 1px solid rgba(74, 222, 128, 0.45);
+      color: #bbf7d0;
+    }
+
+    .feedback.wrong {
+      background: rgba(153, 27, 27, 0.18);
+      border: 1px solid rgba(248, 113, 113, 0.55);
+      color: #fecaca;
+    }
+
+    .feedback strong {
+      color: #e5e7eb;
+    }
+
+    .correct-answer {
+      font-weight: 600;
+      color: #bef264;
+    }
+
+    .side-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .score-card {
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(59, 130, 246, 0.85);
+      padding: 10px 12px;
+    }
+
+    .score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .score-title {
+      font-size: 0.86rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .score-pill {
+      font-size: 0.76rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border: 1px solid rgba(56, 189, 248, 0.65);
+      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .score-pill span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.5);
+    }
+
+    .score-main {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .score-value {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .score-total {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .score-bar {
+      margin-top: 4px;
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #22d3ee);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+      transition: width 0.35s var(--transition-med);
+    }
+
+    .score-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3px;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      font-size: 0.75rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+    }
+
+    .legend-dot.correct {
+      background: var(--success);
+    }
+
+    .legend-dot.wrong {
+      background: var(--danger);
+    }
+
+    .legend-dot.pending {
+      background: rgba(148, 163, 184, 0.7);
+    }
+
+    .controls-card {
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(37, 99, 235, 0.85);
+      padding: 10px 12px;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform 0.08s ease-out,
+        box-shadow 0.08s ease-out, color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at top left, #0ea5e9, #3b82f6);
+      color: #0b1120;
+      box-shadow: 0 12px 22px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 28px rgba(37, 99, 235, 0.9);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-soft);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(59, 130, 246, 0.9);
+      color: #e5e7eb;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.96);
+    }
+
+    .btn span.icon {
+      font-size: 0.95rem;
+    }
+
+    .hint-text {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .question-map {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .map-item {
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.96);
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast), transform 0.08s ease-out, box-shadow 0.08s ease-out;
+    }
+
+    .map-item:hover {
+      border-color: rgba(56, 189, 248, 0.9);
+      color: #e5e7eb;
+      transform: translateY(-0.5px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.96);
+    }
+
+    .map-item.correct {
+      background: rgba(22, 163, 74, 0.15);
+      border-color: rgba(74, 222, 128, 0.8);
+      color: #bbf7d0;
+    }
+
+    .map-item.wrong {
+      background: rgba(127, 29, 29, 0.18);
+      border-color: rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+    }
+
+    .map-item.current {
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+    }
+
+    .footnote {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+      text-align: right;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="title-block">
+        <div class="title-pill">
+          <span class="icon">Δ</span>
+          <span>QCM autoformatif – Protection différentielle</span>
+        </div>
+        <h1>Protection différentielle en BT</h1>
+        <p class="subtitle">
+          Entraîne-toi sur les principes de la protection différentielle, les DDR, la sécurité des personnes et la continuité de service.
+        </p>
+      </div>
+      <div class="meta-badges">
+        <div class="badge level">
+          <span class="dot"></span>
+          <span>Lycée techno, BTS, BUT</span>
+        </div>
+        <div class="badge count">
+          <span class="dot"></span>
+          <span><span id="questionCount"></span> questions</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Questions</div>
+          <div class="panel-tag">Cliquer sur une réponse pour valider</div>
+        </div>
+        <div id="questions" class="questions"></div>
+      </section>
+
+      <aside class="panel">
+        <div class="side-inner">
+          <div class="score-card">
+            <div class="score-header">
+              <div class="score-title">Score global</div>
+              <div class="score-pill">
+                <span class="dot"></span>
+                <span id="scoreLabel">Aucune question validée pour le moment</span>
+              </div>
+            </div>
+            <div class="score-main">
+              <span class="score-value" id="scoreValue">0</span>
+              <span class="score-total" id="scoreTotal">/ 0</span>
+            </div>
+            <div class="score-bar">
+              <div id="scoreBarFill" class="score-bar-fill"></div>
+            </div>
+            <div class="score-meta">
+              <div class="legend">
+                <span class="legend-item"><span class="legend-dot correct"></span> Bonnes</span>
+                <span class="legend-item"><span class="legend-dot wrong"></span> Erronées</span>
+                <span class="legend-item"><span class="legend-dot pending"></span> En attente</span>
+              </div>
+              <span id="progressText">0 / 0 répondues</span>
+            </div>
+          </div>
+
+          <div class="controls-card">
+            <div class="controls-row">
+              <button class="btn btn-primary" id="btnShowAllSolutions">
+                <span class="icon">✓</span>
+                Tout corriger
+              </button>
+              <button class="btn btn-ghost" id="btnReset">
+                <span class="icon">↺</span>
+                Réinitialiser
+              </button>
+            </div>
+            <p class="hint-text">
+              Cliquer sur une proposition affiche immédiatement la correction avec une explication. Utilise la carte des questions pour naviguer rapidement.
+            </p>
+            <div class="question-map" id="questionMap"></div>
+          </div>
+
+          <p class="footnote">
+            QCM inspiré d’un questionnaire sur la protection différentielle BT (DDR, sécurité des personnes, sélectivité, perturbations). Correction fournie à but pédagogique.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const questionsData = [
+      {
+        id: 1,
+        text: "En local sec, la valeur de la tension limite de sécurité est en alternatif de :",
+        options: [
+          { key: "a", label: "24 V", correct: false },
+          { key: "b", label: "50 V", correct: true },
+          { key: "c", label: "120 V", correct: false }
+        ],
+        explanation:
+          "En local sec, la tension limite de sécurité en courant alternatif est de 50 V ; au‑delà, le risque d’électrisation devient significatif."
+      },
+      {
+        id: 2,
+        text: "Le corps humain peut, en cas de contact accidentel avec une pièce sous tension, être assimilé à un récepteur.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "On modélise le corps humain comme une impédance traversée par un courant, ce qui permet d’analyser les effets physiologiques."
+      },
+      {
+        id: 3,
+        text: "En courant alternatif, le temps limite d'exposition au passage du courant dans le corps humain est d'autant plus long que la tension de contact est élevée.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Plus la tension (donc le courant) est élevée, plus le temps admissible est court pour rester dans des zones de sécurité humaines."
+      },
+      {
+        id: 4,
+        text: "En courant continu, le temps limite d'exposition au passage du courant dans le corps humain est plus long qu'en alternatif jusqu'à une tension de contact d'environ 150 V.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Pour des tensions modérées, le courant continu est généralement un peu moins dangereux que l’alternatif à 50 Hz, à durée d’exposition égale."
+      },
+      {
+        id: 5,
+        text: "La tension limite de sécurité peut se définir comme la tension de contact au-delà de laquelle il y a un risque électrique.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "La tension limite de sécurité sépare une zone considérée comme sans danger d’une zone où un risque significatif apparaît."
+      },
+      {
+        id: 6,
+        text: "La tension limite de sécurité dépend :",
+        options: [
+          { key: "a", label: "Du type de local.", correct: true },
+          { key: "b", label: "De la nature de la tension d'alimentation.", correct: true },
+          { key: "c", label: "De la fréquence du courant.", correct: true },
+          { key: "d", label: "Du type de schéma de liaison à la terre.", correct: true }
+        ],
+        explanation:
+          "Les conditions d’environnement, la nature de la tension, la fréquence et le schéma de liaison à la terre influent sur le risque et donc sur la valeur de sécurité retenue."
+      },
+      {
+        id: 7,
+        text: "L'effet physiologique d'un courant de 30 mA à 50 Hz sera le même que celui d'un courant de 180 mA à 400 Hz.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "La fréquence modifie la réponse du corps humain : on ne peut pas assimiler directement les effets de courants différents en intensité et en fréquence."
+      },
+      {
+        id: 8,
+        text: "Tous les dispositifs différentiels réglés sur 30 mA protègent efficacement contre les contacts indirects quelle que soit la fréquence du courant.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "La sensibilité (30 mA) ne suffit pas : la capacité à détecter dépend aussi du type de courant (sinusoïdal, redressé, etc.) et donc de la classe du DDR."
+      },
+      {
+        id: 9,
+        text: "Un courant de défaut de 50 mA entre deux pièces métalliques en contact ponctuel peut chauffer celles-ci au rouge vif et provoquer un départ d'incendie.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "50 mA est trop faible pour un échauffement au rouge vif ; les courants de défaut provoquant un incendie sont beaucoup plus importants."
+      },
+      {
+        id: 10,
+        text: "Le défaut d'isolement dans un récepteur peut être provoqué par :",
+        options: [
+          { key: "a", label: "Le vieillissement des isolants.", correct: true },
+          { key: "b", label: "Une surtension.", correct: true },
+          { key: "c", label: "Un environnement agressif.", correct: true },
+          { key: "d", label: "Une détérioration mécanique.", correct: true },
+          { key: "e", label: "Des vibrations répétées.", correct: true }
+        ],
+        explanation:
+          "Tous ces facteurs dégradent l’isolement (vieillissement, contraintes électriques, chimiques, mécaniques ou vibratoires) et peuvent conduire à un défaut."
+      },
+      {
+        id: 11,
+        text: "La norme européenne CEI 364 préconise un système différentiel de sensibilité maximum égale à 500 mA en tête de distribution.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "En tête d’installation, des différentiels de type 300 ou 500 mA assurent la protection contre les risques d’incendie dus aux défauts d’isolement."
+      },
+      {
+        id: 12,
+        text: "Le Dispositif Différentiel Résiduel (DDR) surveille le courant de fuite à la terre et déclenche lorsque celui-ci dépasse un seuil appelé « sensibilité ».",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Le DDR compare la somme des courants des conducteurs actifs ; un déséquilibre supérieur au seuil de sensibilité provoque l’ouverture du circuit."
+      },
+      {
+        id: 13,
+        text: "Le Dispositif Différentiel Résiduel est composé :",
+        options: [
+          { key: "a", label: "D'un circuit magnétique en forme de tore.", correct: true },
+          { key: "b", label: "D'un circuit magnétique fixe et d'un circuit magnétique mobile.", correct: false },
+          { key: "c", label: "D'un élément fusible à HPC.", correct: false },
+          { key: "d", label: "D'une interface de traitement de l'image du courant de défaut.", correct: true },
+          { key: "e", label: "D'un relais électromécanique.", correct: true }
+        ],
+        explanation:
+          "Le DDR comporte un tore, un enroulement de détection, une électronique (ou interface) de traitement et un organe de coupure (relais/disjoncteur)."
+      },
+      {
+        id: 14,
+        text: "Pour une installation exempte de défaut d'isolement, dans le circuit magnétique torique d'un DDR :",
+        options: [
+          { key: "a", label: "La somme vectorielle des courants dans les conducteurs est nulle.", correct: true },
+          { key: "b", label: "La somme algébrique des courants est nulle.", correct: false },
+          { key: "c", label: "La somme vectorielle des flux magnétiques produits par les conducteurs actifs est nulle.", correct: true },
+          { key: "d", label: "La somme algébrique des tensions d'alimentation est nulle.", correct: false }
+        ],
+        explanation:
+          "En régime normal, les courants aller et retour s’annulent dans le tore, d’où un flux résultant nul et aucune induction dans l’enroulement de détection."
+      },
+      {
+        id: 15,
+        text: "À l'apparition d'un défaut d'isolement, la somme vectorielle des flux magnétiques dans le tore de détection d'un DDR est égale à zéro.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "En présence d’un défaut, le courant de fuite rompt l’équilibre ; le flux résultant dans le tore devient non nul et déclenche le DDR."
+      },
+      {
+        id: 16,
+        text: "Les DDR définis par la norme CEI 60755 couvrent trois types de protections :",
+        options: [
+          { key: "a", label: "Courants alternatifs sinusoïdaux (Classe AC).", correct: true },
+          { key: "b", label: "Courants alternatifs sinusoïdaux ou à composante continue pulsée (Classe A).", correct: true },
+          { key: "c", label: "Courants redressés à simple alternance et filtrés par charge capacitive (Classe B).", correct: false },
+          { key: "d", label: "Courants ondulés haute fréquence (Classe C).", correct: false }
+        ],
+        explanation:
+          "La norme définit principalement les classes AC, A et B ; la classe B traite des courants de défaut comportant une composante continue lissée et des composantes haute fréquence."
+      },
+      {
+        id: 17,
+        text: "La classe d'un DDR définit sa capacité à détecter le courant de fuite à la terre en fonction de la nature du courant alimentant la charge.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Chaque classe (AC, A, B…) spécifie les formes d’onde de courant de défaut que le DDR est capable de détecter efficacement."
+      },
+      {
+        id: 18,
+        text: "Un différentiel de Classe AC est capable de détecter efficacement un courant de fuite à la terre dans le cas d'un départ alimenté par un redresseur alternatif/continu.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Les charges de type redresseur génèrent des courants de fuite à composante continue ; un DDR de classe A ou B est alors requis, pas un simple AC."
+      },
+      {
+        id: 19,
+        text: "En schéma TT, le DDR est l'appareil de base de la protection des personnes et son utilisation est obligatoire sur l'ensemble de l'installation.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "En schéma TT, la coupure automatique par DDR est le moyen privilégié pour limiter la tension de contact en cas de défaut d’isolement."
+      },
+      {
+        id: 20,
+        text: "En schéma TN ou IT, la protection différentielle est nécessaire :",
+        options: [
+          { key: "a", label: "Dans tous les cas de figure.", correct: false },
+          { key: "b", label: "Si l'installation est très étendue.", correct: true },
+          { key: "c", label: "Si les masses électriques ne sont pas interconnectées.", correct: true },
+          { key: "d", label: "En cas de risques d'incendie ou d'explosion.", correct: true }
+        ],
+        explanation:
+          "En TN/IT, la coupure par surintensité peut suffire, mais des DDR deviennent nécessaires dans les configurations défavorables (longueurs, masses séparées, risques particuliers)."
+      },
+      {
+        id: 21,
+        text: "Les DDR « Haute Sensibilité » peuvent être utilisés comme protection complémentaire contre le contact direct dans certaines applications spécifiques.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Des DDR 30 mA peuvent être utilisés comme protection complémentaire contre le contact direct, par exemple sur des bancs de test ou montages pédagogiques."
+      },
+      {
+        id: 22,
+        text: "Les DDR « Haute Sensibilité » offrent une protection efficace contre le contact direct.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Ils améliorent la sécurité mais ne garantissent pas à eux seuls une protection parfaite contre le contact direct ; les mesures de base (isolation, barrières) restent indispensables."
+      },
+      {
+        id: 23,
+        text: "La continuité de service se rapporte à la disponibilité de l'énergie dans une installation électrique ; c'est une composante importante du cahier des charges.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Les coupures intempestives sont coûteuses ; assurer la continuité de service est donc un enjeu majeur, formalisé dès le cahier des charges."
+      },
+      {
+        id: 24,
+        text: "Les déclenchements intempestifs dans la protection différentielle nuisent à la continuité de service. Leurs origines sont :",
+        options: [
+          { key: "a", label: "Une mauvaise sélectivité.", correct: true },
+          { key: "b", label: "Le choix d'une mauvaise gamme de différentiels.", correct: true },
+          { key: "c", label: "Des signaux perturbants (foudre, harmoniques, composante continue...)", correct: true },
+          { key: "d", label: "Un défaut d'isolement très résistif sur un récepteur.", correct: true }
+        ],
+        explanation:
+          "Les mauvais réglages, le choix inadapté des DDR et les perturbations peuvent provoquer des déclenchements non souhaités et donc des pertes de service."
+      },
+      {
+        id: 25,
+        text: "Une protection différentielle de 300 mA est imposée par la norme sur toute prise de courant inférieure à 32 A.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Sur les prises ≤ 32 A, la norme impose généralement des DDR 30 mA (protection des personnes), pas 300 mA qui sont plutôt destinés à la protection incendie."
+      },
+      {
+        id: 26,
+        text: "Toutes les masses électriques des récepteurs doivent être reliées à une prise de terre dont la résistance RA doit être inférieure à :",
+        options: [
+          { key: "a", label: "10 ohms", correct: false },
+          { key: "b", label: "50 ohms", correct: true },
+          { key: "c", label: "100 ohms", correct: false },
+          { key: "d", label: "500 ohms", correct: false }
+        ],
+        explanation:
+          "La norme NF C 15‑100 recommande RA ≤ 50 Ω en présence de DDR 30 mA, pour garantir une tension de contact admissible lors d’un défaut."
+      },
+      {
+        id: 27,
+        text: "La sélectivité verticale des protections différentielles impose :",
+        options: [
+          { key: "a", label: "Le doublement de la valeur différentielle entre deux niveaux.", correct: true },
+          { key: "b", label: "Un temps de retard de la protection amont par rapport à l'aval.", correct: true },
+          { key: "c", label: "Une démagnétisation complète du tore amont supérieure à celle de l'aval.", correct: false },
+          { key: "d", label: "L'emploi d'un disjoncteur différentiel sélectif.", correct: true }
+        ],
+        explanation:
+          "Pour qu’un défaut n’entraîne que la coupure du départ concerné (et non de l’amont), on joue sur la sensibilité, le temps et parfois des dispositifs sélectifs."
+      },
+      {
+        id: 28,
+        text: "La sélectivité horizontale, définie par la norme C15-100, permet d'économiser un DDR en tête lorsque tous les départs sont déjà protégés, tout en assurant la continuité de service.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Chaque départ est protégé individuellement ; on peut alors se dispenser de DDR général, et seul le départ en défaut est coupé."
+      },
+      {
+        id: 29,
+        text: "Dans la sélectivité horizontale, le phénomène de surtension combiné à l'effet capacitif du départ sain peut provoquer un déclenchement du DDR. Cet effet s'appelle :",
+        options: [
+          { key: "a", label: "Déclenchement capacitif.", correct: false },
+          { key: "b", label: "Déclenchement par self-induction.", correct: false },
+          { key: "c", label: "Déclenchement par sympathie.", correct: true },
+          { key: "d", label: "Déclenchement par mutuelle induction.", correct: false }
+        ],
+        explanation:
+          "Le DDR d’un départ sain peut déclencher à cause d’effets transitoires liés à un défaut sur un autre départ : on parle de déclenchement par sympathie."
+      },
+      {
+        id: 30,
+        text: "Le courant de fuite est un courant qui :",
+        options: [
+          { key: "a", label: "Circule entre les parties actives et la terre en l'absence de défaut.", correct: true },
+          { key: "b", label: "Circule entre les parties actives et la terre en présence de défaut.", correct: false },
+          { key: "c", label: "Circule entre les masses et la terre en l'absence de défaut.", correct: false },
+          { key: "d", label: "Circule entre les masses et la terre en présence de défaut.", correct: false }
+        ],
+        explanation:
+          "Le courant de fuite résulte des capacités parasitaires et des impédances d’isolement finies, même sans défaut franc d’isolement."
+      },
+      {
+        id: 31,
+        text: "Contrairement au courant de défaut, le courant de fuite ne dépend que :",
+        options: [
+          { key: "a", label: "De la nature des récepteurs.", correct: true },
+          { key: "b", label: "De l'étendue de l'installation et des câbles.", correct: true },
+          { key: "c", label: "Du vieillissement de l'installation.", correct: true },
+          { key: "d", label: "Du courant d'appel des récepteurs.", correct: false }
+        ],
+        explanation:
+          "Les courants de fuite sont liés aux capacités et isolements des récepteurs et câbles, et évoluent avec le vieillissement, pas avec le courant d’appel instantané."
+      },
+      {
+        id: 32,
+        text: "Pour tenir compte du courant de fuite inhérent à toute installation électrique, il faut :",
+        options: [
+          { key: "a", label: "Diminuer le courant de fuite en limitant les récepteurs capacitifs.", correct: true },
+          { key: "b", label: "Limiter le nombre de récepteurs protégés par chaque DDR.", correct: true },
+          { key: "c", label: "Utiliser des tresses de masse pour chaque récepteur.", correct: false }
+        ],
+        explanation:
+          "On agit sur la conception (type de récepteurs, groupement des circuits) et le dimensionnement des DDR pour éviter que les courants de fuite permanents ne déclenchent."
+      },
+      {
+        id: 33,
+        text: "La protection différentielle par DDR est fortement perturbée par les harmoniques générées par les appareils électroniques.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Les formes d’onde déformées avec des harmoniques peuvent rendre la détection plus complexe et provoquer des déclenchements intempestifs."
+      },
+      {
+        id: 34,
+        text: "Les courants porteurs injectés sur le réseau (tarification heures creuses/pleines, EJP, etc.) peuvent fortement perturber le fonctionnement des protections différentielles.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Ces signaux à haute fréquence superposés au 50 Hz peuvent être interprétés comme des courants de déséquilibre par certains DDR sensibles."
+      },
+      {
+        id: 35,
+        text: "En cas de défaut d'isolement dans une alimentation stabilisée à courant continu, la composante continue superposée au courant de défaut peut perturber le fonctionnement des protections différentielles.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Les composantes continues saturent éventuellement les tores des DDR et faussent la mesure, d’où la nécessité de DDR adaptés (classe A ou B)."
+      },
+      {
+        id: 36,
+        text: "En cas de défaut d'isolement dans une alimentation à découpage ou lors d'un phénomène de foudre, la composante haute fréquence des courants de fuite transitoire peut perturber le fonctionnement des protections différentielles et provoquer des déclenchements intempestifs.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Les transitoires haute fréquence liés à la foudre ou aux alimentations à découpage sont une source classique de déclenchements intempestifs des DDR."
+      }
+    ];
+
+    const state = {
+      answered: {},
+      multipleSelectionIds: new Set([6, 10, 13, 14, 16, 20, 24, 27, 31, 32])
+    };
+
+    const questionsContainer = document.getElementById("questions");
+    const questionMapContainer = document.getElementById("questionMap");
+    const questionCountLabel = document.getElementById("questionCount");
+    const scoreValueEl = document.getElementById("scoreValue");
+    const scoreTotalEl = document.getElementById("scoreTotal");
+    const scoreBarFillEl = document.getElementById("scoreBarFill");
+    const progressTextEl = document.getElementById("progressText");
+    const scoreLabelEl = document.getElementById("scoreLabel");
+    const btnShowAllSolutions = document.getElementById("btnShowAllSolutions");
+    const btnReset = document.getElementById("btnReset");
+
+    function isMultiple(questionId) {
+      return state.multipleSelectionIds.has(questionId);
+    }
+
+    function renderQuestions() {
+      questionsContainer.innerHTML = "";
+      questionMapContainer.innerHTML = "";
+      questionCountLabel.textContent = questionsData.length;
+      scoreTotalEl.textContent = `/ ${questionsData.length}`;
+
+      questionsData.forEach((q, index) => {
+        const card = document.createElement("article");
+        card.className = "question-card";
+        card.dataset.questionId = q.id;
+
+        const header = document.createElement("div");
+        header.className = "question-header";
+
+        const indexSpan = document.createElement("div");
+        indexSpan.className = "question-index";
+        indexSpan.textContent = `Question ${index + 1}`;
+
+        const statusPill = document.createElement("div");
+        statusPill.className = "question-status-pill";
+        statusPill.dataset.status = "pending";
+        statusPill.innerHTML = `<span class="bullet"></span><span>En attente</span>`;
+
+        header.appendChild(indexSpan);
+        header.appendChild(statusPill);
+
+        const textEl = document.createElement("p");
+        textEl.className = "question-text";
+        textEl.textContent = q.text;
+
+        const optionsWrapper = document.createElement("div");
+        optionsWrapper.className = "options";
+
+        q.options.forEach((opt) => {
+          const label = document.createElement("label");
+          label.className = "option-chip";
+          label.dataset.key = opt.key;
+
+          const input = document.createElement("input");
+          input.type = isMultiple(q.id) ? "checkbox" : "radio";
+          input.name = `q_${q.id}`;
+          input.value = opt.key;
+
+          const badge = document.createElement("span");
+          badge.className = "option-badge";
+          badge.textContent = opt.key.toUpperCase();
+
+          const spanLabel = document.createElement("span");
+          spanLabel.className = "option-label";
+          spanLabel.textContent = opt.label;
+
+          label.appendChild(input);
+          label.appendChild(badge);
+          label.appendChild(spanLabel);
+
+          label.addEventListener("click", (e) => {
+            e.preventDefault();
+            handleOptionClick(q, opt.key, card);
+          });
+
+          optionsWrapper.appendChild(label);
+        });
+
+        const feedback = document.createElement("div");
+        feedback.className = "feedback";
+        feedback.dataset.questionId = q.id;
+
+        card.appendChild(header);
+        card.appendChild(textEl);
+        card.appendChild(optionsWrapper);
+        card.appendChild(feedback);
+
+        questionsContainer.appendChild(card);
+
+        const mapItem = document.createElement("button");
+        mapItem.type = "button";
+        mapItem.className = "map-item";
+        mapItem.textContent = index + 1;
+        mapItem.dataset.questionId = q.id;
+        mapItem.addEventListener("click", () => {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+          document
+            .querySelectorAll(".map-item")
+            .forEach((el) => el.classList.remove("current"));
+          mapItem.classList.add("current");
+        });
+        questionMapContainer.appendChild(mapItem);
+      });
+
+      updateGlobalScore();
+    }
+
+    function handleOptionClick(question, selectedKey, cardEl) {
+      const isMulti = isMultiple(question.id);
+      const optionChips = cardEl.querySelectorAll(".option-chip");
+      let selectedKeys = [];
+
+      if (isMulti) {
+        const chip = Array.from(optionChips).find(
+          (c) => c.dataset.key === selectedKey
+        );
+        const input = chip.querySelector("input");
+        input.checked = !input.checked;
+        selectedKeys = Array.from(optionChips)
+          .filter((c) => c.querySelector("input").checked)
+          .map((c) => c.dataset.key);
+      } else {
+        optionChips.forEach((chip) => {
+          const input = chip.querySelector("input");
+          input.checked = chip.dataset.key === selectedKey;
+        });
+        selectedKeys = [selectedKey];
+      }
+
+      if (selectedKeys.length === 0) {
+        return;
+      }
+
+      applyCorrection(question, cardEl, selectedKeys);
+      updateGlobalScore();
+    }
+
+    function applyCorrection(question, cardEl, selectedKeys) {
+      const correctKeys = question.options
+        .filter((o) => o.correct)
+        .map((o) => o.key);
+      const setSelected = new Set(selectedKeys);
+      const setCorrect = new Set(correctKeys);
+
+      const isExactlyCorrect =
+        selectedKeys.length === correctKeys.length &&
+        selectedKeys.every((k) => setCorrect.has(k));
+
+      const statusPill = cardEl.querySelector(".question-status-pill");
+      statusPill.classList.remove("correct", "wrong");
+      const bullet = statusPill.querySelector(".bullet");
+      const labelSpan = statusPill.querySelector("span:last-child");
+
+      if (isExactlyCorrect) {
+        statusPill.classList.add("correct");
+        bullet.style.backgroundColor = "#4ade80";
+        labelSpan.textContent = "Bonne réponse";
+      } else {
+        statusPill.classList.add("wrong");
+        bullet.style.backgroundColor = "#f97373";
+        labelSpan.textContent = "Réponse à revoir";
+      }
+
+      const optionChips = cardEl.querySelectorAll(".option-chip");
+      optionChips.forEach((chip) => {
+        chip.classList.remove("correct", "wrong");
+        const key = chip.dataset.key;
+        if (setCorrect.has(key) && setSelected.has(key)) {
+          chip.classList.add("correct");
+        } else if (!setCorrect.has(key) && setSelected.has(key)) {
+          chip.classList.add("wrong");
+        }
+      });
+
+      const feedbackEl = cardEl.querySelector(".feedback");
+      feedbackEl.classList.add("visible");
+      feedbackEl.classList.remove("correct", "wrong");
+      feedbackEl.classList.add(isExactlyCorrect ? "correct" : "wrong");
+      const correctLabels = question.options
+        .filter((o) => o.correct)
+        .map((o) => o.key.toUpperCase())
+        .join(", ");
+      feedbackEl.innerHTML = `
+        <strong>${isExactlyCorrect ? "✔ Correct." : "✗ Incorrect."}</strong>
+        <span>La ou les bonne(s) réponse(s) : 
+          <span class="correct-answer">${correctLabels}</span>.
+        </span>
+        <br />
+        ${question.explanation}
+      `;
+
+      state.answered[question.id] = {
+        correct: isExactlyCorrect,
+        selectedKeys: Array.from(selectedKeys)
+      };
+
+      updateQuestionMapItem(question.id, isExactlyCorrect);
+    }
+
+    function updateQuestionMapItem(questionId, isCorrect) {
+      const mapItem = questionMapContainer.querySelector(
+        `.map-item[data-question-id="${questionId}"]`
+      );
+      if (!mapItem) return;
+      mapItem.classList.remove("correct", "wrong");
+      mapItem.classList.add(isCorrect ? "correct" : "wrong");
+    }
+
+    function updateGlobalScore() {
+      const total = questionsData.length;
+      const answeredIds = Object.keys(state.answered);
+      const answeredCount = answeredIds.length;
+      const correctCount = answeredIds.filter(
+        (id) => state.answered[Number(id)].correct
+      ).length;
+
+      scoreValueEl.textContent = correctCount;
+      scoreTotalEl.textContent = `/ ${total}`;
+      progressTextEl.textContent = `${answeredCount} / ${total} répondues`;
+
+      const ratio = total > 0 ? (correctCount / total) * 100 : 0;
+      scoreBarFillEl.style.width = `${ratio}%`;
+
+      if (answeredCount === 0) {
+        scoreLabelEl.textContent = "Aucune question validée pour le moment";
+      } else if (ratio === 100) {
+        scoreLabelEl.textContent = "Parfait, 100 % de bonnes réponses !";
+      } else if (ratio >= 70) {
+        scoreLabelEl.textContent = "Très bon niveau, encore quelques détails à consolider.";
+      } else if (ratio >= 40) {
+        scoreLabelEl.textContent = "Résultats intermédiaires, poursuis l’entraînement.";
+      } else {
+        scoreLabelEl.textContent = "Commence par relire le cours puis refais le QCM.";
+      }
+    }
+
+    function showAllSolutions() {
+      questionsData.forEach((q) => {
+        const card = questionsContainer.querySelector(
+          `.question-card[data-question-id="${q.id}"]`
+        );
+        if (!card) return;
+        const correctKeys = q.options.filter((o) => o.correct).map((o) => o.key);
+        applyCorrection(q, card, correctKeys);
+      });
+      updateGlobalScore();
+    }
+
+    function resetAll() {
+      state.answered = {};
+      document
+        .querySelectorAll(".question-card")
+        .forEach((card) => {
+          const statusPill = card.querySelector(".question-status-pill");
+          statusPill.classList.remove("correct", "wrong");
+          const bullet = statusPill.querySelector(".bullet");
+          const labelSpan = statusPill.querySelector("span:last-child");
+          bullet.style.backgroundColor = "rgba(148, 163, 184, 0.8)";
+          labelSpan.textContent = "En attente";
+
+          card
+            .querySelectorAll(".option-chip")
+            .forEach((chip) => {
+              chip.classList.remove("correct", "wrong");
+              chip.querySelector("input").checked = false;
+            });
+
+          const feedbackEl = card.querySelector(".feedback");
+          feedbackEl.classList.remove("visible", "correct", "wrong");
+          feedbackEl.innerHTML = "";
+        });
+
+      document
+        .querySelectorAll(".map-item")
+        .forEach((item) => (item.className = "map-item"));
+
+      updateGlobalScore();
+    }
+
+    btnShowAllSolutions.addEventListener("click", showAllSolutions);
+    btnReset.addEventListener("click", resetAll);
+
+    renderQuestions();
+  </script>
+</body>
+</html>

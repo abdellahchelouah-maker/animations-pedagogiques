@@ -1,0 +1,632 @@
+/* ============================
+   RESET & BASE
+   ============================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #1b2838, #020b16);
+  color: #f5f5f5;
+  line-height: 1.5;
+}
+
+/* ============================
+   APP LAYOUT
+   ============================ */
+
+.app {
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================
+   HEADER
+   ============================ */
+
+.app-header {
+  margin-bottom: 1.5rem;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Bloc marque : logo + titre */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.header-title-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header h1 {
+  font-family: "Rajdhani", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  letter-spacing: 0.04em;
+}
+
+.header-tagline {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  max-width: 720px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.header-line {
+  margin-top: 0.75rem;
+  height: 2px;
+  background: linear-gradient(90deg, #00bcd4, #4caf50, transparent);
+}
+
+/* Bouton règles */
+
+.btn-rules {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(3, 22, 40, 0.8);
+  color: #f5f5f5;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-rules:hover {
+  background: rgba(0, 188, 212, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ============================
+   MAIN
+   ============================ */
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ============================
+   DECK SECTION
+   ============================ */
+
+.deck-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.deck {
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.deck:hover,
+.deck:focus-visible {
+  border-color: #00bcd4;
+  background: rgba(0, 188, 212, 0.12);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* Visuels des paquets TRIZ / Lois / Concepts (agrandis) */
+.deck-visual {
+  width: 112px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.deck-info h2 {
+  font-family: "Rajdhani", system-ui, sans-serif;
+  font-size: 1.1rem;
+}
+
+.deck-info p {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* ============================
+   ACTION BUTTONS (Atelier / Tirage)
+   ============================ */
+
+.actions-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Boutons principaux (Atelier guidé / Tirage aléatoire) */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+  min-height: 3rem;
+}
+
+.btn-atelier {
+  background: linear-gradient(135deg, #00bcd4, #4caf50);
+  color: #020b16;
+  box-shadow: 0 6px 18px rgba(0, 188, 212, 0.55);
+}
+
+.btn-atelier:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0, 188, 212, 0.7);
+}
+
+.btn-random {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5f5;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn-random:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Icône dans les boutons principaux */
+.action-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============================
+   CARDS SECTION
+   ============================ */
+
+.cards-section {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.cards-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.cards-header h2 {
+  font-family: "Rajdhani", system-ui, sans-serif;
+  font-size: 1.1rem;
+}
+
+/* Bouton reset */
+
+.btn-reset {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-reset:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* ============================
+   ATELIER STEPS
+   ============================ */
+
+.atelier-steps {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: radial-gradient(circle at top left, rgba(0, 188, 212, 0.18), transparent);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.atelier-cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+/* Bouton tirage cas dans l’atelier */
+.atelier-cases button {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f5f5f5;
+  font-size: 0.9rem;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.atelier-cases button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.atelier-cases select {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.3);
+  color: #f5f5f5;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.9rem;
+}
+
+.step-indicator {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.step {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0.7;
+}
+
+.step.active {
+  background: #00bcd4;
+  color: #020b16;
+  opacity: 1;
+}
+
+.step.done {
+  background: #4caf50;
+  color: #020b16;
+  opacity: 0.95;
+}
+
+.atelier-instructions {
+  margin-top: 0.45rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.atelier-nav {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Boutons de navigation d’étapes */
+.atelier-nav button {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+  color: #f5f5f5;
+  font-size: 0.9rem;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.atelier-nav button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ============================
+   BLUEPRINT / GRID
+   ============================ */
+
+.blueprint-grid {
+  position: relative;
+  border-radius: 14px;
+  padding: 0.9rem;
+  background: radial-gradient(circle at top, rgba(10, 120, 200, 0.2), rgba(0, 0, 0, 0.75));
+  overflow: hidden;
+}
+
+.blueprint-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.cards-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  z-index: 1;
+}
+
+/* ============================
+   CASE LAYOUT (ÉTAPE 1)
+   ============================ */
+
+.case-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.case-illustration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.case-illustration h3 {
+  margin-top: 0.5rem;
+  font-family: "Rajdhani", system-ui, sans-serif;
+  font-size: 1.1rem;
+}
+
+.case-text p {
+  font-size: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+
+/* Illustration de cas : taille maîtrisée, image entière */
+
+.case-image {
+  display: block;
+  max-width: 220px;
+  max-height: 160px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 720px) {
+  .case-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .case-illustration {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* ============================
+   CARD (TRIZ / LOIS / CONCEPTS)
+   ============================ */
+
+/* Taille normale pour toutes les cartes (tirage, paquet) */
+.card {
+  width: 180px;
+  height: 240px;
+  perspective: 1000px;
+}
+
+/* Taille agrandie pour les cartes d’atelier (étapes 2 et 3) */
+.card-atelier {
+  width: 360px;
+  height: 480px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.6);
+}
+
+.card-front {
+  background: #111827;
+}
+
+.card-back {
+  background: #020617;
+  transform: rotateY(180deg);
+}
+
+/* Image de carte : image entière visible, sans recadrage destructeur */
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #020617;
+}
+
+/* Zoom icon */
+
+.zoom-icon {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.15rem 0.35rem;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ============================
+   MODALS
+   ============================ */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 50;
+}
+
+.modal-content {
+  background: #020617;
+  border-radius: 12px;
+  padding: 1rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.modal-zoom img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.modal-label {
+  font-size: 0.9rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  border: none;
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* Règles */
+
+.rules-content h2 {
+  margin-bottom: 0.5rem;
+}
+
+.rules-content h3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+
+.rules-content p,
+.rules-content li {
+  font-size: 0.9rem;
+}
+
+.rules-content ul,
+.rules-content ol {
+  padding-left: 1.2rem;
+}
+
+/* ============================
+   FOOTER
+   ============================ */
+
+.app-footer {
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+
+@media (max-width: 640px) {
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-brand {
+    align-items: flex-start;
+  }
+
+  .deck-section {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-atelier {
+    width: 100%;
+    height: auto;
+    max-width: 360px;
+    max-height: 480px;
+  }
+}

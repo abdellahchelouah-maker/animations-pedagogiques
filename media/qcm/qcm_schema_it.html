@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>QCM - Schéma de liaison IT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #020617;
+      --accent: #a855f7;
+      --accent-soft: rgba(168, 85, 247, 0.12);
+      --accent-strong: #22c55e;
+      --danger: #f97373;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --radius: 0.9rem;
+      --shadow: 0 18px 45px rgba(0,0,0,0.65);
+      --transition: 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 45%, #020617 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    .title {
+      font-size: clamp(1.7rem, 2vw + 1rem, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title span.logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 0.8rem;
+      background: radial-gradient(circle at 30% 20%, #a855f7, #8b5cf6 40%, #4f46e5 100%);
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #0b1120;
+    }
+
+    .subtitle {
+      margin-top: 0.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.78rem;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .pill-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.9);
+    }
+
+    main {
+      background: radial-gradient(circle at top left, #0f172a 0, #020617 55%);
+      border-radius: calc(var(--radius) + 0.6rem);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: var(--shadow);
+      padding: 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.22), transparent 70%);
+      top: -140px;
+      right: -140px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .toolbar-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+    }
+
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      backdrop-filter: blur(16px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #022c22;
+      font-weight: 600;
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.55);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.85);
+      border-color: rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #22c55e, #059669);
+      border-color: rgba(34, 197, 94, 1);
+    }
+
+    .btn-icon {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+    }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .score-pill strong {
+      color: var(--accent-strong);
+      font-size: 1rem;
+    }
+
+    .questions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .question-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top left, rgba(76, 29, 149, 0.4), rgba(15, 23, 42, 0.9));
+      padding: 0.85rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(168, 85, 247, 0.16), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+    }
+
+    .question-card:hover::before {
+      opacity: 1;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .q-label {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--muted);
+    }
+
+    .q-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-top: 0.15rem;
+    }
+
+    .options {
+      display: grid;
+      gap: 0.45rem;
+      margin-top: 0.3rem;
+    }
+
+    .option {
+      position: relative;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(88, 28, 135, 0.8);
+      background: rgba(15, 23, 42, 0.85);
+      padding: 0.4rem 0.6rem 0.4rem 2.2rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      min-height: 2.1rem;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .option:hover {
+      border-color: rgba(168, 85, 247, 0.9);
+      background: rgba(15, 23, 42, 0.98);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.85);
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .option-label {
+      position: absolute;
+      left: 0.6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.9);
+      transition: border-color var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+
+    .option-text {
+      flex: 1;
+    }
+
+    .option.correct {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(22, 163, 74, 0.12);
+    }
+
+    .option.correct .option-label {
+      border-color: rgba(34, 197, 94, 1);
+      background: rgba(22, 163, 74, 0.8);
+      color: #022c22;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
+    }
+
+    .option.incorrect {
+      border-color: rgba(239, 68, 68, 0.9);
+      background: rgba(127, 29, 29, 0.12);
+    }
+
+    .option.incorrect .option-label {
+      border-color: rgba(239, 68, 68, 1);
+      background: rgba(127, 29, 29, 0.8);
+      color: #fef2f2;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+    }
+
+    .option.disabled {
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .feedback {
+      margin-top: 0.4rem;
+      font-size: 0.83rem;
+      padding: 0.45rem 0.55rem;
+      border-radius: 0.6rem;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      display: none;
+    }
+
+    .feedback.correct {
+      border-color: rgba(34, 197, 94, 0.8);
+      background: rgba(22, 163, 74, 0.1);
+      color: #bbf7d0;
+    }
+
+    .feedback.incorrect {
+      border-color: rgba(239, 68, 68, 0.8);
+      background: rgba(127, 29, 29, 0.2);
+      color: #fecaca;
+    }
+
+    .feedback strong {
+      font-weight: 600;
+    }
+
+    .footer-info {
+      margin-top: 1.2rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(88, 28, 135, 0.6);
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.7rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-info a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-info a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      main {
+        padding: 0.9rem;
+      }
+
+      .question-card {
+        padding: 0.75rem 0.7rem;
+      }
+
+      .option {
+        padding-left: 2rem;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar-left,
+      .toolbar-right {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="title">
+      <span class="logo">IT</span>
+      <span>QCM – Schéma de liaison IT</span>
+    </div>
+    <p class="subtitle">
+      Test interactif sur le régime de neutre IT, le CPI, le premier et le second défaut d’isolement et la continuité de service.
+    </p>
+    <div class="chip-row">
+      <span class="pill"><span class="pill-dot"></span> SLT – Terminale</span>
+      <span class="chip">Régime IT</span>
+      <span class="chip">CPI & défauts</span>
+      <span class="chip">Continuité de service</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="glow"></div>
+
+    <section class="toolbar">
+      <div class="toolbar-left">
+        <button class="btn btn-primary" id="btnCheckAll">
+          <span class="btn-icon">✓</span>
+          Vérifier toutes les réponses
+        </button>
+        <button class="btn" id="btnReset">
+          <span class="btn-icon">↺</span>
+          Réinitialiser le QCM
+        </button>
+      </div>
+      <div class="toolbar-right">
+        <div class="score-pill">
+          Score : <strong id="scoreValue">0 / 32</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <!-- Injecté par JS -->
+    </section>
+
+    <div class="footer-info">
+      <span>Mode d’emploi : sélectionner les réponses, puis afficher la correction détaillée par question ou globalement.</span>
+      <span>Source pédagogique : QCM « Schéma de liaison IT » (adapté au format web interactif).</span>
+    </div>
+  </main>
+</div>
+
+<script>
+  const questionsData = [
+    {
+      id: 1,
+      text: "La première lettre du schéma de liaison IT signifie que :",
+      type: "single",
+      options: [
+        { key: "a", text: "Le neutre est raccordé à une forte impédance.", correct: false },
+        { key: "b", text: "Le neutre n'est pas raccordé directement à la Terre (isolé ou impédant).", correct: true },
+        { key: "c", text: "Les masses sont en liaison avec une prise de terre.", correct: false },
+        { key: "d", text: "L'isolation de l'installation est optimale.", correct: false }
+      ],
+      explanation:
+        "La lettre I signifie que le point neutre de la source n’est pas directement relié à la Terre (neutre isolé ou relié via une forte impédance)."
+    },
+    {
+      id: 2,
+      text: "La seconde lettre du schéma de liaison IT signifie que :",
+      type: "single",
+      options: [
+        { key: "a", text: "Le neutre est impédant.", correct: false },
+        { key: "b", text: "Les masses sont raccordées entre elles et reliées à une prise de terre.", correct: true },
+        { key: "c", text: "Il y a absence de circuit terminal.", correct: false }
+      ],
+      explanation:
+        "La lettre T indique que les masses de l’installation sont connectées à une prise de terre locale commune."
+    },
+    {
+      id: 3,
+      text: "Le schéma de liaison à la terre représenté sur la première image correspond à un schéma de liaison IT.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Le schéma montre un neutre non directement relié à la Terre et des masses mises à la terre, ce qui correspond à un régime IT."
+    },
+    {
+      id: 4,
+      text: "Le schéma de liaison à la terre représenté sur l’autre figure correspond à un schéma de liaison IT.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "La seconde figure représente un autre régime de neutre (TT ou TN) et ne respecte pas les caractéristiques du schéma IT."
+    },
+    {
+      id: 5,
+      text: "Dans le cas d'un premier défaut d'isolement au niveau d'un récepteur, il en résulte :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Un court-circuit entre phase et neutre.", correct: false },
+        { key: "b", text: "Un court-circuit entre deux phases si le récepteur est alimenté en triphasé.", correct: false },
+        { key: "c", text: "Un courant de fuite à la terre dont la valeur est fortement limitée.", correct: true },
+        { key: "d", text: "Un courant de fuite à la terre particulièrement dangereux.", correct: false }
+      ],
+      explanation:
+        "En régime IT, le premier défaut entraîne un courant de fuite très limité grâce à l’impédance entre le réseau et la Terre."
+    },
+    {
+      id: 6,
+      text: "Le courant dans la boucle de défaut (cas du premier défaut) est limité par :",
+      type: "multi",
+      options: [
+        { key: "a", text: "La tension de contact.", correct: false },
+        { key: "b", text: "La résistance des câbles d'alimentation.", correct: true },
+        { key: "c", text: "La résistance du défaut d'isolement.", correct: true },
+        { key: "d", text: "L'impédance de la liaison entre le neutre et la Terre.", correct: true }
+      ],
+      explanation:
+        "La valeur du courant de défaut dépend de l’impédance de la boucle : câbles, résistance du défaut et impédance neutre–Terre."
+    },
+    {
+      id: 7,
+      text: "La tension de contact, dans le cas d'un premier défaut, est toujours supérieure à la tension limite de contact. Elle est donc dangereuse.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "En régime IT, le premier défaut est généralement non dangereux pour les personnes si les conditions de mise à la terre sont correctes."
+    },
+    {
+      id: 8,
+      text: "Il est nécessaire en cas de premier défaut d'isolement de mettre en œuvre immédiatement une protection contre les contacts indirects.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Le premier défaut n’impose pas une coupure immédiate, mais il doit être localisé et éliminé dans un délai compatible avec l’exploitation."
+    },
+    {
+      id: 9,
+      text: "Un premier défaut provoque tout de suite une élévation dangereuse du potentiel des masses de l'installation.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Grâce au neutre isolé ou impédant, les masses ne prennent pas immédiatement un potentiel dangereux lors du premier défaut."
+    },
+    {
+      id: 10,
+      text: "Un C.P.I., c'est un appareil de protection contre les contacts indirects utilisé en schéma IT.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Le CPI est un appareil de surveillance : il détecte et signale les défauts d’isolement, mais ne coupe pas lui-même le circuit."
+    },
+    {
+      id: 11,
+      text: "Le Contrôleur Permanent d'Isolement a pour rôle essentiel de signaler la présence d'un défaut d'isolement dans un récepteur.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Le CPI mesure en continu la résistance d’isolement du réseau et déclenche une alarme lorsqu’elle devient trop faible."
+    },
+    {
+      id: 12,
+      text: "L'impédance permettant la liaison entre le neutre et sa prise de terre dans la maquette didactisée est simulée par l'impédance interne du CPI qui est de 128 kΩ.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Dans la maquette, l’impédance neutre–Terre est modélisée par l’impédance interne du CPI, ce qui reproduit le comportement d’un régime IT."
+    },
+    {
+      id: 13,
+      text: "L'interconnexion des masses et la mise à la terre des masses ne sont pas une condition nécessaire et suffisante pour la protection des personnes en schéma IT.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "En régime IT, la seule interconnexion des masses ne suffit pas : la surveillance par CPI et la gestion du second défaut sont indispensables."
+    },
+    {
+      id: 14,
+      text: "Le CPI contrôle en permanence l’isolement du réseau par rapport à la Terre et signale dès que cet isolement est inférieur à son seuil.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Le principe du CPI est précisément de surveiller en continu la résistance d’isolement et d’alarmer lorsque celle-ci devient trop faible."
+    },
+    {
+      id: 15,
+      text: "Pour localiser le premier défaut d'isolement dans ce schéma de liaison à la terre, il est nécessaire d'éteindre le CPI.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "On conserve le CPI en fonctionnement pour que le système de localisation puisse utiliser son générateur de courant de recherche."
+    },
+    {
+      id: 16,
+      text: "La localisation du premier défaut en ouvrant successivement chaque disjoncteur ne nuit pas à la continuité de service et présente l'avantage d'être économique.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Couper successivement les départs interrompt le service ; on préfère des méthodes de localisation sous tension pour maintenir l’exploitation."
+    },
+    {
+      id: 17,
+      text: "Le CPI se manifeste en cas de court-circuit par une signalisation sonore et lumineuse.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Le CPI signale des défauts d’isolement, pas les courts-circuits qui sont gérés par les dispositifs de protection contre les surintensités."
+    },
+    {
+      id: 18,
+      text: "La recherche du premier défaut s'effectue en schéma IT par l'injection d'un courant en haute fréquence entre le réseau et la Terre et l'utilisation de capteurs magnétiques mobiles.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Le système de localisation injecte un courant (souvent de fréquence différente de 50 Hz) et suit ce courant avec des pinces magnétiques pour repérer la dérivation en défaut."
+    },
+    {
+      id: 19,
+      text: "L’utilisation d’un générateur de courant alternatif à très basse fréquence (environ 10 Hz) associé à un capteur magnétique présente l'avantage :",
+      type: "multi",
+      options: [
+        { key: "a", text: "De favoriser la sélectivité des protections.", correct: false },
+        { key: "b", text: "De localiser le défaut tout en continuant à exploiter.", correct: true },
+        { key: "c", text: "De réduire la complexité de l'installation électrique.", correct: false }
+      ],
+      explanation:
+        "Le courant basse fréquence permet de distinguer facilement le courant de localisation du courant de service, sans interrompre l’exploitation."
+    },
+    {
+      id: 20,
+      text: "Lorsque l'afficheur du capteur magnétique n'affiche aucune valeur après réglage de la sensibilité, cela signifie que :",
+      type: "multi",
+      options: [
+        { key: "a", text: "L'afficheur est hors-service et qu'il faut le réparer.", correct: false },
+        { key: "b", text: "Le défaut d'isolement recherché est en amont de l'endroit où est placée la pince.", correct: false },
+        { key: "c", text: "Le défaut d'isolement recherché est en aval de l'endroit où est placée la pince.", correct: false },
+        { key: "d", text: "Le défaut d'isolement est localisé sur une autre dérivation de l'installation électrique.", correct: true }
+      ],
+      explanation:
+        "Si aucun courant de localisation n’est détecté, c’est que la dérivation en défaut n’est pas celle sur laquelle est placée la pince."
+    },
+    {
+      id: 21,
+      text: "Lorsque l'afficheur du capteur magnétique affiche une valeur après réglage de la sensibilité, cela signifie que :",
+      type: "single",
+      options: [
+        { key: "a", text: "Le défaut est situé en aval de la pince.", correct: true },
+        { key: "b", text: "Le défaut est situé en amont de la pince.", correct: false },
+        { key: "c", text: "La sensibilité choisie est trop élevée.", correct: false }
+      ],
+      explanation:
+        "La présence de courant de localisation mesuré par la pince indique que la dérivation située en aval de la pince contient le défaut."
+    },
+    {
+      id: 22,
+      text: "Lorsqu'un second défaut d'isolement survient avant que le premier ne soit éliminé, il en résulte :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Une surtension dangereuse dans l'installation.", correct: false },
+        { key: "b", text: "Un court-circuit entre phase et neutre.", correct: false },
+        { key: "c", text: "Un court-circuit entre deux phases.", correct: true },
+        { key: "d", text: "Un courant de fuite à la terre.", correct: false }
+      ],
+      explanation:
+        "Deux défauts sur des phases différentes créent un court-circuit entre phases via les masses et la Terre."
+    },
+    {
+      id: 23,
+      text: "En cas de double défaut d'isolement, la tension de contact est négligeable et une protection contre les contacts indirects est inutile.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Avec un double défaut, des tensions de contact importantes peuvent apparaître et une coupure rapide est indispensable."
+    },
+    {
+      id: 24,
+      text: "En cas d'un double défaut, la protection des personnes peut être assurée par :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Une plus forte impédance entre le neutre du transformateur et la Terre.", correct: false },
+        { key: "b", text: "Un neutre parfaitement isolé.", correct: false },
+        { key: "c", text: "Un fusible.", correct: true },
+        { key: "d", text: "Un disjoncteur magnétothermique.", correct: true },
+        { key: "e", text: "Un limiteur de surtension appelé aussi parasurtenseur.", correct: false }
+      ],
+      explanation:
+        "En cas de double défaut, le danger est un court-circuit franc qui doit être éliminé par des protections de surintensité (fusibles ou disjoncteurs)."
+    },
+    {
+      id: 25,
+      text: "Le déclenchement du magnétothermique dans le cas d'un double défaut d'isolement doit toujours être réalisé :",
+      type: "single",
+      options: [
+        { key: "a", text: "Par le déclencheur thermique.", correct: false },
+        { key: "b", text: "Par le déclencheur magnétique.", correct: true },
+        { key: "c", text: "Par les deux déclencheurs à la fois.", correct: false }
+      ],
+      explanation:
+        "Le double défaut provoque un courant très élevé, ce qui sollicite la partie magnétique du disjoncteur pour une coupure rapide."
+    },
+    {
+      id: 26,
+      text: "Le déclencheur thermique permet de protéger contre le court-circuit provoqué par la présence de deux défauts d'isolement en schéma IT.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Le déclencheur thermique protège les surcharges lentes, pas les courts-circuits brutaux dus à un double défaut."
+    },
+    {
+      id: 27,
+      text: "Le déclencheur magnétique permet de protéger contre le court-circuit provoqué par la présence de deux défauts d'isolement en schéma IT.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "La fonction magnétique est conçue pour déclencher rapidement en cas de fort courant de court-circuit."
+    },
+    {
+      id: 28,
+      text: "Dans le cas d'une installation en schéma IT s'étendant sur une large superficie, la protection des personnes à l'aide de disjoncteurs magnétothermiques est toujours assurée.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Les longues distances augmentent l’impédance de boucle, ce qui peut rendre le courant de défaut insuffisant pour déclencher le disjoncteur."
+    },
+    {
+      id: 29,
+      text: "Dans le cas d'une installation en schéma IT s'étendant sur une large superficie, si la protection par disjoncteur magnétothermique n'est pas assurée, il faut :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Employer un disjoncteur de courbe B.", correct: false },
+        { key: "b", text: "Augmenter la section des conducteurs.", correct: true },
+        { key: "c", text: "Utiliser un dispositif différentiel à courant résiduel.", correct: true },
+        { key: "d", text: "Augmenter la section du conducteur de protection.", correct: false },
+        { key: "e", text: "Diminuer la valeur de la prise de terre des masses.", correct: true }
+      ],
+      explanation:
+        "On cherche à augmenter le courant de défaut (sections plus grandes, meilleure prise de terre) et/ou à utiliser un DDR pour garantir la protection des personnes."
+    },
+    {
+      id: 30,
+      text: "Le choix du schéma IT se fonde principalement sur la continuité de service, meilleure que dans les autres schémas. Pour cette raison, il est employé dans les hôpitaux et les industries où l'énergie est primordiale.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Le premier défaut n’entraîne pas de coupure immédiate, ce qui offre une excellente continuité de service dans les installations sensibles."
+    },
+    {
+      id: 31,
+      text: "La norme NFC 15-100 impose aux utilisateurs du schéma IT :",
+      type: "multi",
+      options: [
+        { key: "a", text: "L'utilisation d'un poste de transformation privé.", correct: false },
+        { key: "b", text: "L'emploi d'un personnel d'entretien compétent.", correct: true },
+        { key: "c", text: "L'utilisation de DPCC (dispositifs de protection contre les court-circuits) sur chaque départ.", correct: true },
+        { key: "d", text: "L'utilisation d'un limiteur de surtension au niveau du transformateur HTA/BT.", correct: false }
+      ],
+      explanation:
+        "Le régime IT impose une organisation de la maintenance et des protections adaptées sur chaque départ pour gérer les défauts d’isolement."
+    },
+    {
+      id: 32,
+      text: "Le fonctionnement du CPI repose sur l'injection d'un courant continu ou basse fréquence entre le réseau et la Terre et la mesure de la résistance d'isolement. Si elle est inférieure à un seuil, une alarme est déclenchée.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Ce principe de mesure permet de surveiller en permanence l’état d’isolement du réseau IT sans perturber son fonctionnement."
+    }
+  ]; // fin questions
+
+  const questionsContainer = document.getElementById("questions");
+  const scoreValue = document.getElementById("scoreValue");
+  const btnCheckAll = document.getElementById("btnCheckAll");
+  const btnReset = document.getElementById("btnReset");
+
+  function renderQuestions() {
+    questionsContainer.innerHTML = "";
+    questionsData.forEach((q) => {
+      const card = document.createElement("article");
+      card.className = "question-card";
+      card.dataset.qid = q.id;
+
+      const header = document.createElement("div");
+      header.className = "question-header";
+
+      const label = document.createElement("div");
+      label.className = "q-label";
+      label.textContent = "Question " + q.id;
+
+      const typeInfo = document.createElement("div");
+      typeInfo.className = "chip";
+      typeInfo.textContent = q.type === "multi" ? "Plusieurs réponses possibles" : "Une seule réponse";
+
+      header.appendChild(label);
+      header.appendChild(typeInfo);
+
+      const title = document.createElement("div");
+      title.className = "q-title";
+      title.textContent = q.text;
+
+      const optionsWrapper = document.createElement("div");
+      optionsWrapper.className = "options";
+
+      q.options.forEach((opt) => {
+        const optionEl = document.createElement("label");
+        optionEl.className = "option";
+        optionEl.dataset.key = opt.key;
+
+        const input = document.createElement("input");
+        input.type = q.type === "multi" ? "checkbox" : "radio";
+        input.name = "q" + q.id + (q.type === "multi" ? "_" + opt.key : "");
+        input.value = opt.key;
+
+        const badge = document.createElement("div");
+        badge.className = "option-label";
+        badge.textContent = opt.key;
+
+        const text = document.createElement("div");
+        text.className = "option-text";
+        text.textContent = opt.text;
+
+        optionEl.appendChild(input);
+        optionEl.appendChild(badge);
+        optionEl.appendChild(text);
+
+        optionEl.addEventListener("click", function (ev) {
+          if (optionEl.classList.contains("disabled")) return;
+          if (ev.target.tagName.toLowerCase() === "input") return;
+
+          if (q.type === "multi") {
+            input.checked = !input.checked;
+          } else {
+            const siblings = optionsWrapper.querySelectorAll(".option input[type='radio']");
+            siblings.forEach((radio) => {
+              if (radio !== input) radio.checked = false;
+            });
+            input.checked = true;
+          }
+        });
+
+        optionsWrapper.appendChild(optionEl);
+      });
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.textContent = q.explanation;
+
+      card.appendChild(header);
+      card.appendChild(title);
+      card.appendChild(optionsWrapper);
+      card.appendChild(feedback);
+
+      questionsContainer.appendChild(card);
+    });
+  }
+
+  function evaluateQuestion(card, question) {
+    const optionsEls = card.querySelectorAll(".option");
+    const feedback = card.querySelector(".feedback");
+    let allCorrect = true;
+    let atLeastOneSelected = false;
+
+    optionsEls.forEach((optEl, index) => {
+      const input = optEl.querySelector("input");
+      const isCorrect = question.options[index].correct;
+      const selected = input.checked;
+
+      optEl.classList.remove("correct", "incorrect", "disabled");
+
+      if (selected) {
+        atLeastOneSelected = true;
+        if (isCorrect) {
+          optEl.classList.add("correct");
+        } else {
+          optEl.classList.add("incorrect");
+          allCorrect = false;
+        }
+      } else if (isCorrect) {
+        allCorrect = false;
+      }
+    });
+
+    if (!atLeastOneSelected) {
+      feedback.style.display = "block";
+      feedback.classList.remove("correct", "incorrect");
+      feedback.innerHTML = "<strong>Rappel :</strong> sélectionnez au moins une réponse pour cette question.";
+      return false;
+    }
+
+    feedback.style.display = "block";
+    if (allCorrect) {
+      feedback.classList.add("correct");
+      feedback.classList.remove("incorrect");
+      feedback.innerHTML = "<strong>Bonne réponse :</strong> " + question.explanation;
+      optionsEls.forEach((optEl) => optEl.classList.add("disabled"));
+      return true;
+    } else {
+      feedback.classList.add("incorrect");
+      feedback.classList.remove("correct");
+      feedback.innerHTML = "<strong>À corriger :</strong> " + question.explanation;
+      return false;
+    }
+  }
+
+  function evaluateAll() {
+    const cards = questionsContainer.querySelectorAll(".question-card");
+    let score = 0;
+    cards.forEach((card) => {
+      const qid = parseInt(card.dataset.qid, 10);
+      const question = questionsData.find((q) => q.id === qid);
+      const good = evaluateQuestion(card, question);
+      if (good) score++;
+    });
+    scoreValue.textContent = score + " / " + questionsData.length;
+  }
+
+  function resetAll() {
+    const cards = questionsContainer.querySelectorAll(".question-card");
+    cards.forEach((card) => {
+      const optionsEls = card.querySelectorAll(".option");
+      const feedback = card.querySelector(".feedback");
+      optionsEls.forEach((optEl) => {
+        const input = optEl.querySelector("input");
+        input.checked = false;
+        optEl.classList.remove("correct", "incorrect", "disabled");
+      });
+      feedback.style.display = "none";
+      feedback.classList.remove("correct", "incorrect");
+    });
+    scoreValue.textContent = "0 / " + questionsData.length;
+  }
+
+  btnCheckAll.addEventListener("click", evaluateAll);
+  btnReset.addEventListener("click", resetAll);
+
+  renderQuestions();
+</script>
+</body>
+</html>

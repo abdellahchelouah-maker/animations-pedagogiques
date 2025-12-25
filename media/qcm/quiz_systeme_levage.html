@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Quiz Système de Levage</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #071028 0%, #071a2a 60%);
+    color: #e6eef6;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  h1 { margin-bottom: 10px; }
+  .subtitle { color: #9aa4b2; margin-bottom: 20px; }
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6ee7b7, #60a5fa);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .question-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+  }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .question-number { color: #60a5fa; font-weight: bold; }
+  .question-type {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: #9aa4b2;
+  }
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option:hover {
+    background: rgba(255,255,255,0.05);
+  }
+  .option input {
+    width: 18px;
+    height: 18px;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: #6ee7b7;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn:hover {
+    background: rgba(110,231,183,0.1);
+  }
+  .btn-secondary {
+    color: #60a5fa;
+  }
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .feedback {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+  }
+  .feedback.correct {
+    border-left: 4px solid #6ee7b7;
+    background: rgba(110,231,183,0.1);
+  }
+  .feedback.wrong {
+    border-left: 4px solid #fb7185;
+    background: rgba(251,113,133,0.1);
+  }
+  .summary {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .summary h2 {
+    margin-bottom: 15px;
+  }
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal.show {
+    display: flex;
+  }
+  .modal-content {
+    background: #071428;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 500px;
+  }
+  .final-score {
+    font-size: 48px;
+    color: #6ee7b7;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  .formula {
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Quiz : Système de Levage 1</h1>
+  <p class="subtitle">16 questions — Calculs et concepts mécaniques</p>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <div class="question-card" id="questionCard"></div>
+
+  <div class="navigation">
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← Précédent</button>
+      <button class="btn" id="nextBtn">Suivant →</button>
+    </div>
+    <div>
+      <span>Question <strong id="currentNum">1</strong> / <strong>16</strong></span>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="restartBtn">🔄 Recommencer</button>
+    <button class="btn btn-secondary" id="showAnswersBtn">👁️ Afficher réponses</button>
+  </div>
+
+  <div class="summary">
+    <h2>Résumé</h2>
+    <div class="stat">
+      <span>Score</span>
+      <strong id="scoreDisplay">0 / 16</strong>
+    </div>
+    <div class="stat">
+      <span>Réponses correctes</span>
+      <strong id="correctDisplay">0</strong>
+    </div>
+    <div class="stat">
+      <span>Questions répondues</span>
+      <strong id="answeredDisplay">0</strong>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h2>Résultat final</h2>
+    <div class="final-score" id="finalScore">0 / 16</div>
+    <p id="resultMessage"></p>
+    <div style="margin-top: 20px;">
+      <button class="btn" id="closeModal">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  { 
+    id: 1, 
+    text: "Quel est le poids d'une masse de 100 kg ?", 
+    type: "single", 
+    options: { a: "100 kg", b: "981 N", c: "10 N" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Correct : P = m × g = 100 × 9,81 ≈ 981 N", 
+      default: "Le poids se calcule avec P = m × g, où g ≈ 9,81 m/s². Donc P = 100 × 9,81 = 981 N" 
+    } 
+  },
+  
+  { 
+    id: 2, 
+    text: "Quelle est la vitesse angulaire en rad/s d'un moteur tournant à 3000 tr/min ?", 
+    type: "single", 
+    options: { a: "314 rad/s", b: "18850 rad/s", c: "7,95 rad/s" }, 
+    correct: ["a"], 
+    feedback: { 
+      a: "Exact : ω = (3000 × 2π) / 60 ≈ 314 rad/s", 
+      default: "Formule : ω = (N × 2π) / 60. Donc ω = (3000 × 2π) / 60 ≈ 314 rad/s" 
+    } 
+  },
+  
+  { 
+    id: 3, 
+    text: "Quelle est la vitesse angulaire en rad/s d'un moteur tournant à 25 tr/s ?", 
+    type: "single", 
+    options: { a: "120,3 rad/s", b: "157 rad/s", c: "92 rad/s" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Correct : ω = 25 × 2π ≈ 157 rad/s", 
+      default: "Formule : ω = N × 2π (si N est en tr/s). Donc ω = 25 × 2π ≈ 157 rad/s" 
+    } 
+  },
+  
+  { 
+    id: 4, 
+    text: "Déterminer le rapport du réducteur permettant l'entraînement en rotation d'un plateau à une vitesse de 78,5 rad/s à l'aide d'un moteur tournant à 1500 tr/min.", 
+    type: "single", 
+    options: { a: "1", b: "1/20", c: "1/2" }, 
+    correct: ["c"], 
+    feedback: { 
+      c: "Exact : ω_moteur = 1500 × 2π / 60 = 157 rad/s. Rapport = 78,5 / 157 = 1/2", 
+      default: "Convertir 1500 tr/min en rad/s : 157 rad/s. Rapport = ω_sortie / ω_entrée = 78,5 / 157 = 1/2" 
+    } 
+  },
+  
+  { 
+    id: 5, 
+    text: "Calculer la vitesse linéaire d'un chariot automoteur si les roues motrices (de rayon = 12 cm) sont entraînées par un motoréducteur tournant à 300 tr/min.", 
+    type: "single", 
+    options: { a: "37 m/s", b: "3,77 m/s", c: "0,37 m/s" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Correct : ω = 300 × 2π / 60 = 31,4 rad/s. V = ω × r = 31,4 × 0,12 ≈ 3,77 m/s", 
+      default: "V = ω × r. Avec ω = 31,4 rad/s et r = 0,12 m, on obtient V ≈ 3,77 m/s" 
+    } 
+  },
+  
+  { 
+    id: 6, 
+    text: "Un moteur électrique entraîne par l'intermédiaire d'un réducteur les roues motrices d'un chariot automoteur. Quelle vitesse linéaire de déplacement du chariot si le moteur tourne à 750 tr/min et si les roues ont un diamètre de 38,2 mm ?", 
+    type: "single", 
+    options: { a: "5 m/s", b: "7,75 m/s", c: "1,5 m/s" }, 
+    correct: ["c"], 
+    feedback: { 
+      c: "Exact : ω = 750 × 2π / 60 = 78,5 rad/s. V = ω × r = 78,5 × 0,0191 ≈ 1,5 m/s", 
+      default: "V = ω × r. Le rayon est 38,2/2 = 19,1 mm = 0,0191 m. Avec ω = 78,5 rad/s, V ≈ 1,5 m/s" 
+    } 
+  },
+  
+  { 
+    id: 7, 
+    text: "Déterminer la puissance mécanique nécessaire au déplacement vertical d'une masse de 750 kg à la vitesse linéaire de 0,15 m/s ?", 
+    type: "single", 
+    options: { a: "100 W", b: "981 W", c: "1,1 kW" }, 
+    correct: ["c"], 
+    feedback: { 
+      c: "Correct : P = F × v = (m × g) × v = (750 × 9,81) × 0,15 ≈ 1103 W ≈ 1,1 kW", 
+      default: "P = Force × vitesse = (masse × g) × v. P = (750 × 9,81) × 0,15 ≈ 1,1 kW" 
+    } 
+  },
+  
+  { 
+    id: 8, 
+    text: "Calculer le couple résistant que représente une masse de 70 kg soulevée par l'intermédiaire d'une poulie de 30 cm de diamètre.", 
+    type: "single", 
+    options: { a: "206 N.m", b: "52 N.m", c: "103 N.m" }, 
+    correct: ["c"], 
+    feedback: { 
+      c: "Exact : C = F × r = (m × g) × r = (70 × 9,81) × 0,15 ≈ 103 N.m", 
+      default: "Couple = Force × rayon. Le rayon = 30/2 = 15 cm = 0,15 m. C = (70 × 9,81) × 0,15 ≈ 103 N.m" 
+    } 
+  },
+  
+  { 
+    id: 9, 
+    text: "Calculer l'inertie totale par rapport à l'axe \"grande vitesse\" d'un système composé de 3 ensembles ayant respectivement une inertie par rapport à cet axe de J1 = 0,07 m².kg ; J2 = 0,0000012 m².kg et J3 = 0,000008 m².kg.", 
+    type: "single", 
+    options: { a: "0,08 m².kg", b: "1,2 m².kg", c: "0,07 m².kg" }, 
+    correct: ["c"], 
+    feedback: { 
+      c: "Correct : J_totale = J1 + J2 + J3 = 0,07 + 0,0000012 + 0,000008 ≈ 0,07 m².kg", 
+      default: "L'inertie totale est la somme des inerties. Les valeurs de J2 et J3 sont négligeables devant J1." 
+    } 
+  },
+  
+  { 
+    id: 10, 
+    text: "Un ascenseur doit soulever une cabine de 1,2 tonnes à la vitesse de 5 m/s. La chaîne cinématique admet un rendement de 72 %. Calculer la puissance mécanique que devra développer le moteur.", 
+    type: "single", 
+    options: { a: "6 kW", b: "81,750 kW", c: "211,9 kW" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Exact : P_utile = (1200 × 9,81) × 5 = 58860 W. P_moteur = 58860 / 0,72 ≈ 81,75 kW", 
+      default: "P = (m × g × v) / rendement = (1200 × 9,81 × 5) / 0,72 ≈ 81,75 kW" 
+    } 
+  },
+  
+  { 
+    id: 11, 
+    text: "La puissance mécanique fournie par un moteur se calcule par la formule : P = C × ω", 
+    type: "single", 
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: ["a"], 
+    feedback: { 
+      a: "Correct : P = C × ω (Puissance = Couple × vitesse angulaire)", 
+      default: "La formule P = C × ω est correcte pour la puissance mécanique en rotation." 
+    } 
+  },
+  
+  { 
+    id: 12, 
+    text: "La puissance mécanique fournie par un moteur se calcule par la formule : P = F × v", 
+    type: "single", 
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: ["a"], 
+    feedback: { 
+      a: "Correct : P = F × v (Puissance = Force × vitesse) pour un mouvement de translation", 
+      default: "La formule P = F × v est correcte pour la puissance mécanique en translation." 
+    } 
+  },
+  
+  { 
+    id: 13, 
+    text: "La puissance mécanique fournie par un moteur se calcule par la formule : P = U × I (pour un moteur électrique)", 
+    type: "single", 
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Correct : P = U × I donne la puissance électrique, pas mécanique. La puissance mécanique nécessite le rendement.", 
+      default: "P = U × I est la puissance électrique. Pour la puissance mécanique : P_meca = P_elec × rendement" 
+    } 
+  },
+  
+  { 
+    id: 14, 
+    text: "Pour une machine à courant alternatif, peut-on superposer les caractéristiques électriques et mécaniques ?", 
+    type: "single", 
+    options: { a: "Oui", b: "Non" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Correct : pour les machines AC, la vitesse dépend de la fréquence, pas directement de la tension.", 
+      default: "Non, car en AC la vitesse est liée à la fréquence du réseau." 
+    } 
+  },
+  
+  { 
+    id: 15, 
+    text: "Pour une machine à courant continu, peut-on superposer les caractéristiques électriques et mécaniques ?", 
+    type: "single", 
+    options: { a: "Oui", b: "Non" }, 
+    correct: ["a"], 
+    feedback: { 
+      a: "Correct : pour une machine DC, il existe une proportionnalité directe entre tension et vitesse.", 
+      default: "Oui, car en DC la vitesse est proportionnelle à la tension d'alimentation." 
+    } 
+  },
+  
+  { 
+    id: 16, 
+    text: "A partir de la constitution fonctionnelle du variateur, préciser si la charge peut restituer de l'énergie :", 
+    type: "single", 
+    options: { a: "Au secteur", b: "Au circuit de freinage", c: "Au moteur" }, 
+    correct: ["b"], 
+    feedback: { 
+      b: "Correct : l'énergie de freinage est dissipée dans le circuit de freinage (résistance).", 
+      default: "L'énergie est généralement dissipée dans un circuit de freinage dédié." 
+    } 
+  }
+];
+
+let currentIndex = 0;
+let userAnswers = {};
+
+function renderQuestion() {
+  const q = questions[currentIndex];
+  const card = document.getElementById('questionCard');
+  
+  let html = `
+    <div class="question-header">
+      <div class="question-number">Question ${currentIndex + 1} / 16</div>
+      <div class="question-type">${q.type === 'multi' ? 'Choix multiple' : 'Choix unique'}</div>
+    </div>
+    <div class="question-text">${q.text}</div>
+    <div class="options">
+  `;
+  
+  for (const [key, text] of Object.entries(q.options)) {
+    const inputType = q.type === 'multi' ? 'checkbox' : 'radio';
+    const checked = userAnswers[q.id] && userAnswers[q.id].includes(key) ? 'checked' : '';
+    html += `
+      <label class="option">
+        <input type="${inputType}" name="q${q.id}" value="${key}" ${checked} onchange="handleAnswer('${q.id}', '${key}', this.checked, '${q.type}')">
+        <span>${key.toUpperCase()}. ${text}</span>
+      </label>
+    `;
+  }
+  
+  html += `
+    </div>
+    <div class="buttons">
+      <button class="btn" onclick="validateQuestion()">✓ Valider</button>
+      <button class="btn btn-secondary" onclick="clearAnswer()">✗ Effacer</button>
+    </div>
+  `;
+  
+  if (userAnswers[q.id] && userAnswers[q.id].validated) {
+    const v = userAnswers[q.id].validated;
+    html += `
+      <div class="feedback ${v.correct ? 'correct' : 'wrong'}">
+        <strong>${v.correct ? '✓ Bonne réponse !' : '✗ Réponse incorrecte'}</strong>
+        <p>${v.message}</p>
+      </div>
+    `;
+  }
+  
+  card.innerHTML = html;
+  document.getElementById('currentNum').textContent = currentIndex + 1;
+  updateProgress();
+  updateSummary();
+}
+
+function handleAnswer(qid, key, checked, type) {
+  if (!userAnswers[qid]) userAnswers[qid] = [];
+  if (userAnswers[qid].validated) delete userAnswers[qid].validated;
+  
+  if (type === 'multi') {
+    if (checked) {
+      if (!userAnswers[qid].includes(key)) userAnswers[qid].push(key);
+    } else {
+      userAnswers[qid] = userAnswers[qid].filter(k => k !== key);
+    }
+  } else {
+    userAnswers[qid] = [key];
+  }
+  updateSummary();
+}
+
+function validateQuestion() {
+  const q = questions[currentIndex];
+  const selected = userAnswers[q.id] || [];
+  
+  const correctSorted = [...q.correct].sort().join(',');
+  const selectedSorted = [...selected].sort().join(',');
+  const isCorrect = correctSorted === selectedSorted;
+  
+  let message = '';
+  if (q.type === 'single') {
+    if (isCorrect) {
+      message = q.feedback[selected[0]] || q.feedback.default || 'Bonne réponse !';
+    } else {
+      message = q.feedback.default || 'Réponse incorrecte.';
+    }
+  } else {
+    message = isCorrect ? (q.feedback.ok || 'Bonne réponse !') : (q.feedback.ko || 'Réponse incorrecte.');
+  }
+  
+  if (!userAnswers[q.id]) userAnswers[q.id] = [];
+  userAnswers[q.id].validated = { correct: isCorrect, message: message };
+  
+  renderQuestion();
+  checkCompletion();
+}
+
+function clearAnswer() {
+  const q = questions[currentIndex];
+  userAnswers[q.id] = [];
+  renderQuestion();
+}
+
+function updateProgress() {
+  const progress = ((currentIndex + 1) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function updateSummary() {
+  const answered = Object.keys(userAnswers).filter(k => userAnswers[k].length > 0).length;
+  const correct = Object.keys(userAnswers).filter(k => userAnswers[k].validated && userAnswers[k].validated.correct).length;
+  
+  document.getElementById('scoreDisplay').textContent = `${correct} / 16`;
+  document.getElementById('correctDisplay').textContent = correct;
+  document.getElementById('answeredDisplay').textContent = answered;
+}
+
+function checkCompletion() {
+  const allValidated = questions.every(q => userAnswers[q.id] && userAnswers[q.id].validated);
+  if (allValidated) {
+    setTimeout(showResults, 1000);
+  }
+}
+
+function showResults() {
+  const correct = Object.keys(userAnswers).filter(k => userAnswers[k].validated && userAnswers[k].validated.correct).length;
+  const pct = Math.round((correct / 16) * 100);
+  
+  document.getElementById('finalScore').textContent = `${correct} / 16`;
+  
+  let msg = '';
+  if (pct === 100) msg = '🎉 Parfait ! Excellente maîtrise des calculs mécaniques.';
+  else if (pct >= 80) msg = '👍 Très bien ! Vous maîtrisez bien les systèmes de levage.';
+  else if (pct >= 50) msg = '📚 Moyen. Révisez les formules de base.';
+  else msg = '📖 À améliorer. Reprenez les notions de mécanique.';
+  
+  document.getElementById('resultMessage').textContent = msg;
+  document.getElementById('resultModal').classList.add('show');
+}
+
+document.getElementById('prevBtn').onclick = () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+};
+
+document.getElementById('restartBtn').onclick = () => {
+  if (confirm('Recommencer le quiz ? Toutes les réponses seront perdues.')) {
+    currentIndex = 0;
+    userAnswers = {};
+    renderQuestion();
+  }
+};
+
+document.getElementById('showAnswersBtn').onclick = () => {
+  if (confirm('Afficher toutes les bonnes réponses ?')) {
+    questions.forEach(q => {
+      userAnswers[q.id] = [...q.correct];
+      const msg = q.type === 'single' ? (q.feedback[q.correct[0]] || 'Réponse correcte') : (q.feedback.ok || 'Réponses correctes');
+      userAnswers[q.id].validated = { correct: true, message: msg };
+    });
+    renderQuestion();
+  }
+};
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('resultModal').classList.remove('show');
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

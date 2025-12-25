@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>QCM API Modernisé – IEC 61131-3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #ffffff;
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .answers label {
+      display: block;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .validate-btn {
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      background: #0078d4;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .validate-btn:hover {
+      background: #005fa3;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .feedback.ok {
+      background: #d4f8d4;
+      border: 1px solid #4caf50;
+      color: #2e7d32;
+    }
+
+    .feedback.ko {
+      background: #ffe0e0;
+      border: 1px solid #e53935;
+      color: #b71c1c;
+    }
+
+    #score-box {
+      background: #ffffff;
+      border: 1px solid #ddd;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+
+    #score-btn {
+      padding: 10px 16px;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #score-btn:hover {
+      background: #222;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>QCM – Automates Programmables Industriels (Version Moderne IEC 61131‑3)</h1>
+    <div class="subtitle">Entrées %I • Sorties %Q • Mémoires %M • Mots %MW • Timers %T • Compteurs %C</div>
+  </header>
+
+  <main>
+    <div id="questions-container"></div>
+
+    <div id="score-box">
+      <h2>Score global</h2>
+      <p id="score-text">Aucune question validée pour le moment.</p>
+      <button id="score-btn">Calculer le score</button>
+    </div>
+  </main>
+<script>
+const questions = [
+
+  {
+    id: 1,
+    text: "L’abréviation « API » signifie Automate Programmable Industriel.",
+    type: "single",
+    options: [
+      { key: "a", text: "Vrai" },
+      { key: "b", text: "Faux" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : API signifie Automate Programmable Industriel.",
+      b: "Non : API signifie bien Automate Programmable Industriel."
+    }
+  },
+
+  {
+    id: 2,
+    text: "Dans un système automatisé moderne, l’API joue le rôle de :",
+    type: "single",
+    options: [
+      { key: "a", text: "Capteur" },
+      { key: "b", text: "Actionneur" },
+      { key: "c", text: "Unité de traitement" },
+      { key: "d", text: "Préactionneur" }
+    ],
+    correct: ["c"],
+    feedback: {
+      c: "Correct : l’API est l’unité de traitement du système automatisé."
+    }
+  },
+
+  {
+    id: 3,
+    text: "Quels éléments font partie de l’architecture interne d’un API moderne ?",
+    type: "multi",
+    options: [
+      { key: "a", text: "CPU" },
+      { key: "b", text: "Carte graphique" },
+      { key: "c", text: "Mémoire RAM / Flash" },
+      { key: "d", text: "Horloge interne" },
+      { key: "e", text: "Bus interne" },
+      { key: "f", text: "Module de communication Ethernet" }
+    ],
+    correct: ["a", "c", "d", "e", "f"],
+    feedback: {
+      ok: "Exact : tous sauf la carte graphique font partie d’un API moderne.",
+      ko: "Seule la carte graphique n’est pas un élément interne d’un API."
+    }
+  },
+
+  {
+    id: 4,
+    text: "La fonction principale d’un API est :",
+    type: "single",
+    options: [
+      { key: "a", text: "Lire les entrées, exécuter un programme, mettre à jour les sorties" },
+      { key: "b", text: "Commander directement les moteurs de puissance" },
+      { key: "c", text: "Remplacer les capteurs" },
+      { key: "d", text: "Générer uniquement des signaux analogiques" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : c’est le cycle API moderne."
+    }
+  },
+
+  {
+    id: 5,
+    text: "Le microprocesseur d’un API moderne :",
+    type: "single",
+    options: [
+      { key: "a", text: "Exécute les instructions du programme utilisateur" },
+      { key: "b", text: "Gère les communications réseau" },
+      { key: "c", text: "Réalise les fonctions logiques et séquentielles" },
+      { key: "d", text: "Toutes les réponses précédentes" }
+    ],
+    correct: ["d"],
+    feedback: {
+      d: "Exact : le CPU gère l’ensemble de ces fonctions."
+    }
+  },
+
+  {
+    id: 6,
+    text: "Les échanges entre CPU, mémoire et modules E/S se font via :",
+    type: "single",
+    options: [
+      { key: "a", text: "Un bus interne" },
+      { key: "b", text: "Une liaison USB" },
+      { key: "c", text: "Une liaison série RS232" },
+      { key: "d", text: "Une liaison radio" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Correct : le bus interne relie CPU, mémoire et E/S."
+    }
+  },
+
+  {
+    id: 7,
+    text: "Les informations échangées entre CPU et modules E/S sont :",
+    type: "single",
+    options: [
+      { key: "a", text: "Analogiques" },
+      { key: "b", text: "Numériques" },
+      { key: "c", text: "Pneumatiques" },
+      { key: "d", text: "Hydrauliques" }
+    ],
+    correct: ["b"],
+    feedback: {
+      b: "Exact : les échanges internes sont numériques."
+    }
+  },
+
+  {
+    id: 8,
+    text: "La mémoire d’un API moderne permet de stocker :",
+    type: "multi",
+    options: [
+      { key: "a", text: "Le programme utilisateur" },
+      { key: "b", text: "Les valeurs des entrées/sorties" },
+      { key: "c", text: "Les variables internes" },
+      { key: "d", text: "Les données de configuration" }
+    ],
+    correct: ["a", "b", "c", "d"],
+    feedback: {
+      ok: "Exact : toutes ces données sont stockées en mémoire.",
+      ko: "Toutes les propositions sont correctes."
+    }
+  },
+
+  {
+    id: 9,
+    text: "La RAM d’un API est une mémoire volatile.",
+    type: "single",
+    options: [
+      { key: "a", text: "Vrai" },
+      { key: "b", text: "Faux" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : la RAM perd son contenu hors tension."
+    }
+  },
+
+  {
+    id: 10,
+    text: "Une mémoire Flash peut être réécrite.",
+    type: "single",
+    options: [
+      { key: "a", text: "Vrai" },
+      { key: "b", text: "Faux" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : la Flash est réinscriptible."
+    }
+  },
+
+  {
+    id: 11,
+    text: "Les notations modernes des entrées et sorties selon IEC 61131‑3 sont :",
+    type: "single",
+    options: [
+      { key: "a", text: "I et O" },
+      { key: "b", text: "%I et %Q" },
+      { key: "c", text: "E et S" },
+      { key: "d", text: "IN et OUT" }
+    ],
+    correct: ["b"],
+    feedback: {
+      b: "Exact : %I et %Q sont les notations IEC modernes."
+    }
+  },
+
+  {
+    id: 12,
+    text: "Le langage Ladder (LD) permet :",
+    type: "multi",
+    options: [
+      { key: "a", text: "De représenter des équations logiques sous forme de contacts et bobines" },
+      { key: "b", text: "De programmer en texte structuré" },
+      { key: "c", text: "De créer des blocs fonctionnels" },
+      { key: "d", text: "De programmer des transitions de Grafcet" }
+    ],
+    correct: ["a"],
+    feedback: {
+      ok: "Exact : le Ladder représente des équations logiques.",
+      ko: "Seule la proposition a) est correcte."
+    }
+  },
+
+  {
+    id: 13,
+    text: "Le langage SFC (Grafcet) permet :",
+    type: "multi",
+    options: [
+      { key: "a", text: "De représenter des séquences d’étapes et transitions" },
+      { key: "b", text: "De programmer des équations logiques" },
+      { key: "c", text: "De gérer des actions associées aux étapes" },
+      { key: "d", text: "De gérer des réceptivités" }
+    ],
+    correct: ["a", "c", "d"],
+    feedback: {
+      ok: "Exact : SFC = étapes, transitions, actions, réceptivités.",
+      ko: "Seule la proposition b) est incorrecte."
+    }
+  },
+
+  {
+    id: 14,
+    text: "En notation IEC, une entrée numérique est identifiée par :",
+    type: "single",
+    options: [
+      { key: "a", text: "%I" },
+      { key: "b", text: "%Q" },
+      { key: "c", text: "%M" },
+      { key: "d", text: "%T" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : %I désigne une entrée."
+    }
+  },
+
+  {
+    id: 15,
+    text: "En notation IEC, une sortie numérique est identifiée par :",
+    type: "single",
+    options: [
+      { key: "a", text: "%I" },
+      { key: "b", text: "%Q" },
+      { key: "c", text: "%M" },
+      { key: "d", text: "%MW" }
+    ],
+    correct: ["b"],
+    feedback: {
+      b: "Exact : %Q désigne une sortie."
+    }
+  },
+
+  {
+    id: 16,
+    text: "Les temporisations (timers) sont identifiées par :",
+    type: "single",
+    options: [
+      { key: "a", text: "%T" },
+      { key: "b", text: "%MW" },
+      { key: "c", text: "%C" },
+      { key: "d", text: "%I" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : %T désigne un timer."
+    }
+  },
+
+  {
+    id: 17,
+    text: "Les compteurs sont identifiés par :",
+    type: "single",
+    options: [
+      { key: "a", text: "%C" },
+      { key: "b", text: "%T" },
+      { key: "c", text: "%Q" },
+      { key: "d", text: "%M" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : %C désigne un compteur."
+    }
+  },
+
+  {
+    id: 18,
+    text: "Les mots mémoire (%MW) servent notamment à :",
+    type: "multi",
+    options: [
+      { key: "a", text: "Stocker des valeurs analogiques" },
+      { key: "b", text: "Stocker des entiers" },
+      { key: "c", text: "Stocker des paramètres" },
+      { key: "d", text: "Toutes les réponses précédentes" }
+    ],
+    correct: ["d"],
+    feedback: {
+      d: "Exact : %MW peut stocker des entiers, analogiques, paramètres…"
+    }
+  },
+
+  {
+    id: 19,
+    text: "Le cycle d’un API moderne suit l’ordre :",
+    type: "single",
+    options: [
+      { key: "a", text: "Exécution → Lecture → Mise à jour" },
+      { key: "b", text: "Lecture → Exécution → Mise à jour" },
+      { key: "c", text: "Mise à jour → Lecture → Exécution" },
+      { key: "d", text: "Lecture → Mise à jour → Exécution" }
+    ],
+    correct: ["b"],
+    feedback: {
+      b: "Exact : c’est le cycle API moderne."
+    }
+  },
+
+  {
+    id: 20,
+    text: "Unity Pro / EcoStruxure Control Expert permet de programmer :",
+    type: "multi",
+    options: [
+      { key: "a", text: "En Ladder (LD)" },
+      { key: "b", text: "En Texte structuré (ST)" },
+      { key: "c", text: "En Grafcet (SFC)" },
+      { key: "d", text: "En blocs fonctionnels (FBD)" }
+    ],
+    correct: ["a", "b", "c", "d"],
+    feedback: {
+      ok: "Exact : Unity supporte LD, ST, SFC, FBD.",
+      ko: "Toutes les propositions sont correctes."
+    }
+  },
+
+  {
+    id: 21,
+    text: "Les API modernes peuvent communiquer via :",
+    type: "multi",
+    options: [
+      { key: "a", text: "Ethernet" },
+      { key: "b", text: "Modbus TCP" },
+      { key: "c", text: "CANopen" },
+      { key: "d", text: "Toutes les réponses précédentes" }
+    ],
+    correct: ["d"],
+    feedback: {
+      d: "Exact : les API modernes supportent de nombreux protocoles."
+    }
+  },
+
+  {
+    id: 22,
+    text: "Une sortie d’API commande généralement :",
+    type: "single",
+    options: [
+      { key: "a", text: "Directement un moteur" },
+      { key: "b", text: "Un préactionneur (relais, contacteur)" },
+      { key: "c", text: "Un capteur" },
+      { key: "d", text: "Une alimentation" }
+    ],
+    correct: ["b"],
+    feedback: {
+      b: "Exact : l’API commande un préactionneur."
+    }
+  },
+
+  {
+    id: 23,
+    text: "Les entrées analogiques permettent de lire :",
+    type: "single",
+    options: [
+      { key: "a", text: "Des valeurs continues (0–10 V, 4–20 mA)" },
+      { key: "b", text: "Des états logiques 0/1" },
+      { key: "c", text: "Des signaux pneumatiques" },
+      { key: "d", text: "Des signaux hydrauliques" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : les entrées analogiques lisent des valeurs continues."
+    }
+  },
+
+  {
+    id: 24,
+    text: "Les sorties analogiques permettent :",
+    type: "single",
+    options: [
+      { key: "a", text: "De générer un signal 0–10 V ou 4–20 mA" },
+      { key: "b", text: "De commander un contacteur" },
+      { key: "c", text: "De lire un capteur" },
+      { key: "d", text: "De mesurer une tension" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : les sorties analogiques génèrent un signal continu."
+    }
+  },
+
+    {
+    id: 25,
+    text: "En SFC, les actions sont associées :",
+    type: "single",
+    options: [
+      { key: "a", text: "Aux étapes" },
+      { key: "b", text: "Aux transitions" },
+      { key: "c", text: "Aux entrées" },
+      { key: "d", text: "Aux sorties" }
+    ],
+    correct: ["a"],
+    feedback: {
+      a: "Exact : en SFC, les actions sont portées par les étapes."
+    }
+  },
+  {
+    id: 26,
+    text: "En SFC, les transitions sont franchies lorsque :",
+    type: "single",
+    options: [
+      { key: "a", text: "Les actions sont actives" },
+      { key: "b", text: "Les réceptivités sont vraies" },
+      { key: "c", text: "Les sorties sont activées" },
+      { key: "d", text: "Le cycle API redémarre" }
+    ],
+    correct: ["b"],
+    feedback: {
+      b: "Exact : une transition est franchie lorsque sa réceptivité est vraie."
+    }
+  }
+];
+</script>
+
+<script>
+// ---------------------------------------------------------
+// Génération dynamique du QCM dans la page
+// ---------------------------------------------------------
+
+const container = document.getElementById("questions-container");
+const scoreText = document.getElementById("score-text");
+const scoreBtn = document.getElementById("score-btn");
+
+let attempts = {};        // { id: { tried: true, correctOnce: true/false } }
+let currentAnswers = {};  // { id: ["a","c"] }
+
+// Génère toutes les questions dans la page
+function renderQuestions() {
+  container.innerHTML = "";
+
+  questions.forEach(q => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+
+    const title = document.createElement("div");
+    title.className = "question-title";
+    title.textContent = `Q${q.id}. ${q.text}`;
+    card.appendChild(title);
+    const answersDiv = document.createElement("div");
+    answersDiv.className = "answers";
+
+    q.options.forEach(opt => {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+
+      input.type = q.type === "single" ? "radio" : "checkbox";
+      input.name = `q_${q.id}`;
+      input.value = opt.key;
+
+      input.addEventListener("change", () => {
+        if (!currentAnswers[q.id]) currentAnswers[q.id] = [];
+
+        if (q.type === "single") {
+          currentAnswers[q.id] = [opt.key];
+        } else {
+          if (input.checked) {
+            if (!currentAnswers[q.id].includes(opt.key)) {
+              currentAnswers[q.id].push(opt.key);
+            }
+          } else {
+            currentAnswers[q.id] =
+              currentAnswers[q.id].filter(k => k !== opt.key);
+          }
+        }
+      });
+
+      label.appendChild(input);
+      label.append(` ${opt.key}) ${opt.text}`);
+      answersDiv.appendChild(label);
+    });
+
+    card.appendChild(answersDiv);
+    // Zone de feedback
+    const feedback = document.createElement("div");
+    feedback.className = "feedback";
+    feedback.id = `feedback_${q.id}`;
+    card.appendChild(feedback);
+
+    // Bouton de validation
+    const btn = document.createElement("button");
+    btn.className = "validate-btn";
+    btn.textContent = "Valider cette question";
+
+    btn.addEventListener("click", () => validateQuestion(q, feedback));
+    card.appendChild(btn);
+
+    container.appendChild(card);
+  });
+}
+// ---------------------------------------------------------
+// Validation d’une question
+// ---------------------------------------------------------
+
+function arraysEqualIgnoreOrder(a, b) {
+  if (a.length !== b.length) return false;
+  const sa = [...a].sort();
+  const sb = [...b].sort();
+  return sa.every((v, i) => v === sb[i]);
+}
+
+function validateQuestion(q, feedbackDiv) {
+  const selected = currentAnswers[q.id] || [];
+
+  if (selected.length === 0) {
+    feedbackDiv.className = "feedback ko";
+    feedbackDiv.style.display = "block";
+    feedbackDiv.textContent = "Veuillez sélectionner au moins une réponse.";
+    return;
+  }
+
+  let ok = false;
+  let text = "";
+
+  if (q.type === "single") {
+    const key = selected[0];
+    ok = q.correct.includes(key);
+    text = q.feedback[key] || q.feedback.default || "";
+  } else {
+    ok = arraysEqualIgnoreOrder(selected, q.correct);
+    text = ok ? q.feedback.ok : q.feedback.ko;
+  }
+
+  feedbackDiv.style.display = "block";
+  feedbackDiv.className = ok ? "feedback ok" : "feedback ko";
+  feedbackDiv.textContent = text;
+
+  // Mise à jour de l’état global
+  if (!attempts[q.id]) {
+    attempts[q.id] = { tried: true, correctOnce: ok };
+  } else {
+    attempts[q.id].tried = true;
+    if (ok) attempts[q.id].correctOnce = true;
+  }
+}
+// ---------------------------------------------------------
+// Calcul du score global
+// ---------------------------------------------------------
+
+scoreBtn.addEventListener("click", () => {
+  const total = questions.length;
+  let correctOnce = 0;
+
+  questions.forEach(q => {
+    if (attempts[q.id] && attempts[q.id].correctOnce) {
+      correctOnce++;
+    }
+  });
+
+  if (correctOnce === 0) {
+    scoreText.textContent = "Aucune bonne réponse validée pour le moment.";
+    return;
+  }
+
+  const percent = Math.round((correctOnce / total) * 100);
+
+  scoreText.textContent =
+    `Vous avez validé correctement ${correctOnce} question(s) sur ${total} (${percent}%).`;
+});
+
+// ---------------------------------------------------------
+// Initialisation
+// ---------------------------------------------------------
+
+renderQuestions();
+</script>
+</body>
+</html>

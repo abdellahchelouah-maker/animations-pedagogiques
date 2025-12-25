@@ -1,0 +1,155 @@
+<script type="text/javascript" language="javascript">
+
+var paramOk = true;
+
+function FaitTableau(n) {
+  this.length = n;
+  for (var i = 0; i <= n; i++) {
+    this[i] = 0
+  }
+  return this
+}
+
+function ParamValeur(nValeur) {
+if (paramOk==false) {return(false);}
+  var nTemp = "";
+  for (var i=0;i<(param.length+1);i++) {
+    if (param[i].substring(0,param[i].indexOf("=")) == nValeur)
+      nTemp = param[i].substring(param[i].indexOf("=")+1,param[i].length)
+  }
+  return Decode(nTemp)
+}
+
+
+if (!location.search) {
+  paramOk = false; 
+}
+else {
+  nReq = location.search.substring(1,location.search.length)
+  // Extrait les différents paramètres avec leur valeur.
+  nReq = nReq.split("&");
+  param = new FaitTableau(nReq.length-1)
+  for (var i=0;i<(nReq.length);i++) {
+    param[i] = nReq[i]
+  }
+}
+
+function Decode(tChaine) {
+  while (true) {
+    var i = tChaine.indexOf('+');
+    if (i < 0) break;
+    tChaine = tChaine.substring(0,i) + '%20' + tChaine.substring(i + 1, tChaine.length);
+  }
+  return unescape(tChaine)
+}
+</script>
+<script language=javascript>hist = ParamValeur("hist");  if (hist==1) {document.write("&nbsp;<font face='verdana' size='2'><a href='javascript:history.go(-1)'><img src='retour.jpg' alt='Retour' border='0'></a></font>");}
+</script><html>
+<META HTTP-EQUIV="imagetoolbar" CONTENT="no">
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript">
+
+
+var IB=new Object;
+var posX=0;posY=0;
+var xOffset=10;yOffset=10;
+function AffBulle(texte) {
+  contenu="<TABLE border=0 cellspacing=0 cellpadding="+IB.NbPixel+"><TR bgcolor='"+IB.ColContour+"'><TD><TABLE border=0 cellpadding=2 cellspacing=0 bgcolor='"+IB.ColFond+"'><TR><TD><FONT size='-1' face='arial' color='"+IB.ColTexte+"'>"+texte+"</FONT></TD></TR></TABLE></TD></TR></TABLE>";
+  var finalPosX=posX-xOffset;
+  if (finalPosX<0) finalPosX=0;
+  if (document.layers) {
+    document.layers["bulle"].document.write(contenu);
+    document.layers["bulle"].document.close();
+    document.layers["bulle"].top=posY+yOffset;
+    document.layers["bulle"].left=finalPosX;
+    document.layers["bulle"].visibility="show";}
+  if (document.all) {
+    //var f=window.event;
+    //doc=document.body.scrollTop;
+    bulle.innerHTML=contenu;
+    document.all["bulle"].style.top=posY+yOffset;
+    document.all["bulle"].style.left=finalPosX;//f.x-xOffset;
+    document.all["bulle"].style.visibility="visible";
+  }
+  //modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+  else if (document.getElementById) {
+    document.getElementById("bulle").innerHTML=contenu;
+    document.getElementById("bulle").style.top=posY+yOffset;
+    document.getElementById("bulle").style.left=finalPosX;
+    document.getElementById("bulle").style.visibility="visible";
+  }
+}
+function getMousePos(e) {
+  if (document.all) {
+  posX=event.x+document.body.scrollLeft; //modifs CL 09/2001 - IE : regrouper l'évènement
+  posY=event.y+document.body.scrollTop;
+  }
+  else {
+  posX=e.pageX; //modifs CL 09/2001 - NS6 : celui-ci ne supporte pas e.x et e.y
+  posY=e.pageY; 
+  }
+}
+function HideBulle() {
+	if (document.layers) {document.layers["bulle"].visibility="hide";}
+	if (document.all) {document.all["bulle"].style.visibility="hidden";}
+	else if (document.getElementById){document.getElementById("bulle").style.visibility="hidden";}
+}
+
+function InitBulle(ColTexte,ColFond,ColContour,NbPixel) {
+	IB.ColTexte=ColTexte;IB.ColFond=ColFond;IB.ColContour=ColContour;IB.NbPixel=NbPixel;
+	if (document.layers) {
+		window.captureEvents(Event.MOUSEMOVE);window.onMouseMove=getMousePos;
+		document.write("<LAYER name='bulle' top=0 left=0 visibility='hide'></LAYER>");
+	}
+	if (document.all) {
+		document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden;z-index=82;'></DIV>");
+		document.onmousemove=getMousePos;
+	}
+	//modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+	else if (document.getElementById) {
+	        document.onmousemove=getMousePos;
+	        document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden'></DIV>");
+	}
+
+}
+InitBulle("black","#F9FFD5","#000000",1);
+function iprint() {
+
+window.open(document.location+'&print=1','print','width=480,height=100,toolbar=no,scrollbars=no'); 
+}
+</SCRIPT>
+<xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
+<style type="text/css">
+v\:* { behavior: url(#default#VML);}
+</style>
+<xml:namespace prefix = v />
+<script language="javascript">
+function retour() {
+history.go(-1);}
+
+</script>
+
+<body  style="" bgcolor="FFFFFF" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" ><input type="hidden" name="fiche" value="18">
+<input type="hidden" name="f" value="20">
+<input type="hidden" name="tp" value="dossier_ressource_piles_batteries">
+<br><center><font face="verdana" size="5" color=""><b>3.7 Tableau comparatif</b></font></center><br>	
+<DIV ID="0" STYLE="position:absolute; width: auto; height: auto; left: 25px; top: 74px; z-index: 0;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="FFFFFF">
+						<tr>
+							<td bgcolor="FFFFFF"><embed src="medias/76.swf" type="application/x-shockwave-flash" width="647" height="473" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" quality="best" play="true" align="absmiddle"></td>
+						</tr>
+					</table>
+
+</td></tr>
+</table></DIV><DIV ID="1" STYLE="position:absolute; width: auto; height: auto; left: -5px; top: 557px; z-index: 1;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="FFFFFF">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/77.png" border="0"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV><DIV ID="2" STYLE="position:absolute; width: auto; height: auto; left: -1px; top: 997px; z-index: 2;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="FFFFFF">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/78.png" border="0"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV></body>
+</htlm>

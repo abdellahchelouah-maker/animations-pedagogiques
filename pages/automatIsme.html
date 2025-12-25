@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Animations d’automatisme – API, Grafcet, pneumatique, régulation et codages</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+        content="Animations pédagogiques d’automatisme : API, automates programmables, Grafcet, logigramme, CAN/CNA, pneumatique, régulation, algèbre de Boole et codages. Ressources interactives pour élèves et enseignants en génie électrique.">
+  <link rel="stylesheet" href="../style/style.css">
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      autoplay: "on",
+      unmuteOverlay: "hidden"
+    };
+  </script>
+  <script src="../js/ruffle/ruffle.js"></script>
+  <script>
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+  </script>
+</head>
+
+<body>
+<header class="site-header">
+  <div class="header-left">
+    <h1>Animations d’automatisme</h1>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="electrotechnique.html">Électrotechnique</a></li>
+        <li><a href="electronique.html">Électronique</a></li>
+        <li><a href="automatisme.html" class="active">Automatisme</a></li>
+        <li><a href="physique.html">Physique</a></li>
+        <li><a href="jeux-educatifs.html">Jeux éducatifs</a></li>
+        <li><a href="visual-basic.html">Programmes Visual Basic</a></li>
+        <li><a href="tpwks.html">TP multimédia</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="header-right">
+    <div class="header-flash-logo">
+      <object type="application/x-shockwave-flash"
+              data="../media/swf/mon_logo.swf">
+        <param name="movie" value="../media/swf/mon_logo.swf">
+        <param name="quality" value="high">
+        <p>Si l’animation ne se lance pas, vérifiez que JavaScript est activé.</p>
+      </object>
+    </div>
+  </div>
+</header>
+
+<main class="content">
+  <section>
+    <h2>Ressources d’automatisme</h2>
+    <p>
+      Cette rubrique regroupe des animations et cours multimédias sur les automates programmables industriels (API),
+      le Grafcet, les convertisseurs CAN/CNA, la pneumatique, la régulation industrielle, l’algèbre de Boole
+      et les principaux codages utilisés en automatisme.
+    </p>
+
+    <h2>Liste des animations d’automatisme</h2>
+    <div class="animation-grid">
+
+      <!-- auto1 -->
+      <article class="animation-card">
+        <img src="../media/img/cablage_api_v1.jpg"
+             alt="Câblage d'un Automate Programmable Industriel"
+             class="card-thumb">
+        <h3>Le câblage d'un Automate Programmable Industriel</h3>
+        <p class="card-tags">
+          Mots‑clés : API, câblage, entrées/sorties, TSX17‑20
+        </p>
+        <p class="card-excerpt">
+          Module présentant les différentes étapes du câblage d’un API (ex. TSX17‑20) et
+          les parties constitutives de l’automate pour se familiariser avec son interface E/S.
+        </p>
+        <a href="auto/auto1-cablage-api.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto2 -->
+      <article class="animation-card">
+        <img src="../media/img/description_graphique_v1.jpg"
+             alt="Outils de description d'un système automatisé – bases du Grafcet"
+             class="card-thumb">
+        <h3>Outils de description d'un système automatisé – bases du Grafcet</h3>
+        <p class="card-tags">
+          Mots‑clés : Grafcet, description de système, automatisme
+        </p>
+        <p class="card-excerpt">
+          Support de cours sur le Grafcet abordant les éléments de base indispensables
+          à la construction des premiers programmes d’automate.
+        </p>
+        <a href="auto/description_graphique_v1.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto3 -->
+      <article class="animation-card">
+        <img src="../media/img/can4bits_v8.jpg"
+             alt="Fonctionnement d'un convertisseur A/N 4 bits"
+             class="card-thumb">
+        <h3>Fonctionnement d'un convertisseur A/N équipant un API</h3>
+        <p class="card-tags">
+          Mots‑clés : CAN, 4 bits, informations analogiques, API
+        </p>
+        <p class="card-excerpt">
+          Animation simulant le fonctionnement d’un convertisseur A/N 4 bits pour la
+          gestion des informations analogiques dans un API.
+        </p>
+        <a href="auto/auto3-fonctionnement-can-4bits.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto4 -->
+      <article class="animation-card">
+        <img src="../media/img/cna10bits_v8.jpg"
+             alt="Fonctionnement d'un convertisseur N/A 10 bits"
+             class="card-thumb">
+        <h3>Fonctionnement d'un convertisseur N/A équipant un API</h3>
+        <p class="card-tags">
+          Mots‑clés : CNA, 10 bits, sortie analogique, API
+        </p>
+        <p class="card-excerpt">
+          Animation simulant le fonctionnement d’un convertisseur N/A 10 bits
+          suivant le conditionnement de la sortie analogique.
+        </p>
+        <a href="auto/cna10bits_v8.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto5 -->
+      <article class="animation-card">
+        <img src="../media/img/resistances_ponderees.jpg"
+             alt="Principe d'un CNA à réseau de résistances pondérées"
+             class="card-thumb">
+        <h3>Principe d'un CNA à réseau de résistances pondérées</h3>
+        <p class="card-tags">
+          Mots‑clés : CNA, résistances pondérées, conversion numérique‑analogique
+        </p>
+        <p class="card-excerpt">
+          Animation interactive expliquant le principe d’un CNA à réseau de résistances
+          pondérées en testant la tension de sortie en fonction du mot binaire d’entrée.
+        </p>
+        <a href="auto/resistances_rponderee.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto6 -->
+      <article class="animation-card">
+        <img src="../media/img/resistances_r2r.jpg"
+             alt="Principe d'un CNA à réseau R‑2R"
+             class="card-thumb">
+        <h3>Principe d'un CNA à réseau de résistances R‑2R</h3>
+        <p class="card-tags">
+          Mots‑clés : CNA, réseau R‑2R, conversion numérique‑analogique
+        </p>
+        <p class="card-excerpt">
+          Animation présentant une autre technologie de CNA, basée sur un réseau
+          de résistances R‑2R, et comparant son principe à celui des résistances pondérées.
+        </p>
+        <a href="auto/resistances_r2r.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto7 -->
+      <article class="animation-card">
+        <img src="../media/img/regulation_tor_v1.jpg"
+             alt="Régulation industrielle : algorithme Tout Ou Rien"
+             class="card-thumb">
+        <h3>Régulation industrielle : séquence sur l'algorithme Tout Ou Rien (TOR)</h3>
+        <p class="card-tags">
+          Mots‑clés : régulation TOR, tout ou rien, automatisme, lycée technique
+        </p>
+        <p class="card-excerpt">
+          Séquence sur la régulation Tout Ou Rien telle qu’elle est abordée en lycée
+          technique pour les bacs STI, avec une approche géométrique.
+        </p>
+        <a href="auto/auto7-regulation-tout-ou-rien.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto8 -->
+      <article class="animation-card">
+        <img src="../media/img/qcm_api.jpg"
+             alt="Questionnaire sur les Automates Programmables Industriels"
+             class="card-thumb">
+        <h3>Questionnaire sur les Automates Programmables Industriels</h3>
+        <p class="card-tags">
+          Mots‑clés : API, questionnaire, auto‑évaluation
+        </p>
+        <p class="card-excerpt">
+          Questionnaire autocorrectif utilisable après la séquence sur les automates
+          programmables industriels pour formaliser les connaissances acquises.
+        </p>
+        <a href="auto/auto8-qcm-api.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto9 -->
+      <article class="animation-card">
+        <img src="../media/img/algebre_logique.jpg"
+             alt="Introduction à l'algèbre binaire"
+             class="card-thumb">
+        <h3>Introduction à l'algèbre binaire</h3>
+        <p class="card-tags">
+          Mots‑clés : algèbre de Boole, fonctions logiques, automatisme
+        </p>
+        <p class="card-excerpt">
+          Cours multimédia sur les bases de l’algèbre de Boole pour
+          l’enseignement professionnel ou technologique de l’automatisme.
+        </p>
+        <a href="auto/algebre_logique.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto10 -->
+      <article class="animation-card">
+        <img src="../media/img/algebre_boole_exo.jpg"
+             alt="Exercices sur les fonctions logiques"
+             class="card-thumb">
+        <h3>Exercices sur les fonctions logiques</h3>
+        <p class="card-tags">
+          Mots‑clés : équations logiques, exercices, QCM
+        </p>
+        <p class="card-excerpt">
+          Série d’exercices et QCM sur les fonctions logiques de base, en
+          complément du cours sur l’algèbre de Boole.
+        </p>
+        <a href="auto/algebre_logique_exo.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto11 -->
+      <article class="animation-card">
+        <img src="../media/img/rdu.jpg"
+             alt="Principe du RDU en pneumatique"
+             class="card-thumb">
+        <h3>Principe de fonctionnement du RDU en pneumatique</h3>
+        <p class="card-tags">
+          Mots‑clés : RDU, vérin pneumatique, vitesse de tige
+        </p>
+        <p class="card-excerpt">
+          Animation présentant le principe du Réducteur de Débit Unidirectionnel
+          utilisé pour régler la vitesse de déplacement de la tige d’un vérin pneumatique.
+        </p>
+        <a href="auto/rdu.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto13 -->
+      <article class="animation-card">
+        <img src="../media/img/ils.jpg"
+             alt="Principe de l'Interrupteur à Lames Souples"
+             class="card-thumb">
+        <h3>Principe de l'Interrupteur à Lames Souples</h3>
+        <p class="card-tags">
+          Mots‑clés : ILS, détecteur de position, vérin, automatisme
+        </p>
+        <p class="card-excerpt">
+          Animation présentant le principe de fonctionnement de l’ILS,
+          détecteur de position de tige monté sur les vérins.
+        </p>
+        <a href="auto/auto13-principe-interrupteur-lames-souples.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto14 -->
+      <article class="animation-card">
+        <img src="../media/img/util_pn.jpg"
+             alt="Principales utilisations de la pneumatique"
+             class="card-thumb">
+        <h3>Principales utilisations de la pneumatique en automatisme</h3>
+        <p class="card-tags">
+          Mots‑clés : pneumatique, déplacer, maintenir, façonner, traiter
+        </p>
+        <p class="card-excerpt">
+          Présentation des grandes familles d’applications de la pneumatique
+          en automatisme à partir d’exemples industriels.
+        </p>
+        <a href="auto/auto14-utilisations-pneumatique.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto15 -->
+      <article class="animation-card">
+        <img src="../media/img/venturi.jpg"
+             alt="Principe du Venturi pour la préhension par le vide"
+             class="card-thumb">
+        <h3>Principe du Venturi pour la préhension par le vide</h3>
+        <p class="card-tags">
+          Mots‑clés : Venturi, ventouse, préhension, vide
+        </p>
+        <p class="card-excerpt">
+          Animation illustrant le principe du Venturi pour générer du vide
+          et permettre la préhension d’objets plats par ventouse.
+        </p>
+        <a href="auto/auto15-principe-venturi-prehension-vide.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto16 -->
+      <article class="animation-card">
+        <img src="../media/img/sadt.jpg"
+             alt="Décomposition fonctionnelle SADT"
+             class="card-thumb">
+        <h3>La décomposition fonctionnelle pour décrire un système automatisé (SADT)</h3>
+        <p class="card-tags">
+          Mots‑clés : SADT, décomposition fonctionnelle, description de système
+        </p>
+        <p class="card-excerpt">
+          Animation présentant la méthode SADT pour décrire un système automatisé
+          par décomposition fonctionnelle.
+        </p>
+        <a href="auto/auto16-decomposition-fonctionnelle-sadt.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto17 -->
+      <article class="animation-card">
+        <img src="../media/img/logigramme.jpg"
+             alt="Logigrammes en portes universelles"
+             class="card-thumb">
+        <h3>Les logigrammes en portes universelles</h3>
+        <p class="card-tags">
+          Mots‑clés : portes universelles, Non‑OU, Non‑ET, logigrammes
+        </p>
+        <p class="card-excerpt">
+          Présentation montrant comment réaliser des équations logiques uniquement
+          avec des portes universelles à partir de logigrammes.
+        </p>
+        <a href="auto/auto17-logigrammes-portes-universelles.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto18 -->
+      <article class="animation-card">
+        <img src="../media/img/gray.jpg"
+             alt="Code GRAY - positionnement rectiligne"
+             class="card-thumb">
+        <h3>Le code GRAY – application au positionnement rectiligne</h3>
+        <p class="card-tags">
+          Mots‑clés : code GRAY, code binaire naturel, position absolue
+        </p>
+        <p class="card-excerpt">
+          Animation expliquant l’utilisation d’une règle codée et du code GRAY
+          pour le positionnement absolu d’un mobile en translation.
+        </p>
+        <a href="auto/auto18-code-gray-positionnement.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto19 -->
+      <article class="animation-card">
+        <img src="../media/img/ascii.jpg"
+             alt="Code ASCII - exemples d'utilisation"
+             class="card-thumb">
+        <h3>Le code ASCII – exemples d’utilisation</h3>
+        <p class="card-tags">
+          Mots‑clés : code ASCII, binaire, hexadécimal, microcontrôleur
+        </p>
+        <p class="card-excerpt">
+          Animation expliquant l’utilisation du code ASCII pour coder des caractères
+          en binaire et en hexadécimal, par exemple pour la programmation bas niveau.
+        </p>
+        <a href="auto/ascii.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto20 -->
+      <article class="animation-card">
+        <img src="../media/img/cil.jpg"
+             alt="Câblage d'une équation logique avec des CIL"
+             class="card-thumb">
+        <h3>Câblage d'une équation logique avec des Circuits Intégrés Logiques</h3>
+        <p class="card-tags">
+          Mots‑clés : CIL, équation logique, platine LABDEC
+        </p>
+        <p class="card-excerpt">
+          Exemple de transcription d’une équation logique en circuit câblé à l’aide
+          de Circuits Intégrés Logiques sur platine.
+        </p>
+        <a href="auto/auto20-cablage-equation-logique-cil.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto21 -->
+      <article class="animation-card">
+        <img src="../media/img/serie_parallele.jpg"
+             alt="Transmission de données série ou parallèle"
+             class="card-thumb">
+        <h3>La transmission de données par liaison série ou parallèle</h3>
+        <p class="card-tags">
+          Mots‑clés : liaison série, liaison parallèle, transmission de données
+        </p>
+        <p class="card-excerpt">
+          Animation illustrant les particularités des transmissions de données
+          en série et en parallèle.
+        </p>
+        <a href="auto/serie_parallele.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto22 -->
+      <article class="animation-card">
+        <img src="../media/img/g7_percage.jpg"
+             alt="Grafcet d'une unité de perçage automatisée"
+             class="card-thumb">
+        <h3>Grafcet d'une unité de perçage automatisée + correction</h3>
+        <p class="card-tags">
+          Mots‑clés : Grafcet, unité de perçage, correction
+        </p>
+        <p class="card-excerpt">
+          Étude du Grafcet d’une unité de perçage automatisée avec possibilité
+          de comparer le fonctionnement et la correction.
+        </p>
+        <a href="auto/g7_percage.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto23 -->
+      <article class="animation-card">
+        <img src="../media/img/g7_pompage.jpg"
+             alt="Grafcet d'une station de pompage"
+             class="card-thumb">
+        <h3>Grafcet d'une station de pompage + correction</h3>
+        <p class="card-tags">
+          Mots‑clés : Grafcet, station de pompage, automatisme
+        </p>
+        <p class="card-excerpt">
+          Étude du Grafcet d’une station de pompage automatisée avec comparaison
+          entre la réponse et la correction.
+        </p>
+        <a href="auto/g7_pompage.html" class="btn">Voir l’animation</a>
+      </article>
+
+      <!-- auto24 -->
+      <article class="animation-card">
+        <img src="../media/img/g7_tts.jpg"
+             alt="Grafcet d'une unité de traitement de surface"
+             class="card-thumb">
+        <h3>Grafcet d'une unité de traitement de surface + correction</h3>
+        <p class="card-tags">
+          Mots‑clés : Grafcet, traitement de surface, automatisme
+        </p>
+        <p class="card-excerpt">
+          Exemple de Grafcet appliqué à une unité de traitement de surface,
+          avec étude du fonctionnement et de la correction.
+        </p>
+        <a href="auto/g7_tts.html" class="btn">Voir l’animation</a>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2025 – Abdellah CHELOUAH</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<script type="text/javascript" language="javascript">
+
+var paramOk = true;
+
+function FaitTableau(n) {
+  this.length = n;
+  for (var i = 0; i <= n; i++) {
+    this[i] = 0
+  }
+  return this
+}
+
+function ParamValeur(nValeur) {
+if (paramOk==false) {return(false);}
+  var nTemp = "";
+  for (var i=0;i<(param.length+1);i++) {
+    if (param[i].substring(0,param[i].indexOf("=")) == nValeur)
+      nTemp = param[i].substring(param[i].indexOf("=")+1,param[i].length)
+  }
+  return Decode(nTemp)
+}
+
+
+if (!location.search) {
+  paramOk = false; 
+}
+else {
+  nReq = location.search.substring(1,location.search.length)
+  // Extrait les différents paramètres avec leur valeur.
+  nReq = nReq.split("&");
+  param = new FaitTableau(nReq.length-1)
+  for (var i=0;i<(nReq.length);i++) {
+    param[i] = nReq[i]
+  }
+}
+
+function Decode(tChaine) {
+  while (true) {
+    var i = tChaine.indexOf('+');
+    if (i < 0) break;
+    tChaine = tChaine.substring(0,i) + '%20' + tChaine.substring(i + 1, tChaine.length);
+  }
+  return unescape(tChaine)
+}
+</script>
+<script language=javascript>hist = ParamValeur("hist");  if (hist==1) {document.write("&nbsp;<font face='verdana' size='2'><a href='javascript:history.go(-1)'><img src='retour.jpg' alt='Retour' border='0'></a></font>");}
+</script><html>
+<META HTTP-EQUIV="imagetoolbar" CONTENT="no">
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript">
+
+
+var IB=new Object;
+var posX=0;posY=0;
+var xOffset=10;yOffset=10;
+function AffBulle(texte) {
+  contenu="<TABLE border=0 cellspacing=0 cellpadding="+IB.NbPixel+"><TR bgcolor='"+IB.ColContour+"'><TD><TABLE border=0 cellpadding=2 cellspacing=0 bgcolor='"+IB.ColFond+"'><TR><TD><FONT size='-1' face='arial' color='"+IB.ColTexte+"'>"+texte+"</FONT></TD></TR></TABLE></TD></TR></TABLE>";
+  var finalPosX=posX-xOffset;
+  if (finalPosX<0) finalPosX=0;
+  if (document.layers) {
+    document.layers["bulle"].document.write(contenu);
+    document.layers["bulle"].document.close();
+    document.layers["bulle"].top=posY+yOffset;
+    document.layers["bulle"].left=finalPosX;
+    document.layers["bulle"].visibility="show";}
+  if (document.all) {
+    //var f=window.event;
+    //doc=document.body.scrollTop;
+    bulle.innerHTML=contenu;
+    document.all["bulle"].style.top=posY+yOffset;
+    document.all["bulle"].style.left=finalPosX;//f.x-xOffset;
+    document.all["bulle"].style.visibility="visible";
+  }
+  //modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+  else if (document.getElementById) {
+    document.getElementById("bulle").innerHTML=contenu;
+    document.getElementById("bulle").style.top=posY+yOffset;
+    document.getElementById("bulle").style.left=finalPosX;
+    document.getElementById("bulle").style.visibility="visible";
+  }
+}
+function getMousePos(e) {
+  if (document.all) {
+  posX=event.x+document.body.scrollLeft; //modifs CL 09/2001 - IE : regrouper l'évènement
+  posY=event.y+document.body.scrollTop;
+  }
+  else {
+  posX=e.pageX; //modifs CL 09/2001 - NS6 : celui-ci ne supporte pas e.x et e.y
+  posY=e.pageY; 
+  }
+}
+function HideBulle() {
+	if (document.layers) {document.layers["bulle"].visibility="hide";}
+	if (document.all) {document.all["bulle"].style.visibility="hidden";}
+	else if (document.getElementById){document.getElementById("bulle").style.visibility="hidden";}
+}
+
+function InitBulle(ColTexte,ColFond,ColContour,NbPixel) {
+	IB.ColTexte=ColTexte;IB.ColFond=ColFond;IB.ColContour=ColContour;IB.NbPixel=NbPixel;
+	if (document.layers) {
+		window.captureEvents(Event.MOUSEMOVE);window.onMouseMove=getMousePos;
+		document.write("<LAYER name='bulle' top=0 left=0 visibility='hide'></LAYER>");
+	}
+	if (document.all) {
+		document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden;z-index=82;'></DIV>");
+		document.onmousemove=getMousePos;
+	}
+	//modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+	else if (document.getElementById) {
+	        document.onmousemove=getMousePos;
+	        document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden'></DIV>");
+	}
+
+}
+InitBulle("black","#F9FFD5","#000000",1);
+function iprint() {
+
+window.open(document.location+'&print=1','print','width=480,height=100,toolbar=no,scrollbars=no'); 
+}
+</SCRIPT>
+<xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
+<style type="text/css">
+v\:* { behavior: url(#default#VML);}
+</style>
+<xml:namespace prefix = v />
+<script language="javascript">
+function retour() {
+history.go(-1);
+}
+
+</script>
+<body  style="" bgcolor="#BEBBFF" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" >
+<input type="hidden" name="fiche" value="6">
+<input type="hidden" name="f" value="5">
+<input type="hidden" name="tp" value="platine_set_dt">
+<br><center><font face="verdana" size="3" color="#000000"><b>p2. Mise en service et raccordements</b></font></center><br>	
+
+		<DIV ID="0"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :7px;
+		top :75px;
+		z-index:0;"><table border="0" cellpadding="0" cellspacing="0"><tr><td>				<table border="0" cellpadding="4" cellspacing="2" bgcolor="" width="middle%">
+						<tr>
+							<td bgcolor=""><P><FONT face=arial,helvetica,sans-serif>La platine doit être raccordée au réseau EDF au moyen de la prise P17 située à l'arrière de la platine. </FONT></P><P><FONT face=arial,helvetica,sans-serif>Son fonctionnement nécessite l'utilisation&nbsp;de 3 conducteurs de&nbsp;phases&nbsp;et d'un conducteur de protection équipotentielle PE.&nbsp; <BR></FONT></P><P><FONT face=arial,helvetica,sans-serif>Le sectionneur porte-fusible qui doit être manoeuvré à vide&nbsp; permet :&nbsp; <BR>- la connexion du circuit de puissance au réseau triphasé, <BR>- la mise sous tension de l'alimentation 24 volts alternatif du circuit de commande.&nbsp; </FONT></P><P><FONT face=arial,helvetica,sans-serif>Le témoin d'alimentation 24 volts signale la mise sous tension de la platine.&nbsp; </FONT></P>
+							</td>
+						</tr>
+					</table>
+</td></tr>
+</table></DIV>
+		<DIV ID="1"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :14px;
+		top :276px;
+		z-index:1;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="FFFFFF">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/17.jpg" border="0" width="385"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV>
+		<DIV ID="2"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :408px;
+		top :301px;
+		z-index:2;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="FFFFFF">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/18.jpg" border="0" width="304"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV>
+		<DIV ID="3"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :96px;
+		top :309px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Sectionneur porte-fusible Q1</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="90" height="120"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="4"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :187px;
+		top :307px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Contacteur inverseur KM1-KM2</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="175" height="116"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="5"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :179px;
+		top :430px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Relais thermique RT</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="104" height="68"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="6"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :574px;
+		top :305px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Appuyer sur le bouton poussoir jaune pour charger l\'arbre du moteur asynchrone. Un appui prolongé peut provoquer une surcharge du moteur.</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="84" height="59"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="7"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :584px;
+		top :383px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Bornes d\'alimentation du circuit de commande.</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="69" height="93"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="8"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :467px;
+		top :306px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Voyant signalant que le moteur est chargé par l\'électro-frein.</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="65" height="66"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="9"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :465px;
+		top :401px;
+		z-index:999;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><tr><td><a href="#" onMouseOver="AffBulle('<font face=times size=2>Voyant signalant que la platine est sous tension. Aucune modification du câblage n\'est autorisée à ce moment pour des raisons de sécurité.</font>')" onMouseOut="HideBulle()"><img src="transparent.gif" border="0" width="74" height="63"></a></td></tr></table>
+</td></tr>
+</table></DIV>
+		<DIV ID="10"
+		STYLE="position:absolute;
+		width :auto;
+		height :auto;
+		left :201px;
+		top :567px;
+		z-index:10;"><table border="0" cellpadding="0" cellspacing="0"><tr><td>				<table border="0" cellpadding="4" cellspacing="2" bgcolor="FFFFFF" width="middle%">
+						<tr>
+							<td bgcolor="#FFCC00"><FONT face=arial,helvetica,sans-serif>Survoler les images avec la souris pour obtenir des détails.</FONT>
+							</td>
+						</tr>
+					</table>
+</td></tr>
+</table></DIV></body>
+</htlm>

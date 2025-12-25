@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+    <title>Animations pédagogiques en génie électrique – Électrotechnique, électronique, automatisme</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description"
+    content="Animations interactives, QCM et TP multimédia en génie électrique : électrotechnique, électronique, automatisme, physique appliquée et jeux éducatifs pour élèves et enseignants.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style/style.css">
+
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      autoplay: "on",
+      unmuteOverlay: "hidden"
+    };
+  </script>
+  <script src="js/ruffle/ruffle.js"></script>
+  <script>
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+  </script>
+</head>
+
+<body>
+<header class="site-header">
+  <div class="header-left">
+    <h1>Animations pédagogiques en génie électrique</h1>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="pages/electrotechnique.html">Électrotechnique</a></li>
+        <li><a href="pages/electronique.html">Électronique</a></li>
+        <li><a href="pages/automatisme.html">Automatisme</a></li>
+        <li><a href="pages/physique.html">Physique</a></li>
+        <li><a href="pages/jeux-educatifs.html">Jeux éducatifs</a></li>
+        <li><a href="pages/visual-basic.html">Programmes Visual Basic</a></li>
+        <li><a href="pages/tpwks.html">TP multimédia</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="header-right">
+    <div class="header-flash-logo">
+      <object type="application/x-shockwave-flash"
+              data="media/swf/mon_logo.swf">
+        <param name="movie" value="media/swf/mon_logo.swf">
+        <param name="quality" value="high">
+        <p>Si l’animation ne se lance pas, vérifiez que JavaScript est activé.</p>
+      </object>
+    </div>
+  </div>
+</header>
+
+<main class="content">
+
+  <!-- À PROPOS / FLASH & RUFFLE -->
+  <section class="profile">
+    <div class="profile-photo">
+      <img src="media/img/profil.png" alt="Photo de l’auteur">
+    </div>
+    <div class="profile-text">
+      <h2>À propos du site</h2>
+      <p>
+        Enseignant en sciences de l’ingénieur – génie électrique, je conçois depuis une vingtaine d’années des animations
+        interactives pour aider les étudiants à visualiser des concepts abstraits et à expérimenter à travers le multimédia et l'interactivité.
+      </p>
+      <p>
+        Initialement développées en technologie Flash, ces animations sont aujourd’hui préservées et rendues accessibles grâce
+        à <strong>Ruffle</strong>, un émulateur open‑source qui permet de les lire dans les navigateurs modernes sans plugin.
+        Ce site a pour ambition de continuer à faire vivre cet héritage et servir de support aux apprentissages en apportant des ressources diverses et variées.
+      </p>
+    </div>
+  </section>
+
+  <!-- HERO : message central + CTA -->
+  <section class="intro">
+    <h2>Des animations interactives pour rendre le génie électrique plus concret</h2>
+    <p>
+      Ce site rassemble des animations pédagogiques, QCM et mini‑sites multimédia
+      pour explorer l’électrotechnique, l’électronique, l’automatisme et la physique appliquée.
+      Toutes les animations Flash sont lues directement dans le navigateur grâce à Ruffle, sans plugin supplémentaire.
+    </p>
+    <p>
+      Commencez par choisir une rubrique ou parcourez les propositions ci‑dessous pour découvrir quelques activités phares.
+    </p>
+  </section>
+
+  <!-- POUR QUI / POUR QUOI -->
+  <section class="info-box">
+    <h2>Pour qui ? Pour quoi ?</h2>
+    <p>Ces ressources s’adressent principalement&nbsp;:</p>
+    <ul>
+      <li>aux enseignants de sciences industrielles et de génie électrique, en quête de supports interactifs pour leurs cours ;</li>
+      <li>aux élèves et étudiants qui souhaitent revoir une notion à leur rythme, avec des animations guidées ;</li>
+      <li>aux curieux du multimédia éducatif, intéressés par l’héritage de la technologie Flash dans l’enseignement.</li>
+    </ul>
+  </section>
+
+  <!-- RUBRIQUES PRINCIPALES -->
+  <section class="heritage-section">
+    <div class="container">
+      <div class="heritage-content">
+        <h2>Explorer les ressources</h2>
+        <div class="card-grid">
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/electrotechnique.jpg"
+                   alt="Illustration d’un circuit et d’une machine électrique">
+            </div>
+            <div class="card-body">
+              <h3>Électrotechnique</h3>
+              <p>Animations sur les circuits électriques, les machines, les schémas de liaison à la terre et la sécurité.</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/electrotechnique.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/electronique.jpg"
+                   alt="Carte électronique avec composants et signaux">
+            </div>
+            <div class="card-body">
+              <h3>Électronique</h3>
+              <p>Ressources pour comprendre les composants, les montages analogiques et logiques, et les signaux.</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/electronique.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/automatisme-api.jpg"
+                   alt="Schéma d’automatisme avec GRAFCET et automate programmable">
+            </div>
+            <div class="card-body">
+              <h3>Automatisme &amp; API</h3>
+              <p>Animations et QCM sur le GRAFCET, les systèmes automatisés et les automates programmables industriels.</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/automatisme.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/physique-appliquee.jpg"
+                   alt="Expérience de physique appliquée en situation de laboratoire">
+            </div>
+            <div class="card-body">
+              <h3>Physique appliquée</h3>
+              <p>Notions de base en physique mises en scène dans des situations expérimentales interactives.</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/physique.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/jeux-educatifs.jpg"
+                   alt="Jeux éducatifs et quiz ludiques autour de l’électricité">
+            </div>
+            <div class="card-body">
+              <h3>Jeux éducatifs</h3>
+              <p>Jeux et activités ludiques pour travailler le vocabulaire, la logique et la curiosité.</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/jeux-educatifs.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/visual-basic-qcm.jpg"
+                   alt="Fenêtre de programme Visual Basic et QCM interactifs">
+            </div>
+            <div class="card-body">
+              <h3>Visual Basic &amp; QCM</h3>
+              <p>Applications Visual Basic, générateur de QCM et packs de questions pour travailler différentes notions.</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/visual-basic.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image">
+              <img src="media/img/tpwks.jpg"
+                   alt="Mini‑sites de TP multimédia et études de cas techniques">
+            </div>
+            <div class="card-body">
+              <h3>TP multimédia (TPWKS)</h3>
+              <p>Mini‑sites complets consacrés à des études de cas (batteries, mesurage, régulation, systèmes techniques).</p>
+              <div class="btn-row">
+                <a class="btn btn-online" href="pages/tpwks.html">Accéder à la rubrique</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2025 – Abdellah CHELOUAH</p>
+</footer>
+</body>
+</html>

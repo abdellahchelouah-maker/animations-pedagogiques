@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Quiz Sécurité Électrique</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #071028 0%, #071a2a 60%);
+    color: #e6eef6;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  h1 { margin-bottom: 10px; }
+  .subtitle { color: #9aa4b2; margin-bottom: 20px; }
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6ee7b7, #60a5fa);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .question-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+  }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .question-number { color: #60a5fa; font-weight: bold; }
+  .question-type {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: #9aa4b2;
+  }
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option:hover {
+    background: rgba(255,255,255,0.05);
+  }
+  .option input {
+    width: 18px;
+    height: 18px;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: #6ee7b7;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn:hover {
+    background: rgba(110,231,183,0.1);
+  }
+  .btn-secondary {
+    color: #60a5fa;
+  }
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .feedback {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+  }
+  .feedback.correct {
+    border-left: 4px solid #6ee7b7;
+    background: rgba(110,231,183,0.1);
+  }
+  .feedback.wrong {
+    border-left: 4px solid #fb7185;
+    background: rgba(251,113,133,0.1);
+  }
+  .summary {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .summary h2 {
+    margin-bottom: 15px;
+  }
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal.show {
+    display: flex;
+  }
+  .modal-content {
+    background: #071428;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 500px;
+  }
+  .final-score {
+    font-size: 48px;
+    color: #6ee7b7;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>⚡ Quiz : Sécurité Électrique</h1>
+  <p class="subtitle">27 questions — Testez vos connaissances en sécurité électrique</p>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <div class="question-card" id="questionCard">
+    <!-- Question will be inserted here -->
+  </div>
+
+  <div class="navigation">
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← Précédent</button>
+      <button class="btn" id="nextBtn">Suivant →</button>
+    </div>
+    <div>
+      <span>Question <strong id="currentNum">1</strong> / <strong>27</strong></span>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="restartBtn">🔄 Recommencer</button>
+    <button class="btn btn-secondary" id="showAnswersBtn">👁️ Afficher réponses</button>
+  </div>
+
+  <div class="summary">
+    <h2>Résumé</h2>
+    <div class="stat">
+      <span>Score</span>
+      <strong id="scoreDisplay">0 / 27</strong>
+    </div>
+    <div class="stat">
+      <span>Réponses correctes</span>
+      <strong id="correctDisplay">0</strong>
+    </div>
+    <div class="stat">
+      <span>Questions répondues</span>
+      <strong id="answeredDisplay">0</strong>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h2>Résultat final</h2>
+    <div class="final-score" id="finalScore">0 / 27</div>
+    <p id="resultMessage"></p>
+    <div style="margin-top: 20px;">
+      <button class="btn" id="closeModal">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  { id: 1, text: "En France, les réseaux publics de distribution ont le neutre :", options: { a: "Raccordé à la phase", b: "Isolé", c: "Raccordé à la terre" }, correct: "c" },
+  { id: 2, text: "Un dispositif différentiel protège :", options: { a: "Les appareils", b: "Les personnes", c: "Les conducteurs" }, correct: "b" },
+  { id: 3, text: "Un différentiel, marqué 30 mA, signifie :", options: { a: "Qu'il consomme 30 mA", b: "Qu'il ne peut couper plus de 30 mA", c: "Qu'il ouvrira ses contacts s'il y a un défaut vers la terre de l'ordre de 30 mA" }, correct: "c" },
+  { id: 4, text: "Dans une maison d'habitation équipée d'un disjoncteur différentiel de 500 mA, la résistance de terre devra être :", options: { a: "Inférieure à 100 Ohms", b: "Supérieure à 800 Ohms", c: "Supérieure à 220 Ohms" }, correct: "a" },
+  { id: 5, text: "Lequel de ces trois courants peut être considéré comme mortel ?", options: { a: "1 mA", b: "5 mA", c: "20 mA" }, correct: "c" },
+  { id: 6, text: "Un oiseau qui se pose sur une ligne électrique n'est pas électrocuté parce que :", options: { a: "Ses pattes sont cornées et donc isolantes", b: "Ses pattes ne touchent qu'à un fil", c: "Les oiseaux résistent mieux au courant électrique que les hommes" }, correct: "b" },
+  { id: 7, text: "Un différentiel s'ouvrira :", options: { a: "En cas de court-circuit", b: "En cas de surcharge", c: "En cas de circulation de courant de fuite vers la terre" }, correct: "c" },
+  { id: 8, text: "Un différentiel doit toujours être associé à :", options: { a: "Un fusible gF ou gI", b: "Une prise de terre", c: "Un fusible aM" }, correct: "b" },
+  { id: 9, text: "Dans un différentiel, l'élément de détection des courants de défaut vers la terre est :", options: { a: "Un bilame", b: "Un tore magnétique et des bobines de détection", c: "Une bobine à noyau mobile" }, correct: "b" },
+  { id: 10, text: "Le bouton de test placé en face avant d'un différentiel sert à tester :", options: { a: "La présence de tension", b: "Si l'appareil est bien branché", c: "Périodiquement le bon fonctionnement de la détection différentielle" }, correct: "c" },
+  { id: 11, text: "Le corps humain mouillé a une résistance :", options: { a: "Plus élevée que s'il était sec", b: "Moins élevée que s'il est sec", c: "Égale à celle qu'il a lorsqu'il est sec" }, correct: "b" },
+  { id: 12, text: "Le courant circulera dans le corps humain :", options: { a: "Plus facilement, s'il est sec", b: "Plus facilement, s'il est mouillé", c: "De la même façon, sec que mouillé" }, correct: "b" },
+  { id: 13, text: "Toucher des conducteurs à un potentiel de 12 V est :", options: { a: "Sans danger", b: "Mortel", c: "Dangereux" }, correct: "a" },
+  { id: 14, text: "Si on utilise une perceuse portative pour travailler en extérieur ou en local mouillé, celle-ci devra être prévue pour fonctionner sous :", options: { a: "110 V", b: "12 V", c: "24 V" }, correct: "c" },
+  { id: 15, text: "Lorsque l'on découvre une personne électrocutée, il faut :", options: { a: "Tirer la personne par un pied ou par une main pour la dégager du circuit électrique", b: "Couper le plus rapidement possible le courant, examiner la victime et alerter les urgences", c: "Crier \"Au secours\"" }, correct: "b" },
+  { id: 16, text: "La carcasse métallique d'une lanterne placée à l'extérieur doit être :", options: { a: "Recouverte d'une peinture isolante", b: "Équipée d'une lampe néon", c: "Reliée à la terre" }, correct: "c" },
+  { id: 17, text: "Un montage électronique d'amateur doit, pour fonctionner, être alimenté sous 12 V. Pour cela, on fait chuter la tension de 230 V à 12 V dans une résistance de 2,2 kiloOhms. Ce montage est :", options: { a: "Sans danger, car \"12 V\" est une tension de sécurité", b: "Dangereux, voire mortel, car la phase du secteur est présente sur les composants", c: "Peu dangereux car presque tous les composants électroniques sont en matière isolante" }, correct: "b" },
+  { id: 18, text: "Un tournevis testeur à voyant néon indique lorsqu'il est allumé :", options: { a: "La phase", b: "La terre", c: "Le neutre" }, correct: "a" },
+  { id: 19, text: "Un tournevis testeur s'allume quand le courant circule de la phase à la terre en passant à travers le corps de l'utilisateur. Conclusion :", options: { a: "Il est dangereux de l'utiliser sous plus de 110 V", b: "Il est sans danger parce que le courant qui circule dans le corps de l'utilisateur est de quelques μA", c: "Il est très dangereux sous plus de 220 V" }, correct: "b" },
+  { id: 20, text: "Le circuit magnétique d'un transformateur 220/24 V (si celui-ci est accessible) doit être raccordé à la terre car :", options: { a: "Sans cela, il risque d'y avoir des parasites", b: "C'est une masse métallique et que toutes les masses métalliques doivent être reliées à la terre", c: "Cela permet d'évacuer vers la terre les courants de Foucault" }, correct: "b" },
+  { id: 21, text: "Que signifie le symbole représentant un petit carré à l'intérieur d'un autre plus grand :", options: { a: "Que l'appareil peut être immergé", b: "Qu'il est protégé contre les chocs", c: "Qu'il dispose d'une double isolation" }, correct: "c" },
+  { id: 22, text: "Que signifie sur un appareil le symbole représentant une goutte noire sur fond blanc ?", options: { a: "Que l'appareil est protégé contre l'eau en plus jusqu'à 60° de la verticale", b: "Que l'appareil peut être immergé", c: "Que l'appareil dispose d'une double isolation" }, correct: "a" },
+  { id: 23, text: "Si une borne d'un appareil est marquée du symbole de la prise de terre, cela signifie qu'il faut la relier :", options: { a: "Au neutre", b: "À la terre", c: "À rien" }, correct: "b" },
+  { id: 24, text: "Un différentiel de sensibilité 30 mA doit être associé à une prise de terre de :", options: { a: "Moins de 800 Ohms", b: "Plus de 1000 Ohms", c: "Plus de 2000 Ohms" }, correct: "a" },
+  { id: 25, text: "Une terre, une fois réalisée, est mesurée. Sa valeur est de 1250 Ohms (sol caillouteux et sec). Quelle sensibilité de disjoncteur différentiel devra-t-on employer pour qu'il y ait protection des personnes ?", options: { a: "300 mA", b: "500 mA", c: "10 mA" }, correct: "a" },
+  { id: 26, text: "À l'entrée d'une villa, un carillon électrique a été installé. Le bouton poussoir est installé à l'extérieur. Pourquoi a-t-on alimenté ce carillon au travers d'un transformateur 220/8 V ?", options: { a: "Parce que le carillon fonctionne sous 8 V", b: "Pour des raisons de sécurité", c: "Parce que le carillon consommera moins sous 8 V que sous 220 V" }, correct: "b" },
+  { id: 27, text: "La norme française qui régit les règles de sécurité dans les réseaux BT est la :", options: { a: "NFC 14 100", b: "NFC 15 100", c: "NFC 13 100" }, correct: "b" }
+];
+
+let currentIndex = 0;
+let userAnswers = {};
+
+function renderQuestion() {
+  const q = questions[currentIndex];
+  const card = document.getElementById('questionCard');
+  
+  let html = `
+    <div class="question-header">
+      <div class="question-number">Question ${currentIndex + 1} / 27</div>
+      <div class="question-type">Choix unique</div>
+    </div>
+    <div class="question-text">${q.text}</div>
+    <div class="options">
+  `;
+  
+  for (const [key, text] of Object.entries(q.options)) {
+    const checked = userAnswers[q.id] === key ? 'checked' : '';
+    html += `
+      <label class="option">
+        <input type="radio" name="q${q.id}" value="${key}" ${checked} onchange="handleAnswer(${q.id}, '${key}')">
+        <span>${key.toUpperCase()}. ${text}</span>
+      </label>
+    `;
+  }
+  
+  html += `
+    </div>
+    <div class="buttons">
+      <button class="btn" onclick="validateQuestion()">✓ Valider</button>
+      <button class="btn btn-secondary" onclick="clearAnswer()">✗ Effacer</button>
+    </div>
+  `;
+  
+  if (userAnswers[q.id] && userAnswers[q.id].validated) {
+    const v = userAnswers[q.id].validated;
+    html += `
+      <div class="feedback ${v.correct ? 'correct' : 'wrong'}">
+        <strong>${v.correct ? '✓ Bonne réponse !' : '✗ Réponse incorrecte'}</strong>
+        <p>La bonne réponse est : ${q.correct.toUpperCase()}. ${q.options[q.correct]}</p>
+      </div>
+    `;
+  }
+  
+  card.innerHTML = html;
+  document.getElementById('currentNum').textContent = currentIndex + 1;
+  updateProgress();
+  updateSummary();
+}
+
+function handleAnswer(qid, key) {
+  if (userAnswers[qid] && userAnswers[qid].validated) {
+    delete userAnswers[qid].validated;
+  }
+  userAnswers[qid] = key;
+  updateSummary();
+}
+
+function validateQuestion() {
+  const q = questions[currentIndex];
+  const selected = userAnswers[q.id];
+  
+  if (!selected) {
+    alert('Veuillez sélectionner une réponse avant de valider.');
+    return;
+  }
+  
+  const isCorrect = selected === q.correct;
+  
+  userAnswers[q.id] = {
+    answer: selected,
+    validated: {
+      correct: isCorrect
+    }
+  };
+  
+  renderQuestion();
+  checkCompletion();
+}
+
+function clearAnswer() {
+  const q = questions[currentIndex];
+  delete userAnswers[q.id];
+  renderQuestion();
+}
+
+function updateProgress() {
+  const progress = ((currentIndex + 1) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function updateSummary() {
+  const answered = Object.keys(userAnswers).filter(k => userAnswers[k]).length;
+  const correct = Object.keys(userAnswers).filter(k => 
+    userAnswers[k].validated && userAnswers[k].validated.correct
+  ).length;
+  
+  document.getElementById('scoreDisplay').textContent = `${correct} / 27`;
+  document.getElementById('correctDisplay').textContent = correct;
+  document.getElementById('answeredDisplay').textContent = answered;
+}
+
+function checkCompletion() {
+  const allValidated = questions.every(q => 
+    userAnswers[q.id] && userAnswers[q.id].validated
+  );
+  if (allValidated) {
+    setTimeout(showResults, 1000);
+  }
+}
+
+function showResults() {
+  const correct = Object.keys(userAnswers).filter(k => 
+    userAnswers[k].validated && userAnswers[k].validated.correct
+  ).length;
+  const pct = Math.round((correct / 27) * 100);
+  
+  document.getElementById('finalScore').textContent = `${correct} / 27`;
+  
+  let msg = '';
+  if (pct === 100) msg = '🎉 Parfait ! Maîtrise complète de la sécurité électrique.';
+  else if (pct >= 80) msg = '👍 Très bien ! Vous avez de bonnes bases en sécurité.';
+  else if (pct >= 60) msg = '📚 Moyen. Révisez les points clés de la sécurité électrique.';
+  else msg = '⚠️ À améliorer. La sécurité électrique nécessite plus d\'attention.';
+  
+  document.getElementById('resultMessage').textContent = msg;
+  document.getElementById('resultModal').classList.add('show');
+}
+
+document.getElementById('prevBtn').onclick = () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+};
+
+document.getElementById('restartBtn').onclick = () => {
+  if (confirm('Recommencer le quiz ? Toutes les réponses seront perdues.')) {
+    currentIndex = 0;
+    userAnswers = {};
+    renderQuestion();
+  }
+};
+
+document.getElementById('showAnswersBtn').onclick = () => {
+  if (confirm('Afficher toutes les bonnes réponses ?')) {
+    questions.forEach(q => {
+      userAnswers[q.id] = {
+        answer: q.correct,
+        validated: { correct: true }
+      };
+    });
+    renderQuestion();
+  }
+};
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('resultModal').classList.remove('show');
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

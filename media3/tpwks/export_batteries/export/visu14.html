@@ -1,0 +1,162 @@
+<script type="text/javascript" language="javascript">
+
+var paramOk = true;
+
+function FaitTableau(n) {
+  this.length = n;
+  for (var i = 0; i <= n; i++) {
+    this[i] = 0
+  }
+  return this
+}
+
+function ParamValeur(nValeur) {
+if (paramOk==false) {return(false);}
+  var nTemp = "";
+  for (var i=0;i<(param.length+1);i++) {
+    if (param[i].substring(0,param[i].indexOf("=")) == nValeur)
+      nTemp = param[i].substring(param[i].indexOf("=")+1,param[i].length)
+  }
+  return Decode(nTemp)
+}
+
+
+if (!location.search) {
+  paramOk = false; 
+}
+else {
+  nReq = location.search.substring(1,location.search.length)
+  // Extrait les différents paramètres avec leur valeur.
+  nReq = nReq.split("&");
+  param = new FaitTableau(nReq.length-1)
+  for (var i=0;i<(nReq.length);i++) {
+    param[i] = nReq[i]
+  }
+}
+
+function Decode(tChaine) {
+  while (true) {
+    var i = tChaine.indexOf('+');
+    if (i < 0) break;
+    tChaine = tChaine.substring(0,i) + '%20' + tChaine.substring(i + 1, tChaine.length);
+  }
+  return unescape(tChaine)
+}
+</script>
+<script language=javascript>hist = ParamValeur("hist");  if (hist==1) {document.write("&nbsp;<font face='verdana' size='2'><a href='javascript:history.go(-1)'><img src='retour.jpg' alt='Retour' border='0'></a></font>");}
+</script><html>
+<META HTTP-EQUIV="imagetoolbar" CONTENT="no">
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript">
+
+
+var IB=new Object;
+var posX=0;posY=0;
+var xOffset=10;yOffset=10;
+function AffBulle(texte) {
+  contenu="<TABLE border=0 cellspacing=0 cellpadding="+IB.NbPixel+"><TR bgcolor='"+IB.ColContour+"'><TD><TABLE border=0 cellpadding=2 cellspacing=0 bgcolor='"+IB.ColFond+"'><TR><TD><FONT size='-1' face='arial' color='"+IB.ColTexte+"'>"+texte+"</FONT></TD></TR></TABLE></TD></TR></TABLE>";
+  var finalPosX=posX-xOffset;
+  if (finalPosX<0) finalPosX=0;
+  if (document.layers) {
+    document.layers["bulle"].document.write(contenu);
+    document.layers["bulle"].document.close();
+    document.layers["bulle"].top=posY+yOffset;
+    document.layers["bulle"].left=finalPosX;
+    document.layers["bulle"].visibility="show";}
+  if (document.all) {
+    //var f=window.event;
+    //doc=document.body.scrollTop;
+    bulle.innerHTML=contenu;
+    document.all["bulle"].style.top=posY+yOffset;
+    document.all["bulle"].style.left=finalPosX;//f.x-xOffset;
+    document.all["bulle"].style.visibility="visible";
+  }
+  //modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+  else if (document.getElementById) {
+    document.getElementById("bulle").innerHTML=contenu;
+    document.getElementById("bulle").style.top=posY+yOffset;
+    document.getElementById("bulle").style.left=finalPosX;
+    document.getElementById("bulle").style.visibility="visible";
+  }
+}
+function getMousePos(e) {
+  if (document.all) {
+  posX=event.x+document.body.scrollLeft; //modifs CL 09/2001 - IE : regrouper l'évènement
+  posY=event.y+document.body.scrollTop;
+  }
+  else {
+  posX=e.pageX; //modifs CL 09/2001 - NS6 : celui-ci ne supporte pas e.x et e.y
+  posY=e.pageY; 
+  }
+}
+function HideBulle() {
+	if (document.layers) {document.layers["bulle"].visibility="hide";}
+	if (document.all) {document.all["bulle"].style.visibility="hidden";}
+	else if (document.getElementById){document.getElementById("bulle").style.visibility="hidden";}
+}
+
+function InitBulle(ColTexte,ColFond,ColContour,NbPixel) {
+	IB.ColTexte=ColTexte;IB.ColFond=ColFond;IB.ColContour=ColContour;IB.NbPixel=NbPixel;
+	if (document.layers) {
+		window.captureEvents(Event.MOUSEMOVE);window.onMouseMove=getMousePos;
+		document.write("<LAYER name='bulle' top=0 left=0 visibility='hide'></LAYER>");
+	}
+	if (document.all) {
+		document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden;z-index=82;'></DIV>");
+		document.onmousemove=getMousePos;
+	}
+	//modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+	else if (document.getElementById) {
+	        document.onmousemove=getMousePos;
+	        document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden'></DIV>");
+	}
+
+}
+InitBulle("black","#F9FFD5","#000000",1);
+function iprint() {
+
+window.open(document.location+'&print=1','print','width=480,height=100,toolbar=no,scrollbars=no'); 
+}
+</SCRIPT>
+<xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
+<style type="text/css">
+v\:* { behavior: url(#default#VML);}
+</style>
+<xml:namespace prefix = v />
+<script language="javascript">
+function retour() {
+history.go(-1);}
+
+</script>
+
+<body  style="" bgcolor="FFFFFF" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" ><input type="hidden" name="fiche" value="13">
+<input type="hidden" name="f" value="14">
+<input type="hidden" name="tp" value="dossier_ressource_piles_batteries">
+<br><center><font face="verdana" size="5" color=""><b>3.1 Choix d’un accumulateur</b></font></center><br>	
+<DIV ID="0" STYLE="position:absolute; width: auto; height: auto; left: 6px; top: 85px; z-index: 0;"><table border="0" cellpadding="0" cellspacing="0"><tr><td>				<table border="0" cellpadding="4" cellspacing="2" bgcolor="FFFFFF" width="middle%">
+						<tr>
+							<td bgcolor="FFFFFF"><P><FONT face=arial,helvetica,sans-serif>Tous les accumulateurs ont des caractéristiques différentes en plus de la quantité d’énergie pouvant être stockée.<BR>On en distingue plusieurs types, dont les plus courantes sont : <FONT style="BACKGROUND-COLOR: #ffcc00">au plomb ; Ni-Cd ; Ni-MH ; Lithium-ion.</FONT><BR></FONT></P><P><FONT face=arial,helvetica,sans-serif>La quantité d’énergie pouvant être restituée est donnée par sa capacité <FONT style="BACKGROUND-COLOR: #ffff99">Q = I x t&nbsp;</FONT>exprimée en Ah (Ampère x heures), en considérant que le courant "I" fourni (en Ampères) est constant pendant un temps "t" (en heures).<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif>On&nbsp;peut calculer aussi l’énergie W emmagasinée en Wh (Watt x heures) : <FONT style="BACKGROUND-COLOR: #ffff99">W =&nbsp;U x&nbsp;Q</FONT> avec&nbsp;U la tension en Volts et&nbsp;Q la capacité en Ah.</FONT></P><P><FONT face=arial,helvetica,sans-serif><EM><U><HR align=left color=transparent SIZE=2 width="100%" shade></P><P>Exemple</U> : Batterie 12V / 50 Ah / 420 A </EM></FONT></P><FONT face=arial,helvetica,sans-serif><P><EM>Cela signifie que la tension de service est 12V, que sa capacité Q est de 50 Ah et qu’en pointe elle peut fournir jusqu’à 420A.&nbsp;D'autre part,&nbsp;un appareil consommant 25 A peut fonctionner pendant 2 heures.<BR></EM></P><HR align=left color=transparent SIZE=2 width="100%" shade><P>La tension dite nominale, est une tension qui constitue une moyenne. En effet, en début de décharge, la tension est<BR>plus&nbsp;élevée qu'à la fin ! Cette tension nominale, mesurée à vide, dépend de la technologie de l'accumulateur, par exemple elle est de 1,2V pour les accumulateurs Ni/Cd ou Ni/MH et 2V pour les batteries au plomb.</FONT></P><P><FONT face=arial,helvetica,sans-serif>En pratique, une batterie est constituée d’éléments de bases (ou cellules), la tension de la batterie est donc un multiple de la tension de cette cellule.<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif>Par exemple, sur cette batterie au plomb de voiture de 12 V, il y a 6 cellules de 2 V.<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif>Un élément important dans le choix d'une source d'énergie autonome est la masse à embarquer.<BR>Le plus léger, à capacité égale, est l'accumulateur Li-ion, on le rencontre beaucoup dans des téléphones mobiles, des caméscopes, des ordinateurs portables et des applications professionnelles.<BR></P></FONT><P><FONT face=arial,helvetica,sans-serif>Les accumulateurs se déchargent naturellement au repos, jusqu’à 1 % par jour suivant la technologie, ils ne sont donc pas adaptés à certains usages, on les évitera dans les appareils peu gourmands en énergie : détecteur d’incendie, horloge ou utilisés épisodiquement : lampe de poche, calculatrice …</FONT></P>
+							</td>
+						</tr>
+					</table>
+</td></tr>
+</table></DIV><DIV ID="1" STYLE="position:absolute; width: auto; height: auto; left: 10px; top: 694px; z-index: 1;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="#000066">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/53.png" border="0"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV><DIV ID="2" STYLE="position:absolute; width: auto; height: auto; left: 398px; top: 685px; z-index: 2;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="#000066">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/54.png" border="0"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV><DIV ID="3" STYLE="position:absolute; width: auto; height: auto; left: -2px; top: 923px; z-index: 3;"><table border="0" cellpadding="0" cellspacing="0"><tr><td>				<table border="0" cellpadding="4" cellspacing="2" bgcolor="FFFFFF" width="middle%">
+						<tr>
+							<td bgcolor="FFFFFF"><P><TABLE style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted" border=0 cellSpacing=1 cellPadding=2 width="100%"><TBODY><TR><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted" colSpan=2><P align=center><FONT size=5 face=arial,helvetica,sans-serif><B>Branchement des batteries d'accumulateur</B> </FONT></P></TD></TR><TR><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted"><P align=center><IMG border=0 hspace=0  align=baseline src="../fiches/editor/images/4.png" width=393 height=200></P></TD><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted"><FONT face=arial,helvetica,sans-serif><B><I><U>EN SERIE</U></I> </B>: <BR>On <U>additionne les tensions</U> des batteries (12 V + 12 V = 24 V) mais la charge reste identique (par exemple 70 Ah) ; Énergie totale = 24 x 70 = 1680 Wh = 2 x l'énergie d'une batterie.</FONT></TD></TR><TR><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted"><P align=center><FONT face=arial,helvetica,sans-serif><IMG border=0 hspace=0  align=baseline src="../fiches/editor/images/6.png" width=372 height=327></FONT></P></TD><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted"><FONT face=arial,helvetica,sans-serif>2) <U><I><B>EN PARALLELE</B></I></U> : <BR>On <U>additionne les charges</U> des batteries ( 70 Ah + 70 Ah = 140 Ah) mais les tensions restent identiques (12 V) ; Energie totale = 12 x 140 = 1680 Wh = 2 x l'énergie d'une batterie.</FONT></TD></TR><TR><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted"><P align=center><FONT face=arial,helvetica,sans-serif><IMG border=0 hspace=0  align=baseline src="../fiches/editor/images/7.png" width=527 height=329></FONT></P></TD><TD style="BORDER-BOTTOM: #c0c0c0 1px dotted; BORDER-LEFT: #c0c0c0 1px dotted; BORDER-TOP: #c0c0c0 1px dotted; BORDER-RIGHT: #c0c0c0 1px dotted"><FONT face=arial,helvetica,sans-serif>3) <U><I><B>MIXTE (SERIE + PARALLELE) </B></I></U>: <BR><BR>Ici, on place en PARALLÈLE 2 x 2 batteries en SÉRIE <BR><BR></FONT><FONT face=arial,helvetica,sans-serif>En SÉRIE : la tension est de 24 V = 12 V x 2 pour une charge de 70 Ah ; <BR>En PARALLÈLE : la charge totale est de 140 Ah = 70Ah x 2 pour une tension de 24 V. <BR><BR>Énergie totale = 24 x 140 = 3360 Wh = 4 x l'énergie d'une batterie. <BR><BR><BR>Le choix du raccordement dépend d'une part de la tension désirée (12, 24, 48 V, etc...) et d'autre part de la charge (en A ou en Ah) à fournir pendant un certain temps (autonomie recherchée). </FONT></TD></TR></TBODY></TABLE></P>
+							</td>
+						</tr>
+					</table>
+</td></tr>
+</table></DIV></body>
+</htlm>

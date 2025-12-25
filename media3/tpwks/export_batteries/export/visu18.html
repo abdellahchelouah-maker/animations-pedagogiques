@@ -1,0 +1,155 @@
+<script type="text/javascript" language="javascript">
+
+var paramOk = true;
+
+function FaitTableau(n) {
+  this.length = n;
+  for (var i = 0; i <= n; i++) {
+    this[i] = 0
+  }
+  return this
+}
+
+function ParamValeur(nValeur) {
+if (paramOk==false) {return(false);}
+  var nTemp = "";
+  for (var i=0;i<(param.length+1);i++) {
+    if (param[i].substring(0,param[i].indexOf("=")) == nValeur)
+      nTemp = param[i].substring(param[i].indexOf("=")+1,param[i].length)
+  }
+  return Decode(nTemp)
+}
+
+
+if (!location.search) {
+  paramOk = false; 
+}
+else {
+  nReq = location.search.substring(1,location.search.length)
+  // Extrait les différents paramètres avec leur valeur.
+  nReq = nReq.split("&");
+  param = new FaitTableau(nReq.length-1)
+  for (var i=0;i<(nReq.length);i++) {
+    param[i] = nReq[i]
+  }
+}
+
+function Decode(tChaine) {
+  while (true) {
+    var i = tChaine.indexOf('+');
+    if (i < 0) break;
+    tChaine = tChaine.substring(0,i) + '%20' + tChaine.substring(i + 1, tChaine.length);
+  }
+  return unescape(tChaine)
+}
+</script>
+<script language=javascript>hist = ParamValeur("hist");  if (hist==1) {document.write("&nbsp;<font face='verdana' size='2'><a href='javascript:history.go(-1)'><img src='retour.jpg' alt='Retour' border='0'></a></font>");}
+</script><html>
+<META HTTP-EQUIV="imagetoolbar" CONTENT="no">
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript">
+
+
+var IB=new Object;
+var posX=0;posY=0;
+var xOffset=10;yOffset=10;
+function AffBulle(texte) {
+  contenu="<TABLE border=0 cellspacing=0 cellpadding="+IB.NbPixel+"><TR bgcolor='"+IB.ColContour+"'><TD><TABLE border=0 cellpadding=2 cellspacing=0 bgcolor='"+IB.ColFond+"'><TR><TD><FONT size='-1' face='arial' color='"+IB.ColTexte+"'>"+texte+"</FONT></TD></TR></TABLE></TD></TR></TABLE>";
+  var finalPosX=posX-xOffset;
+  if (finalPosX<0) finalPosX=0;
+  if (document.layers) {
+    document.layers["bulle"].document.write(contenu);
+    document.layers["bulle"].document.close();
+    document.layers["bulle"].top=posY+yOffset;
+    document.layers["bulle"].left=finalPosX;
+    document.layers["bulle"].visibility="show";}
+  if (document.all) {
+    //var f=window.event;
+    //doc=document.body.scrollTop;
+    bulle.innerHTML=contenu;
+    document.all["bulle"].style.top=posY+yOffset;
+    document.all["bulle"].style.left=finalPosX;//f.x-xOffset;
+    document.all["bulle"].style.visibility="visible";
+  }
+  //modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+  else if (document.getElementById) {
+    document.getElementById("bulle").innerHTML=contenu;
+    document.getElementById("bulle").style.top=posY+yOffset;
+    document.getElementById("bulle").style.left=finalPosX;
+    document.getElementById("bulle").style.visibility="visible";
+  }
+}
+function getMousePos(e) {
+  if (document.all) {
+  posX=event.x+document.body.scrollLeft; //modifs CL 09/2001 - IE : regrouper l'évènement
+  posY=event.y+document.body.scrollTop;
+  }
+  else {
+  posX=e.pageX; //modifs CL 09/2001 - NS6 : celui-ci ne supporte pas e.x et e.y
+  posY=e.pageY; 
+  }
+}
+function HideBulle() {
+	if (document.layers) {document.layers["bulle"].visibility="hide";}
+	if (document.all) {document.all["bulle"].style.visibility="hidden";}
+	else if (document.getElementById){document.getElementById("bulle").style.visibility="hidden";}
+}
+
+function InitBulle(ColTexte,ColFond,ColContour,NbPixel) {
+	IB.ColTexte=ColTexte;IB.ColFond=ColFond;IB.ColContour=ColContour;IB.NbPixel=NbPixel;
+	if (document.layers) {
+		window.captureEvents(Event.MOUSEMOVE);window.onMouseMove=getMousePos;
+		document.write("<LAYER name='bulle' top=0 left=0 visibility='hide'></LAYER>");
+	}
+	if (document.all) {
+		document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden;z-index=82;'></DIV>");
+		document.onmousemove=getMousePos;
+	}
+	//modif CL 09/2001 - NS6 : celui-ci ne supporte plus document.layers mais document.getElementById
+	else if (document.getElementById) {
+	        document.onmousemove=getMousePos;
+	        document.write("<DIV id='bulle' style='position:absolute;top:0;left:0;visibility:hidden'></DIV>");
+	}
+
+}
+InitBulle("black","#F9FFD5","#000000",1);
+function iprint() {
+
+window.open(document.location+'&print=1','print','width=480,height=100,toolbar=no,scrollbars=no'); 
+}
+</SCRIPT>
+<xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
+<style type="text/css">
+v\:* { behavior: url(#default#VML);}
+</style>
+<xml:namespace prefix = v />
+<script language="javascript">
+function retour() {
+history.go(-1);}
+
+</script>
+
+<body  style="" bgcolor="FFFFFF" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" ><input type="hidden" name="fiche" value="16">
+<input type="hidden" name="f" value="18">
+<input type="hidden" name="tp" value="dossier_ressource_piles_batteries">
+<br><center><font face="verdana" size="5" color=""><b>3.5 Les batteries Lithium-ion</b></font></center><br>	
+<DIV ID="0" STYLE="position:absolute; width: auto; height: auto; left: 6px; top: 83px; z-index: 0;"><table border="0" cellpadding="0" cellspacing="0"><tr><td>				<table border="0" cellpadding="4" cellspacing="2" bgcolor="FFFFFF" width="middle%">
+						<tr>
+							<td bgcolor="FFFFFF"><P><FONT face=arial,helvetica,sans-serif>Il existe différents types de batterie Lithium-ion avec comme atout de contenir plus d’énergie :<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif><FONT color=#ff0000>·&nbsp; <STRONG>LiCoO2 (lithium-dioxyde de cobalt) et LiMn204 (Lithium-oxyde de manganèse)</STRONG></FONT>, utilisées principalement dans les téléphones mobiles, ordinateurs portables, lecteurs mp3...<BR>Un gros <STRONG><U>inconvénient </U></STRONG>est qu’en cas de surcharge ou de court-circuit, elles peuvent brûler et facilement exploser, ce qui les rend très dangereuses pour l’utilisation avec de grosses capacités, comme&nbsp;ce serait le cas sur un véhicule électrique.<BR></P></FONT><P><FONT face=arial,helvetica,sans-serif><STRONG><FONT color=#ff0000>·&nbsp; LiFePO4 (lithium-phosphate de fer)</FONT></STRONG>, elles sont récentes et bien adaptées pour les véhicules électriques entre autres, car elles présentent l’avantage d’être beaucoup plus stables chimiquement. En cas de surcharge, la batterie ne prendra pas feu mais se détruira. De plus les constituants sont moins onéreux et aussi moins polluants.<BR>Ces accus ne sont pas disponibles pour les particuliers au format standard AA/R6, compte tenu de leur dangerosité, on doit leur adjoindre un circuit électronique de surveillance et enfermer le tout dans un boîtier bien étanche pour les sécuriser.<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif>La cellule élémentaire Lithium-Ion a une tension nominale de 3,6V, soit trois fois la tension d'un accu Ni/Cd.<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif><STRONG><U>Avantages </U></STRONG>: meilleur rapport énergie/taille et masse. Très faible autodécharge ; accepte des décharges rapides ; peut-être rechargé très rapidement ; possibilité d’être utilisé avec de fortes amplitudes de température (-20°C à +70°C) ; grande durée de vie (2000 cycles à 80% de sa capacité initiale) ; pas d’effet mémoire ; moins polluant.<BR></FONT></P><P><FONT face=arial,helvetica,sans-serif><STRONG><U>Inconvénients :</U></STRONG> les constructeurs n'ont pas fait de formats standards, avec pour résultat des chargeurs et des accus parfois très chers et parfois difficiles à trouver. Obligation d’utiliser des chargeurs spécifiques.</FONT></P><P><FONT face=arial,helvetica,sans-serif><FONT size=3><SPAN id=Li-ion_polym.C3.A8re_.28Li-Po.29 class=mw-headline><STRONG><FONT color=#ff0000>- Li-Po (Li-ion polymère) </FONT></STRONG>: l</SPAN></FONT></FONT><FONT face=arial,helvetica,sans-serif>'électrolyte est un polymère gélifié. La batterie Li-Po utilise un principe de fonctionnement semblable aux batteries Li-ion et a des caractéristiques proches. Elles sont couramment utilisées pour la fourniture d'énergie aux modèle réduits <FONT face=arial,helvetica,sans-serif>volants. </FONT><FONT face=arial,helvetica,sans-serif>Elles sont aussi de plus en plus utilisées pour les vélos à assistance électrique</FONT><FONT face=arial,helvetica,sans-serif>, avec couramment une tension de <SPAN style="WHITE-SPACE: nowrap">24&nbsp;V</SPAN>.</FONT></P></FONT><H3><FONT face=arial,helvetica,sans-serif><FONT size=3><SPAN id=Avantages_des_Li-Po class=mw-headline>Avantages : </SPAN></FONT></FONT></H3><UL><LI><FONT face=arial,helvetica,sans-serif>Batterie pouvant prendre des formes fines et variées (taille "carte de crédit")</FONT><FONT face=arial,helvetica,sans-serif>.</FONT> <LI><FONT face=arial,helvetica,sans-serif>Batterie pouvant être déposée sur un support flexible.</FONT> <LI><FONT face=arial,helvetica,sans-serif>Faible poids (le Li-Po permet parfois d'éliminer la lourde enveloppe de métal).</FONT> <LI><FONT face=arial,helvetica,sans-serif>Plus sûre que les Li-ion (plus résistante à la surcharge et aux fuites d'électrolytes)</FONT><FONT face=arial,helvetica,sans-serif>.</FONT></LI></UL><H3><FONT face=arial,helvetica,sans-serif><FONT size=3><SPAN id=Faiblesse_des_Li-Po class=mw-headline>Inconvénients :</SPAN>&nbsp;</FONT></FONT></H3><UL><LI><FONT face=arial,helvetica,sans-serif>Densité énergétique plus faible que les Li-ion.</FONT> <LI><FONT face=arial,helvetica,sans-serif>Plus cher que le Li-ion.</FONT> <LI><FONT face=arial,helvetica,sans-serif>Charge soumise à des règles strictes sous peine de risque d'inflammation.</FONT> <LI><FONT face=arial,helvetica,sans-serif>Moins de cycles de vie.</FONT></LI></UL><FONT face=Arial><P><FONT face=arial,helvetica,sans-serif><FONT size=3><FONT color=#ff0000><SPAN id=Lithium_M.C3.A9tal_Polym.C3.A8re_.28LMP.29 class=mw-headline><STRONG>- Lithium Métal Polymère (LMP)</STRONG> :&nbsp;</SPAN>&nbsp;</FONT></FONT></FONT><FONT face=arial,helvetica,sans-serif>Elle se présente sous la forme d'un film mince enroulé. Ce film, d'une épaisseur de l'ordre d'une centaine de µm</FONT><FONT face=arial,helvetica,sans-serif>, est composé de 5 couches : </FONT><FONT face=arial,helvetica,sans-serif>Isolant, anode (</FONT><FONT face=arial,helvetica,sans-serif>feuillard de lithium), électr</FONT><FONT face=arial,helvetica,sans-serif>olyte&nbsp;(composé de polyoxyéthylène (POE) et de sels de lithium, cathode</FONT><FONT face=arial,helvetica,sans-serif>&nbsp;(oxyde de vanadium, de carbone et de polymère ), c</FONT><FONT face=arial,helvetica,sans-serif>ollecteur de courant&nbsp;(feuillard de métal permettant d'assurer la connexion électrique). </FONT><FONT face=arial,helvetica,sans-serif>La densité massique est de <SPAN style="WHITE-SPACE: nowrap">110&nbsp;Wh/kg</SPAN>. Pour comparaison, elle contient presque <SPAN style="WHITE-SPACE: nowrap">3&nbsp;fois</SPAN> plus d'énergie que les batteries au plomb (~<SPAN style="WHITE-SPACE: nowrap">40&nbsp;Wh/kg</SPAN>) à poids égal car la structure en film mince est légère et maximise la surface de stockage utile d'énergie. </FONT><FONT face=arial,helvetica,sans-serif>Il n'y a pas d'effet mémoire</FONT><FONT face=arial,helvetica,sans-serif>, on n'a donc pas besoin de vider complètement l'accumulateur avant de la recharger. </FONT><FONT face=arial,helvetica,sans-serif>La durée de vie est de l'ordre de dix ans. </FONT><FONT face=arial,helvetica,sans-serif>Cependant, pour un fonctionnement optimal, l'électrolyte a besoin d'être maintenu à une température avoisinant <SPAN style="WHITE-SPACE: nowrap">85&nbsp;°C</SPAN>.</FONT></P><H3><FONT face=arial,helvetica,sans-serif><FONT size=3><SPAN id=Avantages class=mw-headline>Avantages</SPAN> </FONT></FONT></H3><UL><LI><FONT face=arial,helvetica,sans-serif>Entièrement solide (pas de risque d'explosion).</FONT> <LI><FONT face=arial,helvetica,sans-serif>Faible auto-décharge.</FONT> <LI><FONT face=arial,helvetica,sans-serif>Pas de polluant majeur dans la composition de l'accumulateur</FONT><FONT face=arial,helvetica,sans-serif>.</FONT></LI></UL><H3><FONT face=arial,helvetica,sans-serif><FONT size=3><SPAN id=Inconv.C3.A9nients class=mw-headline>Inconvénients</SPAN> </FONT></FONT></H3><UL><LI><FONT face=arial,helvetica,sans-serif>Fonctionnement optimal à température élevée.</FONT></LI></UL></FONT>
+							</td>
+						</tr>
+					</table>
+</td></tr>
+</table></DIV><DIV ID="1" STYLE="position:absolute; width: auto; height: auto; left: 4px; top: 1317px; z-index: 1;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="#000066">
+								<tr>
+									<td bgcolor="FFFFFF"><img src="medias/65.png" border="0"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV><DIV ID="2" STYLE="position:absolute; width: auto; height: auto; left: 305px; top: 1322px; z-index: 2;"><table border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="2" bgcolor="#000066">
+								<tr>
+									<td bgcolor="#FFFFFF"><img src="medias/123.jpg" border="0" width="407"></td>
+								</tr>
+						</table>
+</td></tr>
+</table></DIV></body>
+</htlm>

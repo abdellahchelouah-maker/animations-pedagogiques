@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Quiz disjoncteurs — Moderne</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --muted:#9aa4b2;
+    --accent:#6ee7b7;
+    --accent-2:#60a5fa;
+    --danger:#fb7185;
+    --glass: rgba(255,255,255,0.03);
+    --radius:12px;
+    --max-width:900px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background:linear-gradient(180deg,#071028 0%, #071a2a 60%);
+    color:#e6eef6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+  }
+
+  .container{
+    width:100%;
+    max-width:var(--max-width);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:0;
+  }
+
+  .quiz{
+    padding:28px;
+    min-height:520px;
+  }
+
+  header.quiz-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .logo{
+    width:48px;height:48px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#04263b;
+    box-shadow:0 6px 18px rgba(96,165,250,0.12), inset 0 -6px 12px rgba(255,255,255,0.06);
+  }
+  .title{
+    line-height:1;
+  }
+  .title h1{font-size:16px;margin:0;font-weight:700}
+  .title p{margin:0;font-size:12px;color:var(--muted)}
+
+  .controls{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .btn{
+    background:transparent;border:1px solid rgba(255,255,255,0.06);
+    color:var(--accent);padding:8px 12px;border-radius:10px;font-weight:600;
+    cursor:pointer;transition:all .18s;backdrop-filter: blur(4px);
+  }
+  .btn.secondary{color:var(--accent-2)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(2,6,23,0.5)}
+
+  .progress{
+    height:10px;background:var(--glass);border-radius:999px;overflow:hidden;margin-top:14px;
+  }
+  .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s ease}
+
+  .card{
+    margin-top:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.03);
+  }
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .q-number{font-weight:700;color:var(--accent-2)}
+  .q-type{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02)}
+
+  .q-text{font-size:18px;margin:6px 0 14px}
+
+  .options{display:grid;gap:10px}
+  .option{
+    display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+    background:rgba(255,255,255,0.01);cursor:pointer;transition:all .14s;
+  }
+  .option:hover{transform:translateY(-3px)}
+  .option input{accent-color:var(--accent)}
+  .option .label{font-weight:600}
+
+  .actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+  .nav{display:flex;gap:8px}
+  .small{font-size:13px;color:var(--muted)}
+
+  .panel{
+    padding:22px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-left:1px solid rgba(255,255,255,0.02);
+    min-width:260px;
+  }
+  .panel h3{margin:0 0 12px}
+  .summary{
+    display:grid;gap:12px;
+  }
+  .stat{
+    display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);
+  }
+  .stat strong{font-size:18px}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:13px;color:var(--muted);cursor:pointer}
+
+  .feedback{
+    margin-top:14px;padding:12px;border-radius:10px;background:rgba(0,0,0,0.25);color:var(--muted);font-size:14px;
+  }
+  .feedback.correct{border-left:4px solid var(--accent);color:#dffbf0}
+  .feedback.wrong{border-left:4px solid var(--danger);color:#ffdbe0}
+
+  footer.attribution{padding:12px;text-align:center;color:var(--muted);font-size:13px}
+
+  .result{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.8));backdrop-filter:blur(4px);z-index:1000;
+  }
+  .result.show{display:flex}
+  .result-card{background:linear-gradient(180deg,#071428,#071a2a);padding:28px;border-radius:14px;max-width:520px;width:92%;text-align:center;border:1px solid rgba(255,255,255,0.04)}
+  .score{font-size:48px;font-weight:800;color:var(--accent);margin:6px 0}
+  .result p{color:var(--muted);margin:8px 0 18px}
+
+  @media (max-width:980px){
+    .container{grid-template-columns:1fr; padding-bottom:18px}
+    .panel{order:2;border-left:none;border-top:1px solid rgba(255,255,255,0.02)}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <main class="quiz">
+    <header class="quiz-header">
+      <div class="brand">
+        <div class="logo">QA</div>
+        <div class="title">
+          <h1>Quiz : Les disjoncteurs</h1>
+          <p>25 questions — Répondez et obtenez un feedback immédiat</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="restartBtn">Recommencer</button>
+        <button class="btn secondary" id="showAnswersBtn">Afficher réponses</button>
+      </div>
+    </header>
+
+    <div class="progress">
+      <i id="progressBar" style="width:0%"></i>
+    </div>
+
+    <section class="card" id="questionCard">
+    </section>
+
+    <div class="actions">
+      <div class="nav">
+        <button class="btn" id="prevBtn">Précédent</button>
+        <button class="btn" id="nextBtn">Suivant</button>
+      </div>
+      <div>
+        <span class="small">Question <strong id="currentIndex">1</strong>/<strong id="totalCount">25</strong></span>
+      </div>
+    </div>
+
+    <footer class="attribution">Interface moderne — Accessible & responsive</footer>
+  </main>
+
+  <aside class="panel">
+    <h3>Résumé</h3>
+    <div class="summary">
+      <div class="stat">
+        <div>
+          <div class="small">Score</div>
+          <strong id="score">0</strong>
+        </div>
+        <div>
+          <div class="small">Réponses correctes</div>
+          <strong id="correctCount">0</strong>
+        </div>
+      </div>
+
+      <div class="stat">
+        <div>
+          <div class="small">Questions répondues</div>
+          <strong id="answeredCount">0</strong>
+        </div>
+        <div>
+          <div class="small">Restantes</div>
+          <strong id="remainingCount">25</strong>
+        </div>
+      </div>
+
+      <div>
+        <div class="small">Navigation rapide</div>
+        <div class="legend" id="navLegend"></div>
+      </div>
+
+      <div id="feedbackBox" class="feedback" style="display:none"></div>
+    </div>
+  </aside>
+</div>
+
+<div class="result" id="resultModal">
+  <div class="result-card">
+    <h2>Résultat</h2>
+    <div class="score" id="finalScore">0 / 25</div>
+    <p id="resultText">Bravo — voici votre score et quelques conseils.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:12px">
+      <button class="btn" id="closeResult">Fermer</button>
+      <button class="btn secondary" id="retryResult">Recommencer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Encapsulation dans DOMContentLoaded pour garantir que le DOM est chargé
+document.addEventListener('DOMContentLoaded', function() {
+
+const questions = [
+  {
+    id: 1,
+    text: "Le symbole ci-dessous représente celui du disjoncteur magnétothermique.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Exact : ce symbole correspond bien à un disjoncteur magnétothermique.",
+      default: "Non : ce symbole est bien celui d'un disjoncteur magnétothermique."
+    }
+  },
+  {
+    id: 2,
+    text: "Le disjoncteur magnétothermique a aussi pour rôle de protéger les personnes.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["b"],
+    feedback: {
+      b: "Correct : il protège les installations, pas les personnes.",
+      default: "Non : la protection des personnes est assurée par les dispositifs différentiels."
+    }
+  },
+  {
+    id: 3,
+    text: "Le disjoncteur magnétothermique protège les installations électriques contre les surtensions.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["b"],
+    feedback: {
+      b: "Exact : il protège contre les surcharges et les courts-circuits, pas contre les surtensions.",
+      default: "Non : les surtensions nécessitent des parafoudres."
+    }
+  },
+  {
+    id: 4,
+    text: "Le disjoncteur magnétothermique protège contre :",
+    type: "multi",
+    options: {
+      a: "Les court-circuits",
+      b: "Les surcharges",
+      c: "Les baisses de tension",
+      d: "Les surtensions"
+    },
+    correct: ["a", "b"],
+    feedback: {
+      ok: "Correct : il protège contre les surcharges (thermique) et les courts-circuits (magnétique).",
+      ko: "Seules les surcharges et les courts-circuits sont corrects."
+    }
+  },
+  {
+    id: 5,
+    text: "Le disjoncteur magnétothermique peut être utilisé pour séparer le réseau du circuit terminal.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Exact : il peut assurer la fonction de sectionnement.",
+      default: "Non : il peut bien séparer le réseau du circuit terminal."
+    }
+  },
+  {
+    id: 6,
+    text: "Le disjoncteur magnétothermique peut assurer un rôle de commande TOR.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Correct : il peut être utilisé comme commande Tout Ou Rien.",
+      default: "Non : il peut assurer une commande TOR."
+    }
+  },
+  {
+    id: 7,
+    text: "Le pouvoir de coupure d'un appareil de protection correspond à :",
+    type: "single",
+    options: {
+      a: "L'énergie dissipée lors de la coupure",
+      b: "La puissance maximale de l'arc électrique",
+      c: "La plus forte valeur du courant de court-circuit qu'il peut couper",
+      d: "La tension d'arc électrique"
+    },
+    correct: ["c"],
+    feedback: {
+      c: "Exact : c'est la valeur maximale de courant de court-circuit qu'il peut interrompre.",
+      default: "Non : le pouvoir de coupure correspond au courant de court-circuit maximal."
+    }
+  },
+  {
+    id: 8,
+    text: "Pour vérifier si le disjoncteur a un pouvoir de coupure suffisant, il faut :",
+    type: "single",
+    options: {
+      a: "Connaître le courant nominal du récepteur",
+      b: "Vérifier que la tension n'est pas trop élevée",
+      c: "Calculer le dégagement thermique dans le disjoncteur",
+      d: "Calculer la valeur efficace du courant de court-circuit à l'endroit de la protection"
+    },
+    correct: ["d"],
+    feedback: {
+      d: "Exact : on compare Icc au pouvoir de coupure.",
+      default: "Non : seul le courant de court-circuit est pertinent."
+    }
+  },
+  {
+    id: 9,
+    text: "Une fois Icc calculé, le pouvoir de coupure doit être :",
+    type: "single",
+    options: {
+      a: "Inférieur à Icc",
+      b: "Égal à Icc",
+      c: "Supérieur à Icc"
+    },
+    correct: ["c"],
+    feedback: {
+      c: "Correct : le pouvoir de coupure doit être supérieur à Icc.",
+      default: "Non : il doit être supérieur."
+    }
+  },
+  {
+    id: 10,
+    text: "Le pouvoir de coupure d'un disjoncteur s'exprime en :",
+    type: "single",
+    options: {
+      a: "Centaines d'ampères",
+      b: "Milliers d'ampères",
+      c: "Centaines de milliers d'ampères",
+      d: "Millions d'ampères"
+    },
+    correct: ["b"],
+    feedback: {
+      b: "Exact : il est généralement exprimé en kA.",
+      default: "Non : il est exprimé en milliers d'ampères."
+    }
+  },
+  {
+    id: 11,
+    text: "Le pouvoir de coupure d'un disjoncteur est très inférieur à celui d'un coupe-circuit à fusible.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Correct : les coupe-circuits à fusible ont un pouvoir de coupure très élevé.",
+      default: "Non : les fusibles ont un pouvoir de coupure plus élevé."
+    }
+  },
+  {
+    id: 12,
+    text: "Pour choisir un disjoncteur, il faut notamment :",
+    type: "multi",
+    options: {
+      a: "Connaître le courant thermique qui le traverse",
+      b: "Connaître les caractéristiques de la charge",
+      c: "Connaître le schéma de liaison à la terre",
+      d: "Faire des essais sur maquette"
+    },
+    correct: ["b", "c"],
+    feedback: {
+      ok: "Exact : ces deux éléments sont nécessaires.",
+      ko: "Les essais sur maquette ne sont pas nécessaires."
+    }
+  },
+  {
+    id: 13,
+    text: "Les courbes de déclenchement expriment :",
+    type: "single",
+    options: {
+      a: "Le temps de déclenchement en fonction de la valeur efficace du courant de défaut",
+      b: "Le temps de déclenchement en fonction de la valeur crête",
+      c: "Le temps de déclenchement en fonction de la tension limite",
+      d: "Le temps de déclenchement en fonction de la résistance du corps humain"
+    },
+    correct: ["a"],
+    feedback: {
+      a: "Exact : elles relient temps de déclenchement et courant de défaut.",
+      default: "Non : seule la réponse a est correcte."
+    }
+  },
+  {
+    id: 14,
+    text: "Les courbes de déclenchement sont composées d'une partie thermique et d'une partie magnétique.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Correct : thermique (surcharge) et magnétique (court-circuit).",
+      default: "Réponse incorrecte."
+    }
+  },
+  {
+    id: 15,
+    text: "Le déclencheur thermique réagit en millisecondes.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["b"],
+    feedback: {
+      b: "Exact : le thermique réagit lentement (secondes).",
+      default: "Non : le thermique est lent."
+    }
+  },
+  {
+    id: 16,
+    text: "Le déclencheur magnétique réagit en millisecondes.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Correct : le magnétique réagit très rapidement.",
+      default: "Non : le magnétique est rapide."
+    }
+  },
+  {
+    id: 17,
+    text: "La limite entre les courbes thermique et magnétique est appelée « seuil du magnétique ».",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Exact : c'est la définition du seuil magnétique.",
+      default: "Réponse incorrecte."
+    }
+  },
+  {
+    id: 18,
+    text: "Les normes utilisent le seuil du magnétique pour définir les courbes de déclenchement.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Correct : c'est bien ce seuil qui définit les courbes B, C, D, Z.",
+      default: "Réponse incorrecte."
+    }
+  },
+  {
+    id: 19,
+    text: "Pour un disjoncteur courbe B, le seuil magnétique est :",
+    type: "single",
+    options: {
+      a: "3 à 5 × In",
+      b: "5 à 10 × In",
+      c: "10 à 15 × In",
+      d: "Supérieur à 12 × In"
+    },
+    correct: ["a"],
+    feedback: {
+      a: "Exact : courbe B = 3 à 5 In.",
+      default: "Non : courbe B = 3 à 5 In."
+    }
+  },
+  {
+    id: 20,
+    text: "Pour un disjoncteur courbe C, le seuil magnétique est :",
+    type: "single",
+    options: {
+      a: "3 à 5 × In",
+      b: "5 à 10 × In",
+      c: "10 à 15 × In",
+      d: "Supérieur à 12 × In"
+    },
+    correct: ["b"],
+    feedback: {
+      b: "Correct : courbe C = 5 à 10 In.",
+      default: "Non : courbe C = 5 à 10 In."
+    }
+  },
+  {
+    id: 21,
+    text: "Pour un disjoncteur courbe D, le seuil magnétique est :",
+    type: "single",
+    options: {
+      a: "3 à 5 × In",
+      b: "5 à 10 × In",
+      c: "10 à 15 × In",
+      d: "Supérieur à 12 × In"
+    },
+    correct: ["c"],
+    feedback: {
+      c: "Exact : courbe D = 10 à 15 In.",
+      default: "Non : courbe D = 10 à 15 In."
+    }
+  },
+  {
+    id: 22,
+    text: "Pour un disjoncteur courbe Z, le seuil magnétique est :",
+    type: "single",
+    options: {
+      a: "2,4 à 3,6 × In",
+      b: "3 à 5 × In",
+      c: "5 à 10 × In",
+      d: "10 à 15 × In"
+    },
+    correct: ["a"],
+    feedback: {
+      a: "Exact : la courbe Z est très sensible (2,4 à 3,6 In).",
+      default: "Non : courbe Z = 2,4 à 3,6 In."
+    }
+  },
+  {
+    id: 23,
+    text: "Les courbes de déclenchement données par les constructeurs comprennent deux courbes thermiques et deux courbes magnétiques.",
+    type: "single",
+    options: { a: "Vrai", b: "Faux" },
+    correct: ["a"],
+    feedback: {
+      a: "Correct : cela permet de définir les zones de certitude et d'incertitude.",
+      default: "Non : il y a bien deux courbes de chaque type."
+    }
+  },
+  {
+    id: 24,
+    text: "L'utilité d'avoir deux courbes thermiques et deux courbes magnétiques est :",
+    type: "single",
+    options: {
+      a: "Doubler le nombre de déclencheurs pour la sécurité",
+      b: "Définir une zone d'incertitude sur le déclenchement",
+      c: "Définir une zone de certitude sur le déclenchement",
+      d: "Définir une zone de certitude sur le non-déclenchement"
+    },
+    correct: ["b"],
+    feedback: {
+      b: "Exact : les deux courbes définissent une zone d'incertitude.",
+      default: "Non : elles définissent une zone d'incertitude."
+    }
+  },
+  {
+    id: 25,
+    text: "Une fois la valeur du courant de défaut connue, les courbes de déclenchement permettent de connaître :",
+    type: "single",
+    options: {
+      a: "Le temps de déclenchement du disjoncteur",
+      b: "L'intervalle de temps de déclenchement du disjoncteur"
+    },
+    correct: ["b"],
+    feedback: {
+      b: "Correct : les courbes donnent une plage, pas une valeur unique.",
+      default: "Non : les courbes donnent un intervalle."
+    }
+  }
+];
+
+let state = { index: 0, answers: {}, revealed: false };
+
+const el = (sel) => document.querySelector(sel);
+
+function renderQuestion() {
+  const q = questions[state.index];
+  const card = el('#questionCard');
+  card.innerHTML = '';
+
+  const meta = document.createElement('div');
+  meta.className = 'q-meta';
+  meta.innerHTML = `<div class="q-number">Q${state.index+1} — ID ${q.id}</div><div class="q-type">${q.type === 'multi' ? 'Choix multiple' : 'Choix unique'}</div>`;
+  card.appendChild(meta);
+
+  const qtext = document.createElement('div');
+  qtext.className = 'q-text';
+  qtext.textContent = q.text;
+  card.appendChild(qtext);
+
+  const optionsWrap = document.createElement('div');
+  optionsWrap.className = 'options';
+  const selected = state.answers[q.id] || [];
+
+  for (const [key, desc] of Object.entries(q.options)) {
+    const opt = document.createElement('label');
+    opt.className = 'option';
+
+    const input = document.createElement('input');
+    input.type = q.type === 'multi' ? 'checkbox' : 'radio';
+    input.name = 'opt';
+    input.value = key;
+    input.checked = selected.includes(key);
+    input.addEventListener('change', (e) => {
+      handleSelect(q.id, key, e.target.checked, q.type);
+    });
+
+    const labelWrap = document.createElement('div');
+    const labelTitle = document.createElement('div');
+    labelTitle.className = 'label';
+    labelTitle.textContent = key.toUpperCase() + '. ' + desc;
+    labelWrap.appendChild(labelTitle);
+
+    opt.appendChild(input);
+    opt.appendChild(labelWrap);
+    optionsWrap.appendChild(opt);
+  }
+
+  card.appendChild(optionsWrap);
+
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  const left = document.createElement('div');
+  left.style.display = 'flex';
+  left.style.gap = '8px';
+
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn';
+  checkBtn.textContent = 'Valider';
+  checkBtn.addEventListener('click', () => validateAnswer(q));
+
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'btn secondary';
+  clearBtn.textContent = 'Effacer';
+  clearBtn.addEventListener('click', () => {
+    state.answers[q.id] = [];
+    renderQuestion();
+    updateSummary();
+  });
+
+  left.appendChild(checkBtn);
+  left.appendChild(clearBtn);
+  actions.appendChild(left);
+  card.appendChild(actions);
+
+  const fbBox = el('#feedbackBox');
+  fbBox.style.display = 'none';
+  fbBox.className = 'feedback';
+  if (state.answers[q.id] && state.answers[q.id].__validated) {
+    const validated = state.answers[q.id].__validated;
+    const isCorrect = validated.correct;
+    fbBox.style.display = 'block';
+    fbBox.classList.toggle('correct', isCorrect);
+    fbBox.classList.toggle('wrong', !isCorrect);
+    fbBox.innerHTML = `<strong>${isCorrect ? 'Bonne réponse' : 'Réponse incorrecte'}</strong><div style="margin-top:8px">${validated.message}</div>`;
+  }
+
+  updateProgress();
+}
+
+function handleSelect(qid, key, checked, type) {
+  if (!state.answers[qid]) state.answers[qid] = [];
+  if (state.answers[qid].__validated) delete state.answers[qid].__validated;
+
+  if (type === 'multi') {
+    if (checked) {
+      if (!state.answers[qid].includes(key)) state.answers[qid].push(key);
+    } else {
+      state.answers[qid] = state.answers[qid].filter(k => k !== key);
+    }
+  } else {
+    state.answers[qid] = [key];
+  }
+  updateSummary();
+}
+
+function arraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+  const sa = [...a].sort(), sb = [...b].sort();
+  return sa.every((v, i) => v === sb[i]);
+}
+
+function validateAnswer(q) {
+  const sel = state.answers[q.id] || [];
+  if (!state.answers[q.id]) state.answers[q.id] = [];
+
+  const isCorrect = arraysEqual(sel, q.correct);
+
+  let message = '';
+  if (q.type === 'single') {
+    if (isCorrect) {
+      const key = q.correct[0];
+      message = q.feedback[key] || q.feedback.default || 'Bonne réponse.';
+    } else {
+      message = q.feedback.default || 'Réponse incorrecte.';
+    }
+  } else {
+    message = isCorrect ? (q.feedback.ok || 'Bonne réponse.') : (q.feedback.ko || 'Réponse incorrecte.');
+  }
+
+  state.answers[q.id].__validated = { correct: isCorrect, message };
+  renderQuestion();
+  updateSummary();
+}
+
+function goTo(index) {
+  state.index = Math.max(0, Math.min(index, questions.length - 1));
+  el('#currentIndex').textContent = state.index + 1;
+  renderQuestion();
+}
+
+function updateSummary() {
+  const total = questions.length;
+  const answered = Object.keys(state.answers).filter(k => {
+    const v = state.answers[k];
+    return Array.isArray(v) && v.length > 0;
+  }).length;
+  const validatedCount = Object.keys(state.answers).filter(k =>
+    state.answers[k] && state.answers[k].__validated && state.answers[k].__validated.correct
+  ).length;
+
+  el('#score').textContent = validatedCount;
+  el('#correctCount').textContent = validatedCount;
+  el('#answeredCount').textContent = answered;
+  el('#remainingCount').textContent = total - answered;
+
+  const legend = el('#navLegend');
+  legend.innerHTML = '';
+  questions.forEach((q, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.textContent = i + 1;
+    const answeredFlag = state.answers[q.id] && state.answers[q.id].length > 0;
+    const validated = state.answers[q.id] && state.answers[q.id].__validated;
+    if (validated) {
+      btn.style.background = validated.correct ? 'linear-gradient(90deg,var(--accent),var(--accent-2))' : 'rgba(251,113,133,0.12)';
+      btn.style.color = validated.correct ? '#04263b' : '#ffdbe0';
+    } else if (answeredFlag) {
+      btn.style.background = 'rgba(96,165,250,0.08)';
+      btn.style.color = 'var(--accent-2)';
+    }
+    btn.addEventListener('click', () => goTo(i));
+    legend.appendChild(btn);
+  });
+
+  const allAnswered = questions.every(q => state.answers[q.id] && state.answers[q.id].length > 0 && state.answers[q.id].__validated);
+  if (allAnswered) showResult();
+}
+
+function updateProgress() {
+  const pct = Math.round(((state.index + 1) / questions.length) * 100);
+  el('#progressBar').style.width = pct + '%';
+  el('#totalCount').textContent = questions.length;
+  el('#currentIndex').textContent = state.index + 1;
+}
+
+function showResult() {
+  const correct = Object.keys(state.answers).filter(k =>
+    state.answers[k] && state.answers[k].__validated && state.answers[k].__validated.correct
+  ).length;
+  const total = questions.length;
+  el('#finalScore').textContent = `${correct} / ${total}`;
+  const pct = Math.round((correct / total) * 100);
+  let text = '';
+  if (pct === 100) text = 'Parfait — maîtrise complète.';
+  else if (pct >= 80) text = 'Très bien — quelques révisions suffisent.';
+  else if (pct >= 50) text = 'Moyen — révisez les points clés.';
+  else text = 'À améliorer — reprenez les notions fondamentales.';
+  el('#resultText').textContent = text;
+  el('#resultModal').classList.add('show');
+}
+
+el('#prevBtn').addEventListener('click', () => goTo(state.index - 1));
+el('#nextBtn').addEventListener('click', () => goTo(state.index + 1));
+el('#restartBtn').addEventListener('click', () => {
+  if (confirm('Recommencer le quiz ? Toutes les réponses seront perdues.')) {
+    state = { index: 0, answers: {}, revealed: false };
+    goTo(0);
+    updateSummary();
+  }
+});
+el('#showAnswersBtn').addEventListener('click', () => {
+  if (confirm('Afficher toutes les bonnes réponses ?')) {
+    questions.forEach(q => {
+      const keys = q.correct;
+      let message = q.type === 'single' ?
+        (q.feedback[keys[0]] || q.feedback.default || 'Réponse correcte : ' + keys[0]) :
+        (q.feedback.ok || 'Réponses correctes : ' + keys.join(', '));
+      state.answers[q.id] = [...keys];
+      state.answers[q.id].__validated = { correct: true, message };
+    });
+    updateSummary();
+    renderQuestion();
+  }
+});
+el('#closeResult').addEventListener('click', () => el('#resultModal').classList.remove('show'));
+el('#retryResult').addEventListener('click', () => {
+  el('#resultModal').classList.remove('show');
+  state = { index: 0, answers: {}, revealed: false };
+  goTo(0);
+  updateSummary();
+});
+
+// Initialisation
+goTo(0);
+updateSummary();
+
+}); // Fin DOMContentLoaded
+</script>
+
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Quiz Schéma de Liaison TT</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #071028 0%, #071a2a 60%);
+    color: #e6eef6;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  h1 { margin-bottom: 10px; }
+  .subtitle { color: #9aa4b2; margin-bottom: 20px; }
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6ee7b7, #60a5fa);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .question-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+  }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .question-number { color: #60a5fa; font-weight: bold; }
+  .question-type {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: #9aa4b2;
+  }
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option:hover {
+    background: rgba(255,255,255,0.05);
+  }
+  .option input {
+    width: 18px;
+    height: 18px;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: #6ee7b7;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn:hover {
+    background: rgba(110,231,183,0.1);
+  }
+  .btn-secondary {
+    color: #60a5fa;
+  }
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .feedback {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+  }
+  .feedback.correct {
+    border-left: 4px solid #6ee7b7;
+    background: rgba(110,231,183,0.1);
+  }
+  .feedback.wrong {
+    border-left: 4px solid #fb7185;
+    background: rgba(251,113,133,0.1);
+  }
+  .summary {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .summary h2 {
+    margin-bottom: 15px;
+  }
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal.show {
+    display: flex;
+  }
+  .modal-content {
+    background: #071428;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 500px;
+  }
+  .final-score {
+    font-size: 48px;
+    color: #6ee7b7;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  .note {
+    background: rgba(96,165,250,0.1);
+    border-left: 4px solid #60a5fa;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #9aa4b2;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔌 Quiz : Schéma de Liaison TT</h1>
+  <p class="subtitle">28 questions — Testez vos connaissances sur le schéma TT</p>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <div class="question-card" id="questionCard">
+    <!-- Question will be inserted here -->
+  </div>
+
+  <div class="navigation">
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← Précédent</button>
+      <button class="btn" id="nextBtn">Suivant →</button>
+    </div>
+    <div>
+      <span>Question <strong id="currentNum">1</strong> / <strong>28</strong></span>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="restartBtn">🔄 Recommencer</button>
+    <button class="btn btn-secondary" id="showAnswersBtn">👁️ Afficher réponses</button>
+  </div>
+
+  <div class="summary">
+    <h2>Résumé</h2>
+    <div class="stat">
+      <span>Score</span>
+      <strong id="scoreDisplay">0 / 28</strong>
+    </div>
+    <div class="stat">
+      <span>Réponses correctes</span>
+      <strong id="correctDisplay">0</strong>
+    </div>
+    <div class="stat">
+      <span>Questions répondues</span>
+      <strong id="answeredDisplay">0</strong>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h2>Résultat final</h2>
+    <div class="final-score" id="finalScore">0 / 28</div>
+    <p id="resultMessage"></p>
+    <div style="margin-top: 20px;">
+      <button class="btn" id="closeModal">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  { 
+    id: 1, 
+    text: "Les lettres TT de ce schéma de liaison signifient que :", 
+    type: "single",
+    options: { 
+      a: "Les appareils sont reliés à la terre", 
+      b: "Le neutre du secondaire du transfo et les carcasses des récepteurs sont reliés séparément à la terre", 
+      c: "Le neutre du primaire du transfo et son secondaire sont reliés ensembles à la même prise de terre", 
+      d: "Seuls les récepteurs doivent disposer d'une liaison à la terre" 
+    }, 
+    correct: "b" 
+  },
+  { 
+    id: 2, 
+    text: "La représentation schématique du schéma de liaison TT est correctement illustrée par la figure. (Note : Image non disponible dans cette version)", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a",
+    note: "Question visuelle - Image non disponible" 
+  },
+  { 
+    id: 3, 
+    text: "La représentation schématique du schéma de liaison TT est correctement illustrée par la figure. (Note : Image non disponible dans cette version)", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b",
+    note: "Question visuelle - Image non disponible" 
+  },
+  { 
+    id: 4, 
+    text: "Un défaut d'isolement, c'est lorsqu'une personne se trouve accidentellement en contact avec le circuit électrique.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  },
+  { 
+    id: 5, 
+    text: "Un défaut d'isolement peut se produire entre une phase et la carcasse métallique du récepteur.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 6, 
+    text: "De quoi dépend la valeur du courant de défaut en cas de défaut d'isolement ?", 
+    type: "single",
+    options: { 
+      a: "De la valeur de la résistance de contact", 
+      b: "De la tension limite de sécurité", 
+      c: "De la valeur des prises de terre du neutre et des récepteurs", 
+      d: "De la sensibilité du relais thermique" 
+    }, 
+    correct: "c" 
+  },
+  { 
+    id: 7, 
+    text: "La tension de contact correspond à la différence de potentiel entre la carcasse d'un récepteur et la terre.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 8, 
+    text: "La tension de contact n'est jamais dangereuse en schéma de liaison TT.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  },
+  { 
+    id: 9, 
+    text: "La tension limite de sécurité UL permet de dire si une tension de contact est dangereuse ou pas.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 10, 
+    text: "La tension limite de sécurité pour une alimentation en courant alternatif est de 50 V pour :", 
+    type: "single",
+    options: { 
+      a: "Les locaux secs", 
+      b: "Les locaux humides et mouillés", 
+      c: "Les locaux immergés" 
+    }, 
+    correct: "a" 
+  },
+  { 
+    id: 11, 
+    text: "La tension limite de sécurité pour une alimentation en courant alternatif est de 12 V pour :", 
+    type: "single",
+    options: { 
+      a: "Les locaux secs", 
+      b: "Les locaux humides et mouillés", 
+      c: "Les locaux immergés" 
+    }, 
+    correct: "c" 
+  },
+  { 
+    id: 12, 
+    text: "La tension limite de sécurité pour une alimentation en courant alternatif est de 25 V pour :", 
+    type: "single",
+    options: { 
+      a: "Les locaux secs", 
+      b: "Les locaux humides et mouillés", 
+      c: "Les locaux immergés" 
+    }, 
+    correct: "b" 
+  },
+  { 
+    id: 13, 
+    text: "Pour affirmer qu'une tension de contact Uc est dangereuse, il faut qu'elle soit :", 
+    type: "single",
+    options: { 
+      a: "Supérieure à UL", 
+      b: "Inférieure à UL", 
+      c: "Égale à UL" 
+    }, 
+    correct: "a" 
+  },
+  { 
+    id: 14, 
+    text: "En schéma TT, quelle protection faut-il prévoir dans le cas d'un contact direct ?", 
+    type: "multi",
+    options: { 
+      a: "Un disjoncteur différentiel de 500 mA", 
+      b: "Un obstacle", 
+      c: "L'éloignement des parties actives", 
+      d: "L'utilisation de la TBT (Très Basse Tension)", 
+      e: "Un fusible à fusion rapide" 
+    }, 
+    correct: ["b", "c", "d"] 
+  },
+  { 
+    id: 15, 
+    text: "En schéma TT, quelle protection faut-il prévoir dans le cas d'un contact indirect ?", 
+    type: "multi",
+    options: { 
+      a: "Un disjoncteur magnétothermique", 
+      b: "Un dispositif différentiel de sensibilité suffisante", 
+      c: "Une prise de terre" 
+    }, 
+    correct: ["b", "c"] 
+  },
+  { 
+    id: 16, 
+    text: "Le principe d'un Dispositif Différentiel à courant Résiduel (DDR) est fondé, en monophasé, sur :", 
+    type: "single",
+    options: { 
+      a: "La comparaison des courants entrant et sortant. Une différence entre ces courants provoque le déclenchement", 
+      b: "La mesure du courant de fuite à la terre. Sa présence provoque le déclenchement", 
+      c: "La mesure permanente du courant dans le récepteur. Sa variation provoque le déclenchement" 
+    }, 
+    correct: "a" 
+  },
+  { 
+    id: 17, 
+    text: "Le principe d'un Dispositif Différentiel à courant Résiduel (DDR) est fondé, en triphasé, sur :", 
+    type: "single",
+    options: { 
+      a: "La détection d'un déphasage entre les courants triphasés", 
+      b: "La détection d'un déséquilibre entre les phases", 
+      c: "L'échauffement d'un bilame qui en se tordant déclenche le différentiel" 
+    }, 
+    correct: "b" 
+  },
+  { 
+    id: 18, 
+    text: "La sensibilité d'un différentiel est choisie en fonction de :", 
+    type: "multi",
+    options: { 
+      a: "La tension limite de sécurité", 
+      b: "De la tension de contact", 
+      c: "De la résistance de la prise de terre du neutre", 
+      d: "De la résistance de la prise de terre des masses", 
+      e: "Du calibre du disjoncteur" 
+    }, 
+    correct: ["a", "d"] 
+  },
+  { 
+    id: 19, 
+    text: "La sensibilité du différentiel doit être inférieure à UL/RA.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 20, 
+    text: "Le DDR déclenche instantanément en 500 millisecondes.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  },
+  { 
+    id: 21, 
+    text: "Le DDR déclenche instantanément en 30 millisecondes.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 22, 
+    text: "La nécessité de la continuité de service (sélectivité) impose au concepteur d'une installation électrique de prévoir une temporisation des DDR en amont par rapport à ceux en aval.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 23, 
+    text: "L'interconnexion des masses et leur mise à la terre est une condition suffisante pour assurer la sécurité des personnes dans un schéma de liaison à la terre TT.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  },
+  { 
+    id: 24, 
+    text: "L'utilisation d'un DDR suffit à assurer la sécurité des personnes dans une installation équipée suivant un schéma de liaison à la terre TT.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  },
+  { 
+    id: 25, 
+    text: "Lorsque la résistance des prises de terre tend à augmenter après quelques mois, cela va dans le sens de la sécurité des personnes dans l'installation électrique. On admet évidemment que le DDR est correctement réglé et que toutes les masses des récepteurs sont interconnectées.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  },
+  { 
+    id: 26, 
+    text: "Une vérification périodique de la valeur des prises de terre s'impose pour conserver une bonne protection différentielle.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 27, 
+    text: "D'après la norme, le courant limite pouvant provoquer l'incandescence du point de contact de 2 pièces conductrices est de 500 mA. C'est pour cette raison que les DDR placés dans les locaux à risque d'incendie ont tous une sensibilité inférieure à 300 mA.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "a" 
+  },
+  { 
+    id: 28, 
+    text: "Pour les récepteurs mobiles, la sensibilité du DDR doit être de 10 mA de manière à assurer la protection des personnes même en cas de rupture du conducteur de protection.", 
+    type: "single",
+    options: { a: "Vrai", b: "Faux" }, 
+    correct: "b" 
+  }
+];
+
+let currentIndex = 0;
+let userAnswers = {};
+
+function renderQuestion() {
+  const q = questions[currentIndex];
+  const card = document.getElementById('questionCard');
+  
+  let html = `
+    <div class="question-header">
+      <div class="question-number">Question ${currentIndex + 1} / 28</div>
+      <div class="question-type">${q.type === 'multi' ? 'Choix multiple' : 'Choix unique'}</div>
+    </div>
+  `;
+  
+  if (q.note) {
+    html += `<div class="note">💡 ${q.note}</div>`;
+  }
+  
+  html += `<div class="question-text">${q.text}</div><div class="options">`;
+  
+  for (const [key, text] of Object.entries(q.options)) {
+    const inputType = q.type === 'multi' ? 'checkbox' : 'radio';
+    let checked = '';
+    
+    if (q.type === 'multi') {
+      checked = userAnswers[q.id] && userAnswers[q.id].includes(key) ? 'checked' : '';
+    } else {
+      checked = userAnswers[q.id] === key ? 'checked' : '';
+    }
+    
+    html += `
+      <label class="option">
+        <input type="${inputType}" name="q${q.id}" value="${key}" ${checked} 
+          onchange="handleAnswer(${q.id}, '${key}', this.checked, '${q.type}')">
+        <span>${key.toUpperCase()}. ${text}</span>
+      </label>
+    `;
+  }
+  
+  html += `
+    </div>
+    <div class="buttons">
+      <button class="btn" onclick="validateQuestion()">✓ Valider</button>
+      <button class="btn btn-secondary" onclick="clearAnswer()">✗ Effacer</button>
+    </div>
+  `;
+  
+  if (userAnswers[q.id] && userAnswers[q.id].validated) {
+    const v = userAnswers[q.id].validated;
+    const correctAnswer = Array.isArray(q.correct) ? 
+      q.correct.map(k => k.toUpperCase()).join(', ') : 
+      q.correct.toUpperCase();
+    
+    html += `
+      <div class="feedback ${v.correct ? 'correct' : 'wrong'}">
+        <strong>${v.correct ? '✓ Bonne réponse !' : '✗ Réponse incorrecte'}</strong>
+        <p>La bonne réponse est : ${correctAnswer}</p>
+      </div>
+    `;
+  }
+  
+  card.innerHTML = html;
+  document.getElementById('currentNum').textContent = currentIndex + 1;
+  updateProgress();
+  updateSummary();
+}
+
+function handleAnswer(qid, key, checked, type) {
+  if (type === 'multi') {
+    if (!userAnswers[qid]) userAnswers[qid] = [];
+    if (userAnswers[qid].validated) delete userAnswers[qid].validated;
+    
+    if (checked) {
+      if (!userAnswers[qid].includes(key)) userAnswers[qid].push(key);
+    } else {
+      userAnswers[qid] = userAnswers[qid].filter(k => k !== key);
+    }
+  } else {
+    if (userAnswers[qid] && userAnswers[qid].validated) {
+      delete userAnswers[qid].validated;
+    }
+    userAnswers[qid] = key;
+  }
+  updateSummary();
+}
+
+function validateQuestion() {
+  const q = questions[currentIndex];
+  let selected = userAnswers[q.id];
+  
+  if (!selected || (Array.isArray(selected) && selected.length === 0)) {
+    alert('Veuillez sélectionner une réponse avant de valider.');
+    return;
+  }
+  
+  let isCorrect = false;
+  
+  if (q.type === 'multi') {
+    const correctSorted = [...q.correct].sort().join(',');
+    const selectedSorted = [...selected].sort().join(',');
+    isCorrect = correctSorted === selectedSorted;
+  } else {
+    isCorrect = selected === q.correct;
+  }
+  
+  if (!userAnswers[q.id]) userAnswers[q.id] = selected;
+  if (typeof userAnswers[q.id] === 'string') {
+    const temp = userAnswers[q.id];
+    userAnswers[q.id] = { answer: temp };
+  }
+  
+  userAnswers[q.id].validated = { correct: isCorrect };
+  
+  renderQuestion();
+  checkCompletion();
+}
+
+function clearAnswer() {
+  const q = questions[currentIndex];
+  delete userAnswers[q.id];
+  renderQuestion();
+}
+
+function updateProgress() {
+  const progress = ((currentIndex + 1) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function updateSummary() {
+  const answered = Object.keys(userAnswers).filter(k => {
+    const ans = userAnswers[k];
+    if (Array.isArray(ans)) return ans.length > 0;
+    return ans && (typeof ans === 'string' || ans.answer);
+  }).length;
+  
+  const correct = Object.keys(userAnswers).filter(k => {
+    const ans = userAnswers[k];
+    return ans && ans.validated && ans.validated.correct;
+  }).length;
+  
+  document.getElementById('scoreDisplay').textContent = `${correct} / 28`;
+  document.getElementById('correctDisplay').textContent = correct;
+  document.getElementById('answeredDisplay').textContent = answered;
+}
+
+function checkCompletion() {
+  const allValidated = questions.every(q => {
+    const ans = userAnswers[q.id];
+    return ans && ans.validated;
+  });
+  
+  if (allValidated) {
+    setTimeout(showResults, 1000);
+  }
+}
+
+function showResults() {
+  const correct = Object.keys(userAnswers).filter(k => {
+    const ans = userAnswers[k];
+    return ans && ans.validated && ans.validated.correct;
+  }).length;
+  
+  const pct = Math.round((correct / 28) * 100);
+  
+  document.getElementById('finalScore').textContent = `${correct} / 28`;
+  
+  let msg = '';
+  if (pct === 100) msg = '🎉 Parfait ! Maîtrise complète du schéma TT.';
+  else if (pct >= 80) msg = '👍 Très bien ! Vous maîtrisez le schéma TT.';
+  else if (pct >= 60) msg = '📚 Moyen. Révisez les concepts du schéma TT.';
+  else msg = '⚠️ À améliorer. Le schéma TT nécessite plus d\'étude.';
+  
+  document.getElementById('resultMessage').textContent = msg;
+  document.getElementById('resultModal').classList.add('show');
+}
+
+document.getElementById('prevBtn').onclick = () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+};
+
+document.getElementById('restartBtn').onclick = () => {
+  if (confirm('Recommencer le quiz ? Toutes les réponses seront perdues.')) {
+    currentIndex = 0;
+    userAnswers = {};
+    renderQuestion();
+  }
+};
+
+document.getElementById('showAnswersBtn').onclick = () => {
+  if (confirm('Afficher toutes les bonnes réponses ?')) {
+    questions.forEach(q => {
+      userAnswers[q.id] = {
+        answer: q.correct,
+        validated: { correct: true }
+      };
+    });
+    renderQuestion();
+  }
+};
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('resultModal').classList.remove('show');
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

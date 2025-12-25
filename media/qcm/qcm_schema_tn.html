@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>QCM - Schéma de liaison TN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --accent-strong: #22c55e;
+      --danger: #f97373;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --radius: 0.9rem;
+      --shadow: 0 18px 45px rgba(0,0,0,0.65);
+      --transition: 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 45%, #020617 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    .title {
+      font-size: clamp(1.7rem, 2vw + 1rem, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title span.logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 0.8rem;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #4f46e5 100%);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.6);
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #0b1120;
+    }
+
+    .subtitle {
+      margin-top: 0.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.78rem;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .pill-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
+    }
+
+    main {
+      background: radial-gradient(circle at top left, #0f172a 0, #020617 55%);
+      border-radius: calc(var(--radius) + 0.6rem);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: var(--shadow);
+      padding: 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 70%);
+      top: -140px;
+      right: -140px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .toolbar-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+    }
+
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      backdrop-filter: blur(16px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #022c22;
+      font-weight: 600;
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.55);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.85);
+      border-color: rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #22c55e, #059669);
+      border-color: rgba(34, 197, 94, 1);
+    }
+
+    .btn-icon {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+    }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .score-pill strong {
+      color: var(--accent-strong);
+      font-size: 1rem;
+    }
+
+    .questions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .question-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.3), rgba(15, 23, 42, 0.9));
+      padding: 0.85rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.12), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+    }
+
+    .question-card:hover::before {
+      opacity: 1;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .q-label {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--muted);
+    }
+
+    .q-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-top: 0.15rem;
+    }
+
+    .options {
+      display: grid;
+      gap: 0.45rem;
+      margin-top: 0.3rem;
+    }
+
+    .option {
+      position: relative;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(30, 64, 175, 0.7);
+      background: rgba(15, 23, 42, 0.85);
+      padding: 0.4rem 0.6rem 0.4rem 2.2rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      min-height: 2.1rem;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .option:hover {
+      border-color: rgba(56, 189, 248, 0.9);
+      background: rgba(15, 23, 42, 0.98);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.85);
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .option-label {
+      position: absolute;
+      left: 0.6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.9);
+      transition: border-color var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+
+    .option-text {
+      flex: 1;
+    }
+
+    .option.correct {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(22, 163, 74, 0.12);
+    }
+
+    .option.correct .option-label {
+      border-color: rgba(34, 197, 94, 1);
+      background: rgba(22, 163, 74, 0.8);
+      color: #022c22;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
+    }
+
+    .option.incorrect {
+      border-color: rgba(239, 68, 68, 0.9);
+      background: rgba(127, 29, 29, 0.12);
+    }
+
+    .option.incorrect .option-label {
+      border-color: rgba(239, 68, 68, 1);
+      background: rgba(127, 29, 29, 0.8);
+      color: #fef2f2;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+    }
+
+    .option.disabled {
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .feedback {
+      margin-top: 0.4rem;
+      font-size: 0.83rem;
+      padding: 0.45rem 0.55rem;
+      border-radius: 0.6rem;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      display: none;
+    }
+
+    .feedback.correct {
+      border-color: rgba(34, 197, 94, 0.8);
+      background: rgba(22, 163, 74, 0.1);
+      color: #bbf7d0;
+    }
+
+    .feedback.incorrect {
+      border-color: rgba(239, 68, 68, 0.8);
+      background: rgba(127, 29, 29, 0.2);
+      color: #fecaca;
+    }
+
+    .feedback strong {
+      font-weight: 600;
+    }
+
+    .footer-info {
+      margin-top: 1.2rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(30, 64, 175, 0.6);
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.7rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-info a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-info a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      main {
+        padding: 0.9rem;
+      }
+
+      .question-card {
+        padding: 0.75rem 0.7rem;
+      }
+
+      .option {
+        padding-left: 2rem;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar-left,
+      .toolbar-right {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="title">
+      <span class="logo">TN</span>
+      <span>QCM – Schéma de liaison TN</span>
+    </div>
+    <p class="subtitle">
+      Test interactif sur les régimes de neutre en schéma TN, TN-C et TN-S, la protection des personnes et la continuité de service.
+    </p>
+    <div class="chip-row">
+      <span class="pill"><span class="pill-dot"></span> SLT – Terminale</span>
+      <span class="chip">Régime de neutre</span>
+      <span class="chip">Sécurité des personnes</span>
+      <span class="chip">Distribution BT</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="glow"></div>
+
+    <section class="toolbar">
+      <div class="toolbar-left">
+        <button class="btn btn-primary" id="btnCheckAll">
+          <span class="btn-icon">✓</span>
+          Vérifier toutes les réponses
+        </button>
+        <button class="btn" id="btnReset">
+          <span class="btn-icon">↺</span>
+          Réinitialiser le QCM
+        </button>
+      </div>
+      <div class="toolbar-right">
+        <div class="score-pill">
+          Score : <strong id="scoreValue">0 / 19</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <!-- Les questions seront injectées en JS -->
+    </section>
+
+    <div class="footer-info">
+      <span>Mode d’emploi : cliquer sur une proposition pour chaque question puis afficher la correction détaillée.</span>
+      <span>Source pédagogique : QCM « Schéma de liaison TN » (adapté au format web).</span>
+    </div>
+  </main>
+</div>
+
+<script>
+  const questionsData = [
+    {
+      id: 1,
+      text: "Les lettres du schéma de liaison TN à la terre signifient que :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Le neutre du secondaire du transformateur d'alimentation n'est pas relié.", correct: false },
+        { key: "b", text: "Le neutre du secondaire du transformateur d'alimentation est relié à une prise de terre.", correct: true },
+        { key: "c", text: "Les masses des récepteurs sont reliées entre elles et mises à la terre.", correct: true },
+        { key: "d", text: "Les masses des récepteurs sont reliées entre elles et reliées au conducteur de neutre.", correct: false },
+        { key: "e", text: "Les masses des récepteurs sont reliées entre elles et reliées au conducteur de protection.", correct: true }
+      ],
+      explanation:
+        "Dans un schéma TN, le neutre de la source est directement relié à la terre, et les masses sont reliées à ce point par l’intermédiaire d’un conducteur de protection (PE)."
+    },
+    {
+      id: 2,
+      text: "La troisième lettre du schéma de liaison TN à la terre (TN-C ou TN-S) donne des précisions sur :",
+      type: "single",
+      options: [
+        { key: "a", text: "L'état du conducteur de protection par rapport au neutre distribué.", correct: true },
+        { key: "b", text: "L'état de la prise de terre du neutre.", correct: false },
+        { key: "c", text: "L'état de connexion ou de séparation des masses métalliques.", correct: false }
+      ],
+      explanation:
+        "La troisième lettre indique si le neutre et le conducteur de protection sont confondus (C) ou séparés (S)."
+    },
+    {
+      id: 3,
+      text: "La lettre C du schéma de liaison TN à la terre, soit TN-C, signifie que :",
+      type: "single",
+      options: [
+        { key: "a", text: "Le neutre et le conducteur de protection sont connexes.", correct: false },
+        { key: "b", text: "Le neutre et le conducteur de protection sont confondus.", correct: true },
+        { key: "c", text: "Le schéma de liaison est corrigé de ses défauts de conception.", correct: false }
+      ],
+      explanation:
+        "En TN-C, un seul conducteur PEN remplit à la fois le rôle de neutre et de conducteur de protection."
+    },
+    {
+      id: 4,
+      text: "La lettre S du schéma de liaison TN à la terre, soit TN-S, signifie que :",
+      type: "single",
+      options: [
+        { key: "a", text: "Le neutre et le conducteur de protection sont deux conducteurs distincts ou séparés.", correct: true },
+        { key: "b", text: "Le neutre et le conducteur de protection sont solidaires.", correct: false },
+        { key: "c", text: "Le schéma de liaison est sûr.", correct: false }
+      ],
+      explanation:
+        "En TN-S, le neutre (N) et le conducteur de protection (PE) sont physiquement séparés sur toute la longueur de l’installation."
+    },
+    {
+      id: 5,
+      text: "Le schéma de liaison à la terre représenté sur l’image (schéma type TN) est bien un schéma TN.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "Le schéma montre le neutre relié à la terre et les masses reliées au point neutre par un conducteur de protection, caractéristique d’un régime TN."
+    },
+    {
+      id: 6,
+      text: "Le schéma de liaison à la terre représenté sur l’autre image est bien un schéma TN.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Ce second schéma correspond à un autre régime de neutre (par exemple TT ou IT) et ne présente pas les caractéristiques d’un TN."
+    },
+    {
+      id: 7,
+      text: "Lorsqu'un défaut d'isolement intervient dans un récepteur, il en résulte :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Un courant de fuite à la terre.", correct: true },
+        { key: "b", text: "Une tension de contact dangereuse pour les personnes.", correct: true },
+        { key: "c", text: "Un court-circuit triphasé brutal dans l'installation.", correct: false },
+        { key: "d", text: "Un court-circuit monophasé.", correct: true },
+        { key: "e", text: "Une légère surcharge.", correct: false }
+      ],
+      explanation:
+        "Un défaut d’isolement amène un courant vers la terre, crée une tension de contact et se traduit en régime TN par un court-circuit phase–masse assimilable à un court-circuit monophasé."
+    },
+    {
+      id: 8,
+      text: "La surintensité produite en cas de défaut d'isolement est limitée par :",
+      type: "multi",
+      options: [
+        { key: "a", text: "La résistance des câbles.", correct: true },
+        { key: "b", text: "La résistance de la prise de terre du neutre.", correct: false },
+        { key: "c", text: "La résistance de la prise de terre des masses.", correct: false },
+        { key: "d", text: "La tension de contact.", correct: false },
+        { key: "e", text: "La tension entre phase et neutre qui chute aux bornes du transfo.", correct: false },
+        { key: "f", text: "La résistance du défaut.", correct: true }
+      ],
+      explanation:
+        "Le courant de défaut est principalement limité par l’impédance de la boucle de défaut : résistance des conducteurs et résistance du point de défaut."
+    },
+    {
+      id: 9,
+      text: "La protection des personnes en régime TN est dans tous les cas assurée par :",
+      type: "single",
+      options: [
+        { key: "a", text: "Un dispositif différentiel à courant résiduel (DDR).", correct: false },
+        { key: "b", text: "Des fusibles.", correct: false },
+        { key: "c", text: "Des disjoncteurs magnétothermiques.", correct: false },
+        { key: "d", text: "Les dispositifs de protection contre les surintensités (fusibles ou disjoncteurs).", correct: true }
+      ],
+      explanation:
+        "En régime TN, la protection des personnes est assurée par l’élimination rapide du défaut par les dispositifs de surintensité (fusible ou disjoncteur), si le courant de défaut est suffisant."
+    },
+    {
+      id: 10,
+      text: "Si la protection des personnes par fusibles ou par disjoncteur magnétothermique n'est pas assurée, il est possible d'utiliser un dispositif différentiel si le neutre est séparé du conducteur de protection.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "En TN-S (neutre séparé), on peut ajouter un DDR pour assurer la protection des personnes lorsque la coupure sur surintensité n’est pas suffisante."
+    },
+    {
+      id: 11,
+      text: "Si la protection des personnes par fusibles ou par disjoncteur magnétothermique n'est pas assurée, il est possible d'utiliser un dispositif différentiel si le neutre est confondu avec le conducteur de protection.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "En TN-C, le neutre et le conducteur de protection sont confondus (PEN), un DDR ne doit pas être utilisé sur ce conducteur."
+    },
+    {
+      id: 12,
+      text: "Lorsqu'un conducteur est repéré « PEN », cela signifie que le conducteur de protection et le conducteur de neutre sont confondus : ils ne forment qu'un seul conducteur.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: true },
+        { key: "b", text: "Faux", correct: false }
+      ],
+      explanation:
+        "PEN signifie « Protective Earth and Neutral » : un seul conducteur assure simultanément les fonctions de protection et de neutre."
+    },
+    {
+      id: 13,
+      text: "Lorsque l'installation s'étend sur une large superficie, cela a une influence sur :",
+      type: "multi",
+      options: [
+        { key: "a", text: "La longueur des câbles qui s'en trouve augmentée.", correct: true },
+        { key: "b", text: "La résistance des câbles qui sera plus grande.", correct: true },
+        { key: "c", text: "Sur la tension de contact qui sera plus faible et donc moins dangereuse.", correct: false },
+        { key: "d", text: "Sur le courant de défaut qui sera moins élevé.", correct: true }
+      ],
+      explanation:
+        "Plus l’installation est étendue, plus les câbles sont longs, leur résistance augmente, ce qui réduit le courant de défaut et augmente potentiellement la tension de contact."
+    },
+    {
+      id: 14,
+      text: "Si le courant de défaut est plus faible dans les installations longues, cela va dans le sens de la sécurité.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Un courant de défaut trop faible peut empêcher le déclenchement rapide des protections, ce qui maintient une tension de contact dangereuse pendant plus longtemps."
+    },
+    {
+      id: 15,
+      text: "En utilisant un disjoncteur magnétothermique pour protéger les personnes en schéma TN, c'est :",
+      type: "single",
+      options: [
+        { key: "a", text: "Le relais thermique qui permettra le déclenchement.", correct: false },
+        { key: "b", text: "Le relais magnétique qui permettra le déclenchement.", correct: true },
+        { key: "c", text: "Les deux relais qui permettront le déclenchement.", correct: false }
+      ],
+      explanation:
+        "En cas de défaut franc, le courant de défaut est élevé et provoque le déclenchement immédiat de la partie magnétique du disjoncteur."
+    },
+    {
+      id: 16,
+      text: "Dans le cas d'une protection par disjoncteur magnétothermique, la longueur maximale de la ligne protégée dépend :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Du matériau utilisé pour les câbles d'alimentation des récepteurs.", correct: true },
+        { key: "b", text: "De la section des conducteurs.", correct: true },
+        { key: "c", text: "De la chute de tension dans l'installation.", correct: false },
+        { key: "d", text: "De la puissance électrique disponible installée par EDF.", correct: false },
+        { key: "e", text: "Du calibre du disjoncteur.", correct: true },
+        { key: "f", text: "Du seuil du magnétique de la courbe de déclenchement du disjoncteur.", correct: true }
+      ],
+      explanation:
+        "La longueur est limitée pour garantir un courant de défaut suffisant pour atteindre le seuil magnétique, ce qui dépend de l’impédance de ligne (matériau, section) et des caractéristiques du disjoncteur."
+    },
+    {
+      id: 17,
+      text: "Dans le cas des départs longs (les circuits terminaux sont éloignés du transformateur), on aura tendance à augmenter la valeur du courant de court-circuit en cas de défaut d'isolement.",
+      type: "single",
+      options: [
+        { key: "a", text: "Vrai", correct: false },
+        { key: "b", text: "Faux", correct: true }
+      ],
+      explanation:
+        "Plus la longueur augmente, plus l’impédance de la boucle de défaut est grande, donc le courant de court-circuit diminue."
+    },
+    {
+      id: 18,
+      text: "Lorsqu'il existe des exigences de continuité de service, le schéma TN est recommandé.",
+      type: "single",
+      options: [
+        { key: "a", text: "Oui", correct: true },
+        { key: "b", text: "Non", correct: false }
+      ],
+      explanation:
+        "Le régime TN permet une coupure rapide des défauts et est largement utilisé en distribution industrielle où la continuité de service est importante."
+    },
+    {
+      id: 19,
+      text: "Le schéma TN se rencontre couramment dans les circuits de distribution industriels. Il est le plus économique des schémas de liaison à la terre :",
+      type: "multi",
+      options: [
+        { key: "a", text: "Parce qu'il nécessite un personnel formé.", correct: false },
+        { key: "b", text: "Parce qu'on utilise moins de canalisations électriques.", correct: true },
+        { key: "c", text: "Parce que la protection du matériel et des personnes est assurée par les mêmes appareils.", correct: true },
+        { key: "d", text: "Parce que sa réalisation est simple et n'utilise qu'une prise de terre.", correct: true },
+        { key: "e", text: "Parce que les installateurs font des ristournes intéressantes pour les entreprises.", correct: false }
+      ],
+      explanation:
+        "Le schéma TN est économique car il limite le nombre de conducteurs, utilise des appareils communs pour la protection et nécessite généralement une seule prise de terre commune."
+    }
+  ];
+
+  const questionsContainer = document.getElementById("questions");
+  const scoreValue = document.getElementById("scoreValue");
+  const btnCheckAll = document.getElementById("btnCheckAll");
+  const btnReset = document.getElementById("btnReset");
+
+  function renderQuestions() {
+    questionsContainer.innerHTML = "";
+    questionsData.forEach((q) => {
+      const card = document.createElement("article");
+      card.className = "question-card";
+      card.dataset.qid = q.id;
+
+      const header = document.createElement("div");
+      header.className = "question-header";
+
+      const label = document.createElement("div");
+      label.className = "q-label";
+      label.textContent = "Question " + q.id;
+
+      const typeInfo = document.createElement("div");
+      typeInfo.className = "chip";
+      typeInfo.textContent = q.type === "multi" ? "Plusieurs réponses possibles" : "Une seule réponse";
+
+      header.appendChild(label);
+      header.appendChild(typeInfo);
+
+      const title = document.createElement("div");
+      title.className = "q-title";
+      title.textContent = q.text;
+
+      const optionsWrapper = document.createElement("div");
+      optionsWrapper.className = "options";
+
+      q.options.forEach((opt) => {
+        const optionEl = document.createElement("label");
+        optionEl.className = "option";
+        optionEl.dataset.key = opt.key;
+
+        const input = document.createElement("input");
+        input.type = q.type === "multi" ? "checkbox" : "radio";
+        input.name = "q" + q.id + (q.type === "multi" ? "_" + opt.key : "");
+        input.value = opt.key;
+
+        const badge = document.createElement("div");
+        badge.className = "option-label";
+        badge.textContent = opt.key;
+
+        const text = document.createElement("div");
+        text.className = "option-text";
+        text.textContent = opt.text;
+
+        optionEl.appendChild(input);
+        optionEl.appendChild(badge);
+        optionEl.appendChild(text);
+
+        optionEl.addEventListener("click", function (ev) {
+          if (optionEl.classList.contains("disabled")) return;
+          if (ev.target.tagName.toLowerCase() === "input") return;
+
+          if (q.type === "multi") {
+            input.checked = !input.checked;
+          } else {
+            const siblings = optionsWrapper.querySelectorAll(".option input[type='radio']");
+            siblings.forEach((radio) => {
+              if (radio !== input) {
+                radio.checked = false;
+              }
+            });
+            input.checked = true;
+          }
+        });
+
+        optionsWrapper.appendChild(optionEl);
+      });
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.textContent = q.explanation;
+
+      card.appendChild(header);
+      card.appendChild(title);
+      card.appendChild(optionsWrapper);
+      card.appendChild(feedback);
+
+      questionsContainer.appendChild(card);
+    });
+  }
+
+  function evaluateQuestion(card, question) {
+    const optionsEls = card.querySelectorAll(".option");
+    const feedback = card.querySelector(".feedback");
+    let allCorrect = true;
+    let atLeastOneSelected = false;
+
+    optionsEls.forEach((optEl, index) => {
+      const input = optEl.querySelector("input");
+      const key = question.options[index].key;
+      const isCorrect = question.options[index].correct;
+      const selected = input.checked;
+
+      optEl.classList.remove("correct", "incorrect", "disabled");
+
+      if (selected) {
+        atLeastOneSelected = true;
+        if (isCorrect) {
+          optEl.classList.add("correct");
+        } else {
+          optEl.classList.add("incorrect");
+          allCorrect = false;
+        }
+      } else if (isCorrect) {
+        allCorrect = false;
+      }
+    });
+
+    if (!atLeastOneSelected) {
+      feedback.style.display = "block";
+      feedback.classList.remove("correct", "incorrect");
+      feedback.innerHTML = "<strong>Rappel :</strong> sélectionnez au moins une réponse pour cette question.";
+      return false;
+    }
+
+    feedback.style.display = "block";
+    if (allCorrect) {
+      feedback.classList.add("correct");
+      feedback.classList.remove("incorrect");
+      feedback.innerHTML = "<strong>Bonne réponse :</strong> " + question.explanation;
+      optionsEls.forEach((optEl) => optEl.classList.add("disabled"));
+      return true;
+    } else {
+      feedback.classList.add("incorrect");
+      feedback.classList.remove("correct");
+      feedback.innerHTML = "<strong>À corriger :</strong> " + question.explanation;
+      return false;
+    }
+  }
+
+  function evaluateAll() {
+    const cards = questionsContainer.querySelectorAll(".question-card");
+    let score = 0;
+    cards.forEach((card) => {
+      const qid = parseInt(card.dataset.qid, 10);
+      const question = questionsData.find((q) => q.id === qid);
+      const good = evaluateQuestion(card, question);
+      if (good) score++;
+    });
+    scoreValue.textContent = score + " / " + questionsData.length;
+  }
+
+  function resetAll() {
+    const cards = questionsContainer.querySelectorAll(".question-card");
+    cards.forEach((card) => {
+      const optionsEls = card.querySelectorAll(".option");
+      const feedback = card.querySelector(".feedback");
+      optionsEls.forEach((optEl) => {
+        const input = optEl.querySelector("input");
+        input.checked = false;
+        optEl.classList.remove("correct", "incorrect", "disabled");
+      });
+      feedback.style.display = "none";
+      feedback.classList.remove("correct", "incorrect");
+    });
+    scoreValue.textContent = "0 / " + questionsData.length;
+  }
+
+  btnCheckAll.addEventListener("click", evaluateAll);
+  btnReset.addEventListener("click", resetAll);
+
+  renderQuestions();
+</script>
+</body>
+</html>

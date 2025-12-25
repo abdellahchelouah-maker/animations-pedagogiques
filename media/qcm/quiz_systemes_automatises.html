@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Quiz Systèmes Automatisés Industriels</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #071028 0%, #071a2a 60%);
+    color: #e6eef6;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  h1 { margin-bottom: 10px; }
+  .subtitle { color: #9aa4b2; margin-bottom: 20px; }
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6ee7b7, #60a5fa);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .question-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+  }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .question-number { color: #60a5fa; font-weight: bold; }
+  .question-type {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: #9aa4b2;
+  }
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option:hover {
+    background: rgba(255,255,255,0.05);
+  }
+  .option input {
+    width: 18px;
+    height: 18px;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: #6ee7b7;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn:hover {
+    background: rgba(110,231,183,0.1);
+  }
+  .btn-secondary {
+    color: #60a5fa;
+  }
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .feedback {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+  }
+  .feedback.correct {
+    border-left: 4px solid #6ee7b7;
+    background: rgba(110,231,183,0.1);
+  }
+  .feedback.wrong {
+    border-left: 4px solid #fb7185;
+    background: rgba(251,113,133,0.1);
+  }
+  .summary {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .summary h2 {
+    margin-bottom: 15px;
+  }
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal.show {
+    display: flex;
+  }
+  .modal-content {
+    background: #071428;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 500px;
+  }
+  .final-score {
+    font-size: 48px;
+    color: #6ee7b7;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Quiz : Systèmes Automatisés Industriels</h1>
+  <p class="subtitle">26 questions — Testez vos connaissances</p>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <div class="question-card" id="questionCard"></div>
+
+  <div class="navigation">
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← Précédent</button>
+      <button class="btn" id="nextBtn">Suivant →</button>
+    </div>
+    <div>
+      <span>Question <strong id="currentNum">1</strong> / <strong>26</strong></span>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="restartBtn">🔄 Recommencer</button>
+    <button class="btn btn-secondary" id="showAnswersBtn">👁️ Afficher réponses</button>
+  </div>
+
+  <div class="summary">
+    <h2>Résumé</h2>
+    <div class="stat">
+      <span>Score</span>
+      <strong id="scoreDisplay">0 / 26</strong>
+    </div>
+    <div class="stat">
+      <span>Réponses correctes</span>
+      <strong id="correctDisplay">0</strong>
+    </div>
+    <div class="stat">
+      <span>Questions répondues</span>
+      <strong id="answeredDisplay">0</strong>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h2>Résultat final</h2>
+    <div class="final-score" id="finalScore">0 / 26</div>
+    <p id="resultMessage"></p>
+    <div style="margin-top: 20px;">
+      <button class="btn" id="closeModal">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  { id: 1, text: "Choisir parmi les systèmes ci-dessous celui qu'on peut qualifier d'entièrement automatisé.", type: "single", options: { a: "Un robot ménager", b: "Une chaudière électrique munie d'une régulation de température", c: "Une centrale vapeur thermostatée", d: "Un caméscope numérique" }, correct: ["b"], feedback: { b: "Correct : la régulation de température permet un fonctionnement automatique.", default: "Une chaudière avec régulation fonctionne automatiquement sans intervention humaine." } },
+  
+  { id: 2, text: "Le critère déterminant pour affirmer qu'un système est automatisé est que :", type: "single", options: { a: "Il produit des objets de bonne qualité", b: "Sa cadence de production est élevée", c: "Il fonctionne en l'absence de l'homme", d: "Il assure la sécurité des opérateurs humains" }, correct: ["c"], feedback: { c: "Exact : un système automatisé fonctionne de manière autonome, sans intervention humaine.", default: "L'automatisation implique le fonctionnement sans l'homme." } },
+  
+  { id: 3, text: "Un système automatisé opère le chargement de barres d'uranium dans un réacteur nucléaire. Selon vous, quel est parmi les critères suivants celui qui vous paraît le plus important ?", type: "single", options: { a: "Le coût de l'opération", b: "La qualité de la réalisation", c: "La flexibilité du processus proposé", d: "La sûreté de fonctionnement" }, correct: ["d"], feedback: { d: "Correct : dans un environnement nucléaire, la sûreté est primordiale.", default: "La sûreté est le critère essentiel en milieu nucléaire." } },
+  
+  { id: 4, text: "Quelle(s) catégorie(s) de matière d'œuvre gère(nt) un système automatisé ?", type: "multi", options: { a: "De l'énergie", b: "De l'information", c: "Des bouteilles à remplir et à encapsuler", d: "De la qualité", e: "De la matière" }, correct: ["a", "b", "e"], feedback: { ok: "Exact : un système automatisé gère de l'énergie, de l'information et de la matière.", ko: "Les bonnes réponses sont : énergie, information et matière." } },
+  
+  { id: 5, text: "La représentation fonctionnelle d'un système automatisé permet :", type: "multi", options: { a: "De représenter l'évolution du système dans le temps", b: "De connaître les flux entrants et sortants de matière d'œuvre", c: "De caractériser les constituants matériels du système automatisé", d: "D'identifier les contraintes sur le système automatisé", e: "De savoir ce qu'il fait" }, correct: ["b", "d", "e"], feedback: { ok: "Correct : elle montre les flux, les contraintes et la fonction du système.", ko: "La représentation fonctionnelle indique les flux, contraintes et fonction." } },
+  
+  { id: 6, text: "Quel(s) constituant(s) rencontre-t-on plus particulièrement dans la partie Opérative d'un système automatisé ?", type: "multi", options: { a: "Une temporisation", b: "Un automate industriel", c: "Des capteurs", d: "Des contacteurs", e: "Un vérin pneumatique", f: "Un moteur électrique" }, correct: ["c", "e", "f"], feedback: { ok: "Exact : la partie opérative contient capteurs, vérins et moteurs.", ko: "Les éléments de la partie opérative sont : capteurs, vérins et moteurs." } },
+  
+  { id: 7, text: "Quel constituant rencontre-t-on principalement dans la partie Commande d'un système automatisé ?", type: "multi", options: { a: "Un automate programmable", b: "Des capteurs", c: "Un moteur électrique", d: "Un vérin hydraulique", e: "Des contacteurs", f: "Des distributeurs" }, correct: ["a"], feedback: { ok: "Correct : l'automate programmable est l'élément principal de la partie commande.", ko: "La partie commande contient principalement l'automate programmable." } },
+  
+  { id: 8, text: "La partie opérative a pour fonction de réaliser la transformation de la matière d'œuvre.", type: "single", options: { a: "Vrai", b: "Faux" }, correct: ["a"], feedback: { a: "Exact : c'est le rôle principal de la partie opérative.", default: "La partie opérative transforme effectivement la matière d'œuvre." } },
+  
+  { id: 9, text: "La partie commande est la zone géographique la plus dangereuse d'un système automatisé. Elle doit par conséquent être délimitée par une barrière physique ou immatérielle.", type: "single", options: { a: "Vrai", b: "Faux" }, correct: ["b"], feedback: { b: "Correct : c'est la partie opérative qui est dangereuse, pas la commande.", default: "La partie dangereuse est la partie opérative, pas la commande." } },
+  
+  { id: 10, text: "Dans un système automatisé, la partie puissance n'est pas isolée de la partie commande.", type: "single", options: { a: "Vrai", b: "Faux" }, correct: ["b"], feedback: { b: "Exact : la partie puissance doit être isolée de la partie commande pour des raisons de sécurité.", default: "Les deux parties doivent être isolées pour la sécurité." } },
+  
+  { id: 11, text: "Quels sont, parmi les choix suivants, les constituants fondamentaux de tout système automatisé ?", type: "multi", options: { a: "L'alimentation", b: "La matière d'œuvre d'entrée et de sortie", c: "Les capteurs", d: "Le dialogue homme-machine" }, correct: ["a", "b", "c"], feedback: { ok: "Correct : alimentation, matière d'œuvre et capteurs sont fondamentaux.", ko: "Les constituants fondamentaux sont : alimentation, matière d'œuvre et capteurs." } },
+  
+  { id: 12, text: "Quels sont, parmi les choix suivants, les constituants fondamentaux de tout système automatisé ? (suite)", type: "multi", options: { a: "Les actionneurs", b: "Les préactionneurs", c: "L'unité de traitement logique", d: "L'arrêt d'urgence", e: "La signalisation sonore et lumineuse" }, correct: ["a", "b", "c"], feedback: { ok: "Exact : actionneurs, préactionneurs et unité de traitement sont fondamentaux.", ko: "Les constituants fondamentaux sont : actionneurs, préactionneurs et unité de traitement." } },
+  
+  { id: 13, text: "Le contacteur fait partie de quel constituant :", type: "single", options: { a: "L'alimentation en fluide", b: "L'actionneur", c: "Le préactionneur", d: "L'unité de traitement logique", e: "Les capteurs" }, correct: ["c"], feedback: { c: "Correct : le contacteur est un préactionneur.", default: "Le contacteur est un préactionneur qui commande l'alimentation." } },
+  
+  { id: 14, text: "Le thermoplongeur fait partie de quel constituant :", type: "single", options: { a: "L'alimentation en fluide", b: "L'actionneur", c: "Le préactionneur", d: "L'unité de traitement logique", e: "Les capteurs" }, correct: ["b"], feedback: { b: "Exact : le thermoplongeur est un actionneur.", default: "Le thermoplongeur transforme l'énergie électrique en chaleur, c'est un actionneur." } },
+  
+  { id: 15, text: "Le codeur incrémental fait partie de quel constituant :", type: "single", options: { a: "L'alimentation en fluide", b: "L'actionneur", c: "Le préactionneur", d: "L'unité de traitement logique", e: "Les capteurs" }, correct: ["e"], feedback: { e: "Correct : le codeur incrémental est un capteur de position.", default: "Le codeur incrémental détecte les positions, c'est un capteur." } },
+  
+  { id: 16, text: "Le rôle de l'alimentation en fluide est :", type: "single", options: { a: "De refroidir une pièce usinée", b: "De contribuer à la production de l'énergie mécanique nécessaire au système", c: "D'alimenter les cuves des systèmes de traitement de surface" }, correct: ["b"], feedback: { b: "Exact : elle fournit l'énergie nécessaire aux actionneurs.", default: "L'alimentation en fluide produit l'énergie mécanique nécessaire." } },
+  
+  { id: 17, text: "La fonction de l'actionneur est :", type: "single", options: { a: "De produire de l'action", b: "De produire une énergie mécanique directement disponible", c: "D'actionner le système" }, correct: ["b"], feedback: { b: "Correct : l'actionneur produit l'énergie mécanique utilisable.", default: "L'actionneur convertit l'énergie en énergie mécanique." } },
+  
+  { id: 18, text: "Quelle est la fonction assurée par le contacteur ?", type: "single", options: { a: "Détecter la position d'un mobile en translation", b: "Se raccorder à un effecteur", c: "Dialoguer avec le système", d: "Commander en TOR (tout ou rien) l'alimentation d'un moteur" }, correct: ["d"], feedback: { d: "Exact : le contacteur commande l'alimentation tout ou rien.", default: "Le contacteur assure la commande TOR des moteurs." } },
+  
+  { id: 19, text: "Quelle est la fonction assurée par un moteur ?", type: "single", options: { a: "Actionner un effecteur", b: "Dialoguer avec le système", c: "Détecter une température", d: "Réaliser la transformation de la matière d'œuvre" }, correct: ["a"], feedback: { a: "Correct : le moteur actionne les effecteurs.", default: "Le moteur transforme l'énergie électrique en mouvement pour actionner." } },
+  
+  { id: 20, text: "Quelle est la fonction réalisée par le bouton-poussoir ?", type: "single", options: { a: "Actionner un effecteur", b: "Détecter une position", c: "Permettre le dialogue homme-machine", d: "Gérer les entrées/sorties du système automatisé" }, correct: ["c"], feedback: { c: "Exact : le bouton-poussoir permet l'interface homme-machine.", default: "Le bouton-poussoir est un élément de dialogue homme-machine." } },
+  
+  { id: 21, text: "Le rôle du préactionneur est :", type: "single", options: { a: "De se situer avant l'actionneur", b: "De conditionner l'alimentation de l'actionneur aux ordres de la partie commande", c: "De transmettre des informations à l'unité de traitement logique" }, correct: ["b"], feedback: { b: "Correct : il adapte les ordres de commande pour alimenter l'actionneur.", default: "Le préactionneur conditionne l'alimentation selon les ordres." } },
+  
+  { id: 22, text: "Le rôle des capteurs est de :", type: "single", options: { a: "Détecter une position angulaire", b: "D'informer l'unité de traitement logique", c: "D'alimenter les préactionneurs" }, correct: ["b"], feedback: { b: "Exact : les capteurs transmettent des informations à l'unité de traitement.", default: "Les capteurs informent l'unité de traitement logique." } },
+  
+  { id: 23, text: "Le rôle de l'unité de traitement logique est de :", type: "single", options: { a: "Permettre un meilleur dialogue homme-machine", b: "Transmettre les informations reçues aux préactionneurs", c: "Gérer les informations d'entrées et commander les actions à entreprendre suivant un algorithme modifiable" }, correct: ["c"], feedback: { c: "Correct : elle traite les informations et commande selon un programme.", default: "L'unité de traitement gère les informations et exécute l'algorithme." } },
+  
+  { id: 24, text: "Parmi les unités de traitement logiques, on trouve :", type: "multi", options: { a: "Les API", b: "Les ordinateurs", c: "Les opérateurs humains", d: "Les consoles de programmation" }, correct: ["a", "b"], feedback: { ok: "Exact : API (automates) et ordinateurs sont des unités de traitement.", ko: "Les unités de traitement logiques sont : API et ordinateurs." } },
+  
+  { id: 25, text: "Parmi les constituants fondamentaux de tout système automatisé, lequel dispose de la famille de composants les plus nombreux.", type: "single", options: { a: "L'alimentation en fluide", b: "L'actionneur", c: "Le préactionneur", d: "Le capteur", e: "L'unité de traitement logique" }, correct: ["d"], feedback: { d: "Correct : il existe une très grande variété de capteurs.", default: "Les capteurs forment la famille la plus nombreuse." } },
+  
+  { id: 26, text: "Une classification des systèmes automatisés fait apparaître l'existence de systèmes en boucle ouverte. Cela signifie que :", type: "single", options: { a: "Le système n'est pas stable", b: "Le résultat de la transformation en sortie n'est pas vérifié", c: "Le contrôle du processus industriel est en temps réel", d: "La boucle n'est pas fermée" }, correct: ["b"], feedback: { b: "Exact : en boucle ouverte, il n'y a pas de retour d'information sur le résultat.", default: "En boucle ouverte, le résultat n'est pas contrôlé." } }
+];
+
+let currentIndex = 0;
+let userAnswers = {};
+
+function renderQuestion() {
+  const q = questions[currentIndex];
+  const card = document.getElementById('questionCard');
+  
+  let html = `
+    <div class="question-header">
+      <div class="question-number">Question ${currentIndex + 1} / 26</div>
+      <div class="question-type">${q.type === 'multi' ? 'Choix multiple' : 'Choix unique'}</div>
+    </div>
+    <div class="question-text">${q.text}</div>
+    <div class="options">
+  `;
+  
+  for (const [key, text] of Object.entries(q.options)) {
+    const inputType = q.type === 'multi' ? 'checkbox' : 'radio';
+    const checked = userAnswers[q.id] && userAnswers[q.id].includes(key) ? 'checked' : '';
+    html += `
+      <label class="option">
+        <input type="${inputType}" name="q${q.id}" value="${key}" ${checked} onchange="handleAnswer('${q.id}', '${key}', this.checked, '${q.type}')">
+        <span>${key.toUpperCase()}. ${text}</span>
+      </label>
+    `;
+  }
+  
+  html += `
+    </div>
+    <div class="buttons">
+      <button class="btn" onclick="validateQuestion()">✓ Valider</button>
+      <button class="btn btn-secondary" onclick="clearAnswer()">✗ Effacer</button>
+    </div>
+  `;
+  
+  if (userAnswers[q.id] && userAnswers[q.id].validated) {
+    const v = userAnswers[q.id].validated;
+    html += `
+      <div class="feedback ${v.correct ? 'correct' : 'wrong'}">
+        <strong>${v.correct ? '✓ Bonne réponse !' : '✗ Réponse incorrecte'}</strong>
+        <p>${v.message}</p>
+      </div>
+    `;
+  }
+  
+  card.innerHTML = html;
+  document.getElementById('currentNum').textContent = currentIndex + 1;
+  updateProgress();
+  updateSummary();
+}
+
+function handleAnswer(qid, key, checked, type) {
+  if (!userAnswers[qid]) userAnswers[qid] = [];
+  if (userAnswers[qid].validated) delete userAnswers[qid].validated;
+  
+  if (type === 'multi') {
+    if (checked) {
+      if (!userAnswers[qid].includes(key)) userAnswers[qid].push(key);
+    } else {
+      userAnswers[qid] = userAnswers[qid].filter(k => k !== key);
+    }
+  } else {
+    userAnswers[qid] = [key];
+  }
+  updateSummary();
+}
+
+function validateQuestion() {
+  const q = questions[currentIndex];
+  const selected = userAnswers[q.id] || [];
+  
+  const correctSorted = [...q.correct].sort().join(',');
+  const selectedSorted = [...selected].sort().join(',');
+  const isCorrect = correctSorted === selectedSorted;
+  
+  let message = '';
+  if (q.type === 'single') {
+    if (isCorrect) {
+      message = q.feedback[selected[0]] || q.feedback.default || 'Bonne réponse !';
+    } else {
+      message = q.feedback.default || 'Réponse incorrecte.';
+    }
+  } else {
+    message = isCorrect ? (q.feedback.ok || 'Bonne réponse !') : (q.feedback.ko || 'Réponse incorrecte.');
+  }
+  
+  if (!userAnswers[q.id]) userAnswers[q.id] = [];
+  userAnswers[q.id].validated = { correct: isCorrect, message: message };
+  
+  renderQuestion();
+  checkCompletion();
+}
+
+function clearAnswer() {
+  const q = questions[currentIndex];
+  userAnswers[q.id] = [];
+  renderQuestion();
+}
+
+function updateProgress() {
+  const progress = ((currentIndex + 1) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function updateSummary() {
+  const answered = Object.keys(userAnswers).filter(k => userAnswers[k].length > 0).length;
+  const correct = Object.keys(userAnswers).filter(k => userAnswers[k].validated && userAnswers[k].validated.correct).length;
+  
+  document.getElementById('scoreDisplay').textContent = `${correct} / 26`;
+  document.getElementById('correctDisplay').textContent = correct;
+  document.getElementById('answeredDisplay').textContent = answered;
+}
+
+function checkCompletion() {
+  const allValidated = questions.every(q => userAnswers[q.id] && userAnswers[q.id].validated);
+  if (allValidated) {
+    setTimeout(showResults, 1000);
+  }
+}
+
+function showResults() {
+  const correct = Object.keys(userAnswers).filter(k => userAnswers[k].validated && userAnswers[k].validated.correct).length;
+  const pct = Math.round((correct / 26) * 100);
+  
+  document.getElementById('finalScore').textContent = `${correct} / 26`;
+  
+  let msg = '';
+  if (pct === 100) msg = '🎉 Parfait ! Excellente maîtrise des systèmes automatisés.';
+  else if (pct >= 80) msg = '👍 Très bien ! Vous avez de solides connaissances.';
+  else if (pct >= 50) msg = '📚 Moyen. Révisez certains concepts clés.';
+  else msg = '📖 À améliorer. Reprenez les bases des systèmes automatisés.';
+  
+  document.getElementById('resultMessage').textContent = msg;
+  document.getElementById('resultModal').classList.add('show');
+}
+
+document.getElementById('prevBtn').onclick = () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+};
+
+document.getElementById('restartBtn').onclick = () => {
+  if (confirm('Recommencer le quiz ? Toutes les réponses seront perdues.')) {
+    currentIndex = 0;
+    userAnswers = {};
+    renderQuestion();
+  }
+};
+
+document.getElementById('showAnswersBtn').onclick = () => {
+  if (confirm('Afficher toutes les bonnes réponses ?')) {
+    questions.forEach(q => {
+      userAnswers[q.id] = [...q.correct];
+      const msg = q.type === 'single' ? (q.feedback[q.correct[0]] || 'Réponse correcte') : (q.feedback.ok || 'Réponses correctes');
+      userAnswers[q.id].validated = { correct: true, message: msg };
+    });
+    renderQuestion();
+  }
+};
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('resultModal').classList.remove('show');
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

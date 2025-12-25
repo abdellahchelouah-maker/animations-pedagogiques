@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>QCM autoformatif – Introduction au GRAFCET</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #1e293b;
+      --bg-soft-2: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --accent-strong: #0ea5e9;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #f97373;
+      --success: #4ade80;
+      --border: #111827;
+      --radius-card: 16px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 22px 40px rgba(15, 23, 42, 0.9);
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.24s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #1f2937, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(145deg, #020617, #020617 55%, #0b1120);
+      border-radius: 26px;
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-shell::before,
+    .app-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .app-shell::before {
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15), transparent);
+      top: -120px;
+      right: -80px;
+    }
+
+    .app-shell::after {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.12), transparent);
+      bottom: -100px;
+      left: -60px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 1.5rem);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-pill span.icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent-strong), #0ea5e9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-size: 0.7rem;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: radial-gradient(circle at top left, #020617, #020617);
+    }
+
+    .badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+    }
+
+    .badge.level {
+      border-color: rgba(94, 234, 212, 0.6);
+      color: #a5f3fc;
+    }
+
+    .badge.count {
+      border-color: rgba(129, 140, 248, 0.5);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 860px) {
+      .app-shell {
+        border-radius: 18px;
+        padding: 18px 14px;
+      }
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      background: linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(15, 23, 42, 1);
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.88);
+      padding: 16px 14px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(56, 189, 248, 0.14),
+        transparent 40%,
+        transparent 60%,
+        rgba(52, 211, 153, 0.08)
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+    }
+
+    .panel-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    /* Questions list */
+    .questions {
+      margin-top: 4px;
+      max-height: min(600px, 68vh);
+      overflow: hidden auto;
+      padding-right: 2px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.7) transparent;
+    }
+
+    .questions::-webkit-scrollbar {
+      width: 6px;
+    }
+    .questions::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .questions::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.45);
+      border-radius: 999px;
+    }
+
+    .question-card {
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(30, 64, 175, 0.85);
+      padding: 10px 12px 11px;
+      margin-bottom: 10px;
+      position: relative;
+      transition: transform var(--transition-fast), border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    .question-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.95);
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .question-index {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .question-status-pill {
+      font-size: 0.7rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .question-status-pill .bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background-color: rgba(148, 163, 184, 0.8);
+    }
+
+    .question-status-pill.correct .bullet {
+      background-color: var(--success);
+      box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.6);
+    }
+
+    .question-status-pill.wrong .bullet {
+      background-color: var(--danger);
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.6);
+    }
+
+    .question-text {
+      font-size: 0.92rem;
+      margin: 0 0 7px;
+      color: #e5e7eb;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .option-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(
+        circle at top left,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.98)
+      );
+      color: var(--text-soft);
+      font-size: 0.8rem;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color var(--transition-fast), background var(--transition-fast),
+        transform 0.08s ease-out, box-shadow 0.08s ease-out, color var(--transition-fast);
+    }
+
+    .option-chip:hover {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: #e5e7eb;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+      transform: translateY(-0.5px);
+    }
+
+    .option-chip input {
+      display: none;
+    }
+
+    .option-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #cbd5f5;
+      background: radial-gradient(circle at top left, #020617, #020617);
+    }
+
+    .option-label {
+      white-space: nowrap;
+    }
+
+    .option-chip.correct {
+      border-color: rgba(74, 222, 128, 0.9);
+      background: radial-gradient(circle at top left, rgba(21, 128, 61, 0.2), #022c22);
+      color: #bbf7d0;
+    }
+
+    .option-chip.wrong {
+      border-color: rgba(248, 113, 113, 0.9);
+      background: radial-gradient(circle at top left, rgba(127, 29, 29, 0.25), #450a0a);
+      color: #fecaca;
+    }
+
+    .option-chip.correct .option-badge {
+      border-color: rgba(74, 222, 128, 0.9);
+      background: radial-gradient(circle at top left, #15803d, #16a34a);
+      color: #e5fbe7;
+    }
+
+    .option-chip.wrong .option-badge {
+      border-color: rgba(248, 113, 113, 0.9);
+      background: radial-gradient(circle at top left, #b91c1c, #ef4444);
+      color: #fee2e2;
+    }
+
+    .feedback {
+      font-size: 0.78rem;
+      padding: 7px 9px;
+      border-radius: 10px;
+      margin-top: 2px;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .feedback.visible {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: rgba(22, 163, 74, 0.15);
+      border: 1px solid rgba(74, 222, 128, 0.45);
+      color: #bbf7d0;
+    }
+
+    .feedback.wrong {
+      background: rgba(153, 27, 27, 0.18);
+      border: 1px solid rgba(248, 113, 113, 0.55);
+      color: #fecaca;
+    }
+
+    .feedback strong {
+      color: #e5e7eb;
+    }
+
+    .correct-answer {
+      font-weight: 600;
+      color: #bef264;
+    }
+
+    /* Side panel (score + progression) */
+    .side-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .score-card {
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(59, 130, 246, 0.85);
+      padding: 10px 12px;
+    }
+
+    .score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .score-title {
+      font-size: 0.86rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .score-pill {
+      font-size: 0.76rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border: 1px solid rgba(56, 189, 248, 0.65);
+      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .score-pill span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.5);
+    }
+
+    .score-main {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .score-value {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .score-total {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .score-bar {
+      margin-top: 4px;
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #22d3ee);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+      transition: width 0.35s var(--transition-med);
+    }
+
+    .score-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3px;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      font-size: 0.75rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+    }
+
+    .legend-dot.correct {
+      background: var(--success);
+    }
+
+    .legend-dot.wrong {
+      background: var(--danger);
+    }
+
+    .legend-dot.pending {
+      background: rgba(148, 163, 184, 0.7);
+    }
+
+    .controls-card {
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617);
+      border-radius: 14px;
+      border: 1px solid rgba(37, 99, 235, 0.85);
+      padding: 10px 12px;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform 0.08s ease-out,
+        box-shadow 0.08s ease-out, color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at top left, #0ea5e9, #3b82f6);
+      color: #0b1120;
+      box-shadow: 0 12px 22px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 28px rgba(37, 99, 235, 0.9);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-soft);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(59, 130, 246, 0.9);
+      color: #e5e7eb;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.96);
+    }
+
+    .btn span.icon {
+      font-size: 0.95rem;
+    }
+
+    .hint-text {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .question-map {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .map-item {
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.96);
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast), transform 0.08s ease-out, box-shadow 0.08s ease-out;
+    }
+
+    .map-item:hover {
+      border-color: rgba(56, 189, 248, 0.9);
+      color: #e5e7eb;
+      transform: translateY(-0.5px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.96);
+    }
+
+    .map-item.correct {
+      background: rgba(22, 163, 74, 0.15);
+      border-color: rgba(74, 222, 128, 0.8);
+      color: #bbf7d0;
+    }
+
+    .map-item.wrong {
+      background: rgba(127, 29, 29, 0.18);
+      border-color: rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+    }
+
+    .map-item.current {
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+    }
+
+    .footnote {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+      text-align: right;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="title-block">
+        <div class="title-pill">
+          <span class="icon">G</span>
+          <span>QCM autoformatif – GRAFCET</span>
+        </div>
+        <h1>Introduction au GRAFCET</h1>
+        <p class="subtitle">Vérifie tes connaissances fondamentales sur la description GRAFCET et le cahier des charges d’un automatisme.</p>
+      </div>
+      <div class="meta-badges">
+        <div class="badge level">
+          <span class="dot"></span>
+          <span>Lycée techno, BTS, BUT</span>
+        </div>
+        <div class="badge count">
+          <span class="dot"></span>
+          <span><span id="questionCount"></span> questions</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Questions</div>
+          <div class="panel-tag">Cliquer sur une réponse pour valider</div>
+        </div>
+        <div id="questions" class="questions"></div>
+      </section>
+
+      <aside class="panel">
+        <div class="side-inner">
+          <div class="score-card">
+            <div class="score-header">
+              <div class="score-title">Score global</div>
+              <div class="score-pill">
+                <span class="dot"></span>
+                <span id="scoreLabel">Aucune question validée pour le moment</span>
+              </div>
+            </div>
+            <div class="score-main">
+              <span class="score-value" id="scoreValue">0</span>
+              <span class="score-total" id="scoreTotal">/ 0</span>
+            </div>
+            <div class="score-bar">
+              <div id="scoreBarFill" class="score-bar-fill"></div>
+            </div>
+            <div class="score-meta">
+              <div class="legend">
+                <span class="legend-item"><span class="legend-dot correct"></span> Bonnes</span>
+                <span class="legend-item"><span class="legend-dot wrong"></span> Erronées</span>
+                <span class="legend-item"><span class="legend-dot pending"></span> En attente</span>
+              </div>
+              <span id="progressText">0 / 0 répondues</span>
+            </div>
+          </div>
+
+          <div class="controls-card">
+            <div class="controls-row">
+              <button class="btn btn-primary" id="btnShowAllSolutions">
+                <span class="icon">✓</span>
+                Tout corriger
+              </button>
+              <button class="btn btn-ghost" id="btnReset">
+                <span class="icon">↺</span>
+                Réinitialiser
+              </button>
+            </div>
+            <p class="hint-text">
+              Cliquer sur une proposition affiche immédiatement la correction avec une explication. Utilise la carte des questions pour naviguer rapidement.
+            </p>
+            <div class="question-map" id="questionMap"></div>
+          </div>
+
+          <p class="footnote">
+            QCM inspiré d’un questionnaire d’introduction au GRAFCET. Correction fournie à but pédagogique.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const questionsData = [
+      {
+        id: 1,
+        text: "GRAFCET est une contraction de GRaphe et de AFCET.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "GRAFCET signifie bien \"Graphe Fonctionnel de Commande Étape/Transition\", contraction historique de GRaphe et AFCET (l’association qui l’a défini)."
+      },
+      {
+        id: 2,
+        text: "GRAFCET vient aussi de Graphe de Contrôle d'Étapes-Transitions.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "On peut effectivement le présenter comme un graphe de contrôle d’étapes et de transitions, ce qui décrit bien sa structure logique."
+      },
+      {
+        id: 3,
+        text: "Le GRAFCET se présente comme un outil plus performant que l'algèbre de Boole pour la réduction du matériel utilisé dans les installations automatisées.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Le GRAFCET est avant tout un outil de description fonctionnelle et séquentielle, pas un outil d’optimisation matérielle comme l’algèbre de Boole."
+      },
+      {
+        id: 4,
+        text: "Pour analyser complètement le fonctionnement d'une installation automatisée, le GRAFCET suffit.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Le GRAFCET décrit le comportement séquentiel, mais il doit être complété par d’autres documents (schémas électriques, pneumatiques, mécaniques, etc.)."
+      },
+      {
+        id: 5,
+        text: "Le GRAFCET permet :",
+        options: [
+          { key: "a", label: "Une description temporelle d'un système automatisé.", correct: true },
+          { key: "b", label: "D'utiliser des technologies diverses pour répondre au cahier des charges.", correct: true },
+          { key: "c", label: "Faciliter le passage de la description au schéma puis au matériel.", correct: true },
+          { key: "d", label: "De restreindre les coûts de maintenance par une simplification de l'installation.", correct: true },
+          { key: "e", label: "Calculer le coût de revient effectif d'une installation automatisée.", correct: false }
+        ],
+        explanation:
+          "Le GRAFCET décrit la logique de commande et facilite conception, choix de technologies et maintenance, mais il ne calcule pas le coût de revient économique."
+      },
+      {
+        id: 6,
+        text: "Le cahier des charges d'un automatisme est :",
+        options: [
+          { key: "a", label: "Une convention avec la banque.", correct: false },
+          { key: "b", label: "Un document contractuel entre l'utilisateur et le concepteur.", correct: true },
+          { key: "c", label: "Un document chiffrant les coûts de l'automatisme.", correct: false }
+        ],
+        explanation:
+          "Le cahier des charges formalise les attentes et obligations entre utilisateur et concepteur ; il peut évoquer les coûts mais son rôle dépasse largement le simple chiffrage."
+      },
+      {
+        id: 7,
+        text: "Un cahier des charges doit couvrir l'ensemble d'un projet sur les plans :",
+        options: [
+          { key: "a", label: "Économique.", correct: true },
+          { key: "b", label: "Commercial.", correct: true },
+          { key: "c", label: "Technique.", correct: true },
+          { key: "d", label: "Juridique.", correct: true }
+        ],
+        explanation:
+          "Un cahier des charges sérieux aborde le projet sous ses aspects économiques, commerciaux, techniques et juridiques pour cadrer l’ensemble de la réalisation."
+      },
+      {
+        id: 8,
+        text: "Le GRAFCET couvre un projet sur le plan économique.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Le GRAFCET traite la logique de commande et la séquence de fonctionnement, pas les aspects économiques du projet."
+      },
+      {
+        id: 9,
+        text: "Le GRAFCET permet de répondre aux questions techniques qui se posent dans un projet d'automatisme.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Le GRAFCET formalise la logique de commande et clarifie ainsi de nombreuses questions techniques liées au fonctionnement de l’automatisme."
+      },
+      {
+        id: 10,
+        text: "Dans un GRAFCET, la mise en fonctionnement d'un actionneur est réalisée au niveau :",
+        options: [
+          { key: "a", label: "D'une transition.", correct: false },
+          { key: "b", label: "D'une étape.", correct: true },
+          { key: "c", label: "D'une boucle conditionnelle.", correct: false }
+        ],
+        explanation:
+          "Les actions sur les actionneurs sont portées par les étapes actives ; la transition ne sert qu’au passage d’une étape à l’autre."
+      },
+      {
+        id: 11,
+        text: "Une transition correspond à une condition de passage d'une étape à la suivante.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Par définition, une transition est associée à une réceptivité qui, lorsqu’elle est vraie, permet le franchissement vers l’étape suivante."
+      },
+      {
+        id: 12,
+        text: "Pour relier une étape à une autre par une transition, il est nécessaire de mettre des flèches qui permettent de connaître le sens de la liaison.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Les flèches indiquent clairement le sens d’évolution de la séquence, ce qui est indispensable pour lire le GRAFCET."
+      },
+      {
+        id: 13,
+        text: "La situation d'un GRAFCET est par définition :",
+        options: [
+          { key: "a", label: "L'ensemble des étapes actives à un instant donné.", correct: true },
+          { key: "b", label: "L'endroit mémoire où est implanté le GRAFCET.", correct: false },
+          { key: "c", label: "La réalisation des actions lorsque l'étape est activée.", correct: false }
+        ],
+        explanation:
+          "La situation du GRAFCET décrit l’état courant du système à travers les étapes actives, indépendamment de l’implantation matérielle."
+      },
+      {
+        id: 14,
+        text: "La règle d'écriture pour décrire l'activité de l'étape 2 en variable logique est de la noter X2.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "On note classiquement Xi pour la variable associée à l’étape i ; X2 est donc la notation correcte pour l’étape 2."
+      },
+      {
+        id: 15,
+        text: "Une action dans un GRAFCET peut se définir comme :",
+        options: [
+          { key: "a", label: "L'intervention directe de l'opérateur sur le cycle.", correct: false },
+          { key: "b", label: "Un ordre donné par la partie commande à la partie opérative.", correct: true },
+          { key: "c", label: "Une condition logique de verrouillage du GRAFCET.", correct: false }
+        ],
+        explanation:
+          "Une action est un ordre émis par la partie commande (via une étape active) vers la partie opérative, et non l’intervention d’un opérateur."
+      },
+      {
+        id: 16,
+        text: "L'exécution d'une action ne peut jamais être soumise à une condition puisque si l'étape est activée, elle doit obligatoirement être réalisée.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Les actions peuvent être conditionnelles (par exemple actions conditionnelles ou temporisées) même si l’étape est active."
+      },
+      {
+        id: 17,
+        text: "La réceptivité d'une transition, c'est :",
+        options: [
+          { key: "a", label: "La validation des étapes précédentes.", correct: false },
+          { key: "b", label: "La condition logique de franchissement de la transition.", correct: true },
+          { key: "c", label: "La possibilité d’évolution des étapes actives.", correct: false }
+        ],
+        explanation:
+          "La réceptivité est la condition logique à vérifier pour autoriser le franchissement de la transition, en plus de la validation des étapes précédentes."
+      },
+      {
+        id: 18,
+        text: "La réceptivité d'une transition prend en compte :",
+        options: [
+          { key: "a", label: "L'état logique des variables booléennes.", correct: true },
+          { key: "b", label: "Le changement d'état des variables booléennes.", correct: false },
+          { key: "c", label: "L'état précédent des variables booléennes.", correct: false }
+        ],
+        explanation:
+          "La réceptivité est une expression logique sur l’état actuel des variables ; elle ne dépend pas directement de leur historique."
+      },
+      {
+        id: 19,
+        text: "La réceptivité d'une transition peut être conditionnée par une temporisation.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "On peut associer des temporisations aux transitions (ou aux actions) de façon à retarder le franchissement ou l’exécution."
+      },
+      {
+        id: 21,
+        text: "Dans un GRAFCET, il est autorisé de relier deux étapes entre elles directement.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Deux étapes ne peuvent pas être reliées directement : il faut toujours passer par une transition qui porte la réceptivité."
+      },
+      {
+        id: 22,
+        text: "L'étape initiale d'un GRAFCET, c'est :",
+        options: [
+          { key: "a", label: "Une étape comme une autre.", correct: false },
+          { key: "b", label: "L'étape qui caractérise le comportement initial de la partie commande.", correct: true },
+          { key: "c", label: "Celle qui est active au début du fonctionnement.", correct: true },
+          { key: "d", label: "L'étape active lorsque le système est à l'arrêt.", correct: false }
+        ],
+        explanation:
+          "L’étape initiale est particulière : elle est active au démarrage et décrit l’état initial de la commande vis‑à‑vis de la partie opérative."
+      },
+      {
+        id: 24,
+        text: "L'évolution de la situation du GRAFCET correspondant au franchissement d'une transition ne peut se produire que lorsque :",
+        options: [
+          { key: "a", label: "Cette transition est validée.", correct: true },
+          { key: "b", label: "La réceptivité associée est vraie.", correct: true },
+          { key: "c", label: "Toutes les étapes suivantes sont déjà activées.", correct: false }
+        ],
+        explanation:
+          "Pour franchir une transition, il faut que les étapes précédentes soient actives (transition validée) et que la réceptivité soit vérifiée."
+      },
+      {
+        id: 25,
+        text: "Lorsqu'à un moment donné l'automatisme doit faire le choix entre plusieurs séquences, cela se traduit dans le GRAFCET par :",
+        options: [
+          { key: "a", label: "Une divergence en ET.", correct: false },
+          { key: "b", label: "Une divergence en OU.", correct: true },
+          { key: "c", label: "Une convergence en ET.", correct: false },
+          { key: "d", label: "Une convergence en OU.", correct: false }
+        ],
+        explanation:
+          "Un choix exclusif entre plusieurs branches de séquence est modélisé par une divergence en OU dans la structure du GRAFCET."
+      },
+      {
+        id: 27,
+        text: "Dans une structure GRAFCET avec une divergence en OU, l'une des branches peut ne pas disposer d'étapes.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "Chaque branche d’une divergence doit comporter au moins une étape ; une branche vide n’a pas de sens fonctionnel."
+      },
+      {
+        id: 28,
+        text: "Une reprise d'étape ne concernant qu'une seule étape est interdite en GRAFCET.",
+        options: [
+          { key: "a", label: "Vrai", correct: false },
+          { key: "b", label: "Faux", correct: true }
+        ],
+        explanation:
+          "La reprise d’étape est autorisée même pour une seule étape, par exemple pour revenir à une étape précédente en fin de séquence."
+      },
+      {
+        id: 29,
+        text: "Lorsqu'à un moment donné l'automatisme doit effectuer plusieurs séquences simultanément, cela se traduit dans le GRAFCET par :",
+        options: [
+          { key: "a", label: "Une divergence en ET.", correct: true },
+          { key: "b", label: "Une divergence en OU.", correct: false },
+          { key: "c", label: "Une convergence en ET.", correct: false },
+          { key: "d", label: "Une convergence en OU.", correct: false }
+        ],
+        explanation:
+          "La réalisation simultanée de plusieurs branches de séquence est modélisée par une divergence en ET."
+      },
+      {
+        id: 30,
+        text: "La réalisation simultanée de séquences proposée par un GRAFCET avec divergence en ET est correcte.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Une divergence en ET permet bien d’activer plusieurs branches en parallèle, ce qui correspond à une exécution simultanée."
+      },
+      {
+        id: 31,
+        text: "Le rôle d'une macro-étape est de :",
+        options: [
+          { key: "a", label: "Permettre une meilleure lisibilité en évitant de surcharger le GRAFCET.", correct: true },
+          { key: "b", label: "Remplacer une longue suite d'étapes linéaires.", correct: true },
+          { key: "c", label: "Réaliser une tâche susceptible de se reproduire dans le GRAFCET.", correct: true }
+        ],
+        explanation:
+          "La macro‑étape permet de regrouper un sous‑GRAFCET (tâche) pour alléger la vue globale et factoriser des séquences répétitives."
+      },
+      {
+        id: 33,
+        text: "Une tâche peut être assimilée à un sous-programme.",
+        options: [
+          { key: "a", label: "Vrai", correct: true },
+          { key: "b", label: "Faux", correct: false }
+        ],
+        explanation:
+          "Une tâche appelée par une macro‑étape joue un rôle analogue à un sous‑programme : séquence autonome pouvant être appelée plusieurs fois."
+      },
+      {
+        id: 34,
+        text: "La séquence à répéter est décrite dans un GRAFCET auxiliaire. L'appel à ce GRAFCET auxiliaire se fait :",
+        options: [
+          { key: "a", label: "Dans le GRAFCET principal par une étape appelée \"tâche\".", correct: true },
+          { key: "b", label: "Dans le GRAFCET principal par une étape appelée \"macro-étape\".", correct: false },
+          { key: "c", label: "Dans le GRAFCET auxiliaire par activation de l'étape initiale.", correct: false }
+        ],
+        explanation:
+          "Le GRAFCET principal contient une étape de type \"tâche\" qui appelle le GRAFCET auxiliaire décrivant la séquence répétée."
+      }
+    ];
+
+    const state = {
+      answered: {}, // id -> { correct: bool, selectedKeys: [..] }
+      multipleSelectionIds: new Set([5, 7, 22, 24, 31])
+    };
+
+    const questionsContainer = document.getElementById("questions");
+    const questionMapContainer = document.getElementById("questionMap");
+    const questionCountLabel = document.getElementById("questionCount");
+    const scoreValueEl = document.getElementById("scoreValue");
+    const scoreTotalEl = document.getElementById("scoreTotal");
+    const scoreBarFillEl = document.getElementById("scoreBarFill");
+    const progressTextEl = document.getElementById("progressText");
+    const scoreLabelEl = document.getElementById("scoreLabel");
+    const btnShowAllSolutions = document.getElementById("btnShowAllSolutions");
+    const btnReset = document.getElementById("btnReset");
+
+    function isMultiple(questionId) {
+      return state.multipleSelectionIds.has(questionId);
+    }
+
+    function renderQuestions() {
+      questionsContainer.innerHTML = "";
+      questionMapContainer.innerHTML = "";
+      questionCountLabel.textContent = questionsData.length;
+      scoreTotalEl.textContent = `/ ${questionsData.length}`;
+
+      questionsData.forEach((q, index) => {
+        const card = document.createElement("article");
+        card.className = "question-card";
+        card.dataset.questionId = q.id;
+
+        const header = document.createElement("div");
+        header.className = "question-header";
+
+        const indexSpan = document.createElement("div");
+        indexSpan.className = "question-index";
+        indexSpan.textContent = `Question ${index + 1}`;
+
+        const statusPill = document.createElement("div");
+        statusPill.className = "question-status-pill";
+        statusPill.dataset.status = "pending";
+        statusPill.innerHTML = `<span class="bullet"></span><span>En attente</span>`;
+
+        header.appendChild(indexSpan);
+        header.appendChild(statusPill);
+
+        const textEl = document.createElement("p");
+        textEl.className = "question-text";
+        textEl.textContent = q.text;
+
+        const optionsWrapper = document.createElement("div");
+        optionsWrapper.className = "options";
+
+        q.options.forEach((opt) => {
+          const label = document.createElement("label");
+          label.className = "option-chip";
+          label.dataset.key = opt.key;
+
+          const input = document.createElement("input");
+          input.type = isMultiple(q.id) ? "checkbox" : "radio";
+          input.name = `q_${q.id}`;
+          input.value = opt.key;
+
+          const badge = document.createElement("span");
+          badge.className = "option-badge";
+          badge.textContent = opt.key.toUpperCase();
+
+          const spanLabel = document.createElement("span");
+          spanLabel.className = "option-label";
+          spanLabel.textContent = opt.label;
+
+          label.appendChild(input);
+          label.appendChild(badge);
+          label.appendChild(spanLabel);
+
+          label.addEventListener("click", (e) => {
+            e.preventDefault();
+            handleOptionClick(q, opt.key, card);
+          });
+
+          optionsWrapper.appendChild(label);
+        });
+
+        const feedback = document.createElement("div");
+        feedback.className = "feedback";
+        feedback.dataset.questionId = q.id;
+
+        card.appendChild(header);
+        card.appendChild(textEl);
+        card.appendChild(optionsWrapper);
+        card.appendChild(feedback);
+
+        questionsContainer.appendChild(card);
+
+        const mapItem = document.createElement("button");
+        mapItem.type = "button";
+        mapItem.className = "map-item";
+        mapItem.textContent = index + 1;
+        mapItem.dataset.questionId = q.id;
+        mapItem.addEventListener("click", () => {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+          document
+            .querySelectorAll(".map-item")
+            .forEach((el) => el.classList.remove("current"));
+          mapItem.classList.add("current");
+        });
+        questionMapContainer.appendChild(mapItem);
+      });
+
+      updateGlobalScore();
+    }
+
+    function handleOptionClick(question, selectedKey, cardEl) {
+      const isMulti = isMultiple(question.id);
+      const optionChips = cardEl.querySelectorAll(".option-chip");
+      let selectedKeys = [];
+
+      if (isMulti) {
+        const chip = Array.from(optionChips).find(
+          (c) => c.dataset.key === selectedKey
+        );
+        const input = chip.querySelector("input");
+        input.checked = !input.checked;
+        selectedKeys = Array.from(optionChips)
+          .filter((c) => c.querySelector("input").checked)
+          .map((c) => c.dataset.key);
+      } else {
+        optionChips.forEach((chip) => {
+          const input = chip.querySelector("input");
+          input.checked = chip.dataset.key === selectedKey;
+        });
+        selectedKeys = [selectedKey];
+      }
+
+      if (selectedKeys.length === 0) {
+        return;
+      }
+
+      applyCorrection(question, cardEl, selectedKeys);
+      updateGlobalScore();
+    }
+
+    function applyCorrection(question, cardEl, selectedKeys) {
+      const correctKeys = question.options
+        .filter((o) => o.correct)
+        .map((o) => o.key);
+      const setSelected = new Set(selectedKeys);
+      const setCorrect = new Set(correctKeys);
+
+      const isExactlyCorrect =
+        selectedKeys.length === correctKeys.length &&
+        selectedKeys.every((k) => setCorrect.has(k));
+
+      const statusPill = cardEl.querySelector(".question-status-pill");
+      statusPill.classList.remove("correct", "wrong");
+      const bullet = statusPill.querySelector(".bullet");
+      const labelSpan = statusPill.querySelector("span:last-child");
+
+      if (isExactlyCorrect) {
+        statusPill.classList.add("correct");
+        bullet.style.backgroundColor = "#4ade80";
+        labelSpan.textContent = "Bonne réponse";
+      } else {
+        statusPill.classList.add("wrong");
+        bullet.style.backgroundColor = "#f97373";
+        labelSpan.textContent = "Réponse à revoir";
+      }
+
+      const optionChips = cardEl.querySelectorAll(".option-chip");
+      optionChips.forEach((chip) => {
+        chip.classList.remove("correct", "wrong");
+        const key = chip.dataset.key;
+        if (setCorrect.has(key) && setSelected.has(key)) {
+          chip.classList.add("correct");
+        } else if (!setCorrect.has(key) && setSelected.has(key)) {
+          chip.classList.add("wrong");
+        }
+      });
+
+      const feedbackEl = cardEl.querySelector(".feedback");
+      feedbackEl.classList.add("visible");
+      feedbackEl.classList.remove("correct", "wrong");
+      feedbackEl.classList.add(isExactlyCorrect ? "correct" : "wrong");
+      const correctLabels = question.options
+        .filter((o) => o.correct)
+        .map((o) => o.key.toUpperCase())
+        .join(", ");
+      feedbackEl.innerHTML = `
+        <strong>${isExactlyCorrect ? "✔ Correct." : "✗ Incorrect."}</strong>
+        <span>La ou les bonne(s) réponse(s) : 
+          <span class="correct-answer">${correctLabels}</span>.
+        </span>
+        <br />
+        ${question.explanation}
+      `;
+
+      state.answered[question.id] = {
+        correct: isExactlyCorrect,
+        selectedKeys: Array.from(selectedKeys)
+      };
+
+      updateQuestionMapItem(question.id, isExactlyCorrect);
+    }
+
+    function updateQuestionMapItem(questionId, isCorrect) {
+      const mapItem = questionMapContainer.querySelector(
+        `.map-item[data-question-id="${questionId}"]`
+      );
+      if (!mapItem) return;
+      mapItem.classList.remove("correct", "wrong");
+      mapItem.classList.add(isCorrect ? "correct" : "wrong");
+    }
+
+    function updateGlobalScore() {
+      const total = questionsData.length;
+      const answeredIds = Object.keys(state.answered);
+      const answeredCount = answeredIds.length;
+      const correctCount = answeredIds.filter(
+        (id) => state.answered[Number(id)].correct
+      ).length;
+
+      scoreValueEl.textContent = correctCount;
+      scoreTotalEl.textContent = `/ ${total}`;
+      progressTextEl.textContent = `${answeredCount} / ${total} répondues`;
+
+      const ratio = total > 0 ? (correctCount / total) * 100 : 0;
+      scoreBarFillEl.style.width = `${ratio}%`;
+
+      if (answeredCount === 0) {
+        scoreLabelEl.textContent = "Aucune question validée pour le moment";
+      } else if (ratio === 100) {
+        scoreLabelEl.textContent = "Parfait, 100 % de bonnes réponses !";
+      } else if (ratio >= 70) {
+        scoreLabelEl.textContent = "Très bon niveau, encore quelques détails à consolider.";
+      } else if (ratio >= 40) {
+        scoreLabelEl.textContent = "Résultats intermédiaires, poursuis l’entraînement.";
+      } else {
+        scoreLabelEl.textContent = "Commence par relire le cours puis refais le QCM.";
+      }
+    }
+
+    function showAllSolutions() {
+      questionsData.forEach((q) => {
+        const card = questionsContainer.querySelector(
+          `.question-card[data-question-id="${q.id}"]`
+        );
+        if (!card) return;
+        const correctKeys = q.options.filter((o) => o.correct).map((o) => o.key);
+        applyCorrection(q, card, correctKeys);
+      });
+      updateGlobalScore();
+    }
+
+    function resetAll() {
+      state.answered = {};
+      document
+        .querySelectorAll(".question-card")
+        .forEach((card) => {
+          const statusPill = card.querySelector(".question-status-pill");
+          statusPill.classList.remove("correct", "wrong");
+          const bullet = statusPill.querySelector(".bullet");
+          const labelSpan = statusPill.querySelector("span:last-child");
+          bullet.style.backgroundColor = "rgba(148, 163, 184, 0.8)";
+          labelSpan.textContent = "En attente";
+
+          card
+            .querySelectorAll(".option-chip")
+            .forEach((chip) => {
+              chip.classList.remove("correct", "wrong");
+              chip.querySelector("input").checked = false;
+            });
+
+          const feedbackEl = card.querySelector(".feedback");
+          feedbackEl.classList.remove("visible", "correct", "wrong");
+          feedbackEl.innerHTML = "";
+        });
+
+      document
+        .querySelectorAll(".map-item")
+        .forEach((item) => item.className = "map-item");
+
+      updateGlobalScore();
+    }
+
+    btnShowAllSolutions.addEventListener("click", showAllSolutions);
+    btnReset.addEventListener("click", resetAll);
+
+    renderQuestions();
+  </script>
+</body>
+</html>
