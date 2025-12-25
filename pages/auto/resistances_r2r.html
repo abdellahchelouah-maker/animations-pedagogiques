@@ -85,31 +85,39 @@
     <article class="pedago-block">
       <h3>Votre avis sur cette animation</h3>
 
-      <form class="feedback-form" action="#" method="post">
-        <div class="rating-group">
-          <label for="note">Note&nbsp;:</label>
-          <select name="note" id="note">
-            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
-            <option value="4">⭐⭐⭐⭐ – Très bien</option>
-            <option value="3">⭐⭐⭐ – Correct</option>
-            <option value="2">⭐⭐ – À améliorer</option>
-            <option value="1">⭐ – Insuffisant</option>
-          </select>
-        </div>
+      <form action="https://formspree.io/f/mnjqavbo"
+      method="POST"
+      class="feedback-form">
 
-        <div class="field-group">
-          <label for="commentaire">Commentaire&nbsp;:</label>
-          <textarea id="commentaire" name="commentaire" rows="4"
-                    placeholder="Suggestions d’amélioration, remarques pédagogiques, idées d’utilisation en classe…"></textarea>
-        </div>
+  <input type="hidden" name="_subject" value="Avis sur l'animation resistances_r2r">
+  <input type="hidden" name="animation" value="resistances_r2r">
 
-        <div class="field-group">
-          <label for="email">Votre adresse e‑mail (facultatif)&nbsp;:</label>
-          <input type="email" id="email" name="email" placeholder="prenom.nom@exemple.fr">
-        </div>
+  <div class="field-group">
+    <label for="note-resistances_r2r">Note :</label>
+    <select id="note-resistances_r2r" name="note-resistances_r2r" required>
+      <option value="">Choisir une note</option>
+      <option value="5">5 - Excellent</option>
+      <option value="4">4 - Très bien</option>
+      <option value="3">3 - Correct</option>
+      <option value="2">2 - Moyen</option>
+      <option value="1">1 - À améliorer</option>
+    </select>
+  </div>
 
-        <button type="submit" class="btn">Envoyer mon avis</button>
-      </form>
+  <div class="field-group">
+    <label for="commentaire-resistances_r2r">Commentaire :</label>
+    <textarea id="commentaire-resistances_r2r" name="commentaire-resistances_r2r" rows="4"
+              placeholder="Vos remarques, suggestions…"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="email-resistances_r2r">Votre e-mail (facultatif) :</label>
+    <input type="email" id="email-resistances_r2r" name="_replyto"
+           placeholder="vous@exemple.fr">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Envoyer mon avis</button>
+</form>
     </article>
 
     <p class="back-link">

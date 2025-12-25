@@ -83,31 +83,39 @@
     <article class="pedago-block">
       <h3>Votre avis sur cette animation</h3>
 
-      <form class="feedback-form" action="#" method="post">
-        <div class="rating-group">
-          <label for="note">Note&nbsp;:</label>
-          <select name="note" id="note">
-            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
-            <option value="4">⭐⭐⭐⭐ – Très bien</option>
-            <option value="3">⭐⭐⭐ – Correct</option>
-            <option value="2">⭐⭐ – À améliorer</option>
-            <option value="1">⭐ – Insuffisant</option>
-          </select>
-        </div>
+      <form action="https://formspree.io/f/mnjqavbo"
+      method="POST"
+      class="feedback-form">
 
-        <div class="field-group">
-          <label for="commentaire">Commentaire&nbsp;:</label>
-          <textarea id="commentaire" name="commentaire" rows="4"
-                    placeholder="Suggestions d’amélioration, remarques pédagogiques, idées d’utilisation en classe…"></textarea>
-        </div>
+  <input type="hidden" name="_subject" value="Avis sur l'animation demarr_stator">
+  <input type="hidden" name="animation" value="demarr_stator">
 
-        <div class="field-group">
-          <label for="email">Votre adresse e‑mail (facultatif)&nbsp;:</label>
-          <input type="email" id="email" name="email" placeholder="prenom.nom@exemple.fr">
-        </div>
+  <div class="field-group">
+    <label for="note-demarr_stator">Note :</label>
+    <select id="note-demarr_stator" name="note-demarr_stator" required>
+      <option value="">Choisir une note</option>
+      <option value="5">5 - Excellent</option>
+      <option value="4">4 - Très bien</option>
+      <option value="3">3 - Correct</option>
+      <option value="2">2 - Moyen</option>
+      <option value="1">1 - À améliorer</option>
+    </select>
+  </div>
 
-        <button type="submit" class="btn">Envoyer mon avis</button>
-      </form>
+  <div class="field-group">
+    <label for="commentaire-demarr_stator">Commentaire :</label>
+    <textarea id="commentaire-demarr_stator" name="commentaire-demarr_stator" rows="4"
+              placeholder="Vos remarques, suggestions…"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="email-demarr_stator">Votre e-mail (facultatif) :</label>
+    <input type="email" id="email-demarr_stator" name="_replyto"
+           placeholder="vous@exemple.fr">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Envoyer mon avis</button>
+</form>
     </article>
 
     <p class="back-link">

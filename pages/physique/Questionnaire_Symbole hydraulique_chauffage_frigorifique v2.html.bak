@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Introduction à la schématisation - 2ème partie : le schéma en énergétique</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- fiche située dans pages/physique/ -->
+  <link rel="stylesheet" href="../../style/style.css">
+    <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      autoplay: "on",
+      unmuteOverlay: "hidden"
+    };
+  </script>
+  <script src="../../js/ruffle/ruffle.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-left">
+    <h1>Physique</h1>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../electrotechnique.html">Électrotechnique</a></li>
+        <li><a href="../electronique.html">Électronique</a></li>
+        <li><a href="../automatisme.html">Automatisme</a></li>
+        <li><a href="../physique.html" class="active">Physique</a></li>
+        <li><a href="../jeux-educatifs.html">Jeux éducatifs</a></li>
+        <li><a href="../visual-basic.html">Visual Basic</a></li>
+		<li><a href="../tpwks.html">TP multimédia</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="header-right">
+    <img src="../../media/img/logo_site_creation.png" alt="Logo du site">
+  </div>
+</header>
+
+<main class="page-content">
+  <section class="animation-detail">
+    <h2>Introduction à la schématisation - 2ème partie : le schéma en énergétique</h2>
+
+    <article class="card">
+      <div class="card-media">
+        <img src="../../media/img/symbole_hydraul.png"
+             alt="Introduction à la schématisation - 2ème partie : le schéma en énergétique">
+      </div>
+
+      <div class="card-body">
+        <p>
+          Deuxième volet de l'introduction à la schématisation. On s'intéresse ici aux symboles de schéma en énergétique : hydraulique, chauffage, frigorifique et aéraulique.
+        </p>
+
+        <p>
+          <strong>Catégorie :</strong> Physique – <strong>Date :</strong> 2017-02-23<br>
+          <strong>Mots‑clés :</strong> évaluation, énergétique, système, STI2D, schéma, ressource, représentations, pédagogie, appareillage, animation, SSI, hydraulique, chauffage
+        </p>
+
+        <div class="player-container">
+          <h3>Animation interactive</h3>
+          <div class="ruffle-player">
+            <script src="../../js/ruffle/ruffle.js"></script>
+            <object type="application/x-shockwave-flash"
+                    data="../../media/swf/Questionnaire_Symbole hydraulique_chauffage_frigorifique v2.swf"
+                    width="800" height="600">
+              <param name="movie" value="../../media/swf/Questionnaire_Symbole hydraulique_chauffage_frigorifique v2.swf">
+              <param name="quality" value="high">
+              <p>Si l’animation ne se lance pas, vérifiez que JavaScript est activé.</p>
+            </object>
+          </div>
+        </div>
+
+        <div class="download-buttons">
+          <a href="../../media/swf/Questionnaire_Symbole hydraulique_chauffage_frigorifique v2.swf" class="btn" download>
+            Télécharger au format SWF
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="pedago-block">
+      <h3>Votre avis sur cette animation</h3>
+
+      <form class="feedback-form" action="#" method="post">
+        <div class="rating-group">
+          <label for="note">Note&nbsp;:</label>
+          <select name="note" id="note">
+            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
+            <option value="4">⭐⭐⭐⭐ – Très bien</option>
+            <option value="3">⭐⭐⭐ – Correct</option>
+            <option value="2">⭐⭐ – À améliorer</option>
+            <option value="1">⭐ – Insuffisant</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="commentaire">Commentaire&nbsp;:</label>
+          <textarea id="commentaire" name="commentaire" rows="4"
+                    placeholder="Suggestions d’amélioration, remarques pédagogiques, idées d’utilisation en classe…"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label for="email">Votre adresse e‑mail (facultatif)&nbsp;:</label>
+          <input type="email" id="email" name="email" placeholder="prenom.nom@exemple.fr">
+        </div>
+
+        <button type="submit" class="btn">Envoyer mon avis</button>
+      </form>
+    </article>
+
+    <p class="back-link">
+      <a href="../physique.html">&larr; Retour à la liste des animations de physique</a>
+    </p>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2025 – Abdellah CHELOUAH</p>
+</footer>
+
+</body>
+</html>

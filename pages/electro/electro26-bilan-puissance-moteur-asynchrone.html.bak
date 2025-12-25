@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Force électromotrice et force motrice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- fiche située dans pages/electro/ -->
+  <link rel="stylesheet" href="../../style/style.css">
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      autoplay: "on",
+      unmuteOverlay: "hidden"
+    };
+  </script>
+  <script src="../../js/ruffle/ruffle.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-left">
+    <h1>Électrotechnique</h1>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../electrotechnique.html" class="active">Électrotechnique</a></li>
+        <li><a href="../electronique.html">Électronique</a></li>
+        <li><a href="../automatisme.html">Automatisme</a></li>
+        <li><a href="../physique.html">Physique</a></li>
+        <li><a href="../jeux-educatifs.html">Jeux éducatifs</a></li>
+        <li><a href="../visual-basic.html">Visual Basic</a></li>
+		<li><a href="../tpwks.html">TP multimédia</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="header-right">
+    <img src="../../media/img/logo_site_creation.png" alt="Logo du site">
+  </div>
+</header>
+
+<main class="page-content">
+  <section class="animation-detail">
+    <h2>Bilan de puissance du moteur asynchrone triphasé</h2>
+
+    <article class="card">
+      <div class="card-media">
+        <img src="../../media/img/puissance_mas.jpg"
+             alt="Bilan de puissance du moteur asynchrone triphasé">
+      </div>
+
+      <div class="card-body">
+        <p>
+          Présentation du bilan de puissance appliqué au moteur asynchrone triphasé, 
+		  en complément du cas à courant continu.       
+		  
+        </p>
+
+        <div class="player-container">
+          <h3>Animation interactive</h3>
+          <div class="ruffle-player">
+            <script src="../../js/ruffle/ruffle.js"></script>
+            <object type="application/x-shockwave-flash"
+                    data="../../media/swf/puissance_mas.swf"
+                    width="800" height="600">
+              <param name="movie" value="../../media/swf/puissance_mas.swf">
+              <param name="quality" value="high">
+              <p>Si l’animation ne se lance pas, vérifiez que JavaScript est activé.</p>
+            </object>
+          </div>
+        </div>
+
+        <div class="download-buttons">
+          <a href="../../media/swf/puissance_mas.swf" class="btn" download>
+            Télécharger au format SWF
+          </a>
+          <a href="../../media/exe/puissance_mas.exe" class="btn" download>
+            Télécharger la version EXE
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Bloc notation + commentaire -->
+    <article class="pedago-block">
+      <h3>Votre avis sur cette animation</h3>
+
+      <form class="feedback-form" action="#" method="post">
+        <div class="rating-group">
+          <label for="note">Note&nbsp;:</label>
+          <select name="note" id="note">
+            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
+            <option value="4">⭐⭐⭐⭐ – Très bien</option>
+            <option value="3">⭐⭐⭐ – Correct</option>
+            <option value="2">⭐⭐ – À améliorer</option>
+            <option value="1">⭐ – Insuffisant</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="commentaire">Commentaire&nbsp;:</label>
+          <textarea id="commentaire" name="commentaire" rows="4"
+                    placeholder="Suggestions d’amélioration, remarques pédagogiques, idées d’utilisation en classe…"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label for="email">Votre adresse e‑mail (facultatif)&nbsp;:</label>
+          <input type="email" id="email" name="email" placeholder="prenom.nom@exemple.fr">
+        </div>
+
+        <button type="submit" class="btn">Envoyer mon avis</button>
+      </form>
+    </article>
+
+    <p class="back-link">
+      <a href="../electrotechnique.html">&larr; Retour à la liste des animations d’électrotechnique</a>
+    </p>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2025 – Abdellah CHELOUAH</p>
+</footer>
+
+</body>
+</html>

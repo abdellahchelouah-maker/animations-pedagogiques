@@ -84,31 +84,39 @@
     <article class="pedago-block">
       <h3>Votre avis sur cette animation</h3>
 
-      <form class="feedback-form" action="#" method="post">
-        <div class="rating-group">
-          <label for="note">Note&nbsp;:</label>
-          <select name="note" id="note">
-            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
-            <option value="4">⭐⭐⭐⭐ – Très bien</option>
-            <option value="3">⭐⭐⭐ – Correct</option>
-            <option value="2">⭐⭐ – À améliorer</option>
-            <option value="1">⭐ – Insuffisant</option>
-          </select>
-        </div>
+      <form action="https://formspree.io/f/mnjqavbo"
+      method="POST"
+      class="feedback-form">
 
-        <div class="field-group">
-          <label for="commentaire">Commentaire&nbsp;:</label>
-          <textarea id="commentaire" name="commentaire" rows="4"
-                    placeholder="Suggestions d’amélioration, remarques pédagogiques, idées d’utilisation en classe…"></textarea>
-        </div>
+  <input type="hidden" name="_subject" value="Avis sur l'animation auto18-code-gray-positionnement">
+  <input type="hidden" name="animation" value="auto18-code-gray-positionnement">
 
-        <div class="field-group">
-          <label for="email">Votre adresse e‑mail (facultatif)&nbsp;:</label>
-          <input type="email" id="email" name="email" placeholder="prenom.nom@exemple.fr">
-        </div>
+  <div class="field-group">
+    <label for="note-auto18-code-gray-positionnement">Note :</label>
+    <select id="note-auto18-code-gray-positionnement" name="note-auto18-code-gray-positionnement" required>
+      <option value="">Choisir une note</option>
+      <option value="5">5 - Excellent</option>
+      <option value="4">4 - Très bien</option>
+      <option value="3">3 - Correct</option>
+      <option value="2">2 - Moyen</option>
+      <option value="1">1 - À améliorer</option>
+    </select>
+  </div>
 
-        <button type="submit" class="btn">Envoyer mon avis</button>
-      </form>
+  <div class="field-group">
+    <label for="commentaire-auto18-code-gray-positionnement">Commentaire :</label>
+    <textarea id="commentaire-auto18-code-gray-positionnement" name="commentaire-auto18-code-gray-positionnement" rows="4"
+              placeholder="Vos remarques, suggestions…"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="email-auto18-code-gray-positionnement">Votre e-mail (facultatif) :</label>
+    <input type="email" id="email-auto18-code-gray-positionnement" name="_replyto"
+           placeholder="vous@exemple.fr">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Envoyer mon avis</button>
+</form>
     </article>
 
     <p class="back-link">

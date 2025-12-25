@@ -85,31 +85,39 @@
     <article class="pedago-block">
       <h3>Votre avis sur cette animation</h3>
 
-      <form class="feedback-form" action="#" method="post">
-        <div class="rating-group">
-          <label for="note">Note&nbsp;:</label>
-          <select name="note" id="note">
-            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
-            <option value="4">⭐⭐⭐⭐ – Très bien</option>
-            <option value="3">⭐⭐⭐ – Correct</option>
-            <option value="2">⭐⭐ – À améliorer</option>
-            <option value="1">⭐ – Insuffisant</option>
-          </select>
-        </div>
+      <form action="https://formspree.io/f/mnjqavbo"
+      method="POST"
+      class="feedback-form">
 
-        <div class="field-group">
-          <label for="commentaire">Commentaire&nbsp;:</label>
-          <textarea id="commentaire" name="commentaire" rows="4"
-                    placeholder="Suggestions d’amélioration, remarques pédagogiques, idées d’utilisation en classe…"></textarea>
-        </div>
+  <input type="hidden" name="_subject" value="Avis sur l'animation physique7-systeme-triphasé">
+  <input type="hidden" name="animation" value="physique7-systeme-triphasé">
 
-        <div class="field-group">
-          <label for="email">Votre adresse e‑mail (facultatif)&nbsp;:</label>
-          <input type="email" id="email" name="email" placeholder="prenom.nom@exemple.fr">
-        </div>
+  <div class="field-group">
+    <label for="note-physique7-systeme-triphasé">Note :</label>
+    <select id="note-physique7-systeme-triphasé" name="note-physique7-systeme-triphasé" required>
+      <option value="">Choisir une note</option>
+      <option value="5">5 - Excellent</option>
+      <option value="4">4 - Très bien</option>
+      <option value="3">3 - Correct</option>
+      <option value="2">2 - Moyen</option>
+      <option value="1">1 - À améliorer</option>
+    </select>
+  </div>
 
-        <button type="submit" class="btn">Envoyer mon avis</button>
-      </form>
+  <div class="field-group">
+    <label for="commentaire-physique7-systeme-triphasé">Commentaire :</label>
+    <textarea id="commentaire-physique7-systeme-triphasé" name="commentaire-physique7-systeme-triphasé" rows="4"
+              placeholder="Vos remarques, suggestions…"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="email-physique7-systeme-triphasé">Votre e-mail (facultatif) :</label>
+    <input type="email" id="email-physique7-systeme-triphasé" name="_replyto"
+           placeholder="vous@exemple.fr">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Envoyer mon avis</button>
+</form>
     </article>
 
     <p class="back-link">
