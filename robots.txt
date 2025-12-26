@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://abdellahchelouah-maker.github.io/animations-pedagogiques/sitemap.xml
