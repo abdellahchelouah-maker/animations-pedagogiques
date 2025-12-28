@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Régulation TOR</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width="device-width," initial-scale="1"">
   <!-- fiche située dans pages/automatisme/ -->
   <link rel="stylesheet" href="../../style/style.css">
   <script>
@@ -15,7 +15,7 @@
   </script>
   <script src="../../js/ruffle/ruffle.js"></script>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RV84PP1P22"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id="G-RV84PP1P22""></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -55,9 +55,8 @@
     <h2>Régulation industrielle : séquence sur l'algorithme Tout Ou Rien (TOR)</h2>
 
     <article class="card">
-      <div class="card-media">
-        <img src="../../media/img/regulation_tor_v1.jpg"
-             alt="Régulation industrielle : séquence sur l'algorithme Tout Ou Rien (TOR)">
+            <div class="card-media">
+        <img src="../../media/img/regulation_tor_v1.jpg" alt="" >
       </div>
 
       <div class="card-body">
@@ -73,23 +72,26 @@
 
         <div class="player-container">
           <h3>Animation interactive</h3>
-          <div class="ruffle-player">
+          <div >
             <script src="../../js/ruffle/ruffle.js"></script>
-            <object type="application/x-shockwave-flash"
+            <object <object <object type="application/x-shockwave-flash"
                     data="../../media/swf/la régulation_TOR v2.swf"
-                    width="800" height="600">
+                    width="800" height="600"> > >
               <param name="movie" value="../../media/swf/la régulation_TOR v2.swf">
               <param name="quality" value="high">
-              <p>Si l’animation ne se lance pas, vérifiez que JavaScript est activé.</p>
+              <p>Si l'animation ne se lance pas, vérifiez que JavaScript est activé.</p>
             </object>
           </div>
-        </div>
-
-        <div class="download-buttons">
+        </div>        <div class="download-buttons">
           <a href="../../media/swf/la régulation_TOR v2.swf" class="btn" download>
             Télécharger au format SWF
           </a>
+          <a href="../../media/swf/la régulation_TOR v2.exe" class="btn" download>
+            Télécharger au format EXE
+          </a>
         </div>
+
+        
       </div>
     </article>
 
@@ -100,35 +102,52 @@
       method="POST"
       class="feedback-form">
 
-  <input type="hidden" name="_subject" value="Avis sur l'animation auto7-regulation-tout-ou-rien">
-  <input type="hidden" name="animation" value="auto7-regulation-tout-ou-rien">
+  <input type="hidden" name="_subject" value="Avis sur l'animation logo_site_creation">
+  <input type="hidden" name="animation" value="logo_site_creation">
 
-  <div class="field-group">
-    <label for="note-auto7-regulation-tout-ou-rien">Note :</label>
-    <select id="note-auto7-regulation-tout-ou-rien" name="note-auto7-regulation-tout-ou-rien" required>
-      <option value="">Choisir une note</option>
-      <option value="5">5 - Excellent</option>
-      <option value="4">4 - Très bien</option>
-      <option value="3">3 - Correct</option>
-      <option value="2">2 - Moyen</option>
-      <option value="1">1 - À améliorer</option>
+  <div class="rating-group">
+    <label for="note-logo_site_creation">Note&nbsp;:</label>
+    <select name="note-logo_site_creation" id="note-logo_site_creation" required>
+      <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
+      <option value="4">⭐⭐⭐⭐ – Très bien</option>
+      <option value="3">⭐⭐ – Correct</option>
+      <option value="2">⭐⭐ – À améliorer</option>
+      <option value="1">⭐ – Insuffisant</option>
     </select>
   </div>
 
   <div class="field-group">
-    <label for="commentaire-auto7-regulation-tout-ou-rien">Commentaire :</label>
-    <textarea id="commentaire-auto7-regulation-tout-ou-rien" name="commentaire-auto7-regulation-tout-ou-rien" rows="4"
-              placeholder="Vos remarques, suggestions…"></textarea>
+    <label for="commentaire-logo_site_creation">Commentaire&nbsp;:</label>
+    <textarea id="commentaire-logo_site_creation"
+              name="commentaire-logo_site_creation"
+              rows="4"
+              placeholder="Suggestions d'amélioration, remarques pédagogiques, idées d'utilisation en classe…"></textarea>
   </div>
 
   <div class="field-group">
-    <label for="email-auto7-regulation-tout-ou-rien">Votre e-mail (facultatif) :</label>
-    <input type="email" id="email-auto7-regulation-tout-ou-rien" name="_replyto"
-           placeholder="vous@exemple.fr">
+    <label for="email-logo_site_creation">Votre e‑mail (facultatif)&nbsp;:</label>
+    <input type="email"
+           id="email-logo_site_creation"
+           name="_replyto"
+           placeholder="prenom.nom@exemple.fr">
   </div>
 
   <button type="submit" class="btn btn-primary">Envoyer mon avis</button>
 </form>
+<div class="legal-notice">
+  <details>
+    <summary>
+      <small>🔒 En cliquant "Envoyer", vous acceptez notre <a href="../politique-confidentialite.html" target="_blank">politique de confidentialité</a></small>
+    </summary>
+    <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #666; line-height: 1.5;">
+      <strong>Informations sur le traitement des données :</strong><br>
+      Les données collectées (note, commentaire, email facultatif) sont utilisées uniquement pour améliorer nos animations pédagogiques. 
+      Elles ne sont pas cédées à des tiers. Vous pouvez demander leur suppression à tout moment via ce formulaire.
+      <br><em>Conforme RGPD - Responsable : Abdellah CHELOUAH</em>
+    </p>
+  </details>
+</div>
+
     </article>
 
     <p class="back-link">

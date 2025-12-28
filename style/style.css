@@ -297,33 +297,167 @@ main p {
 }
 
 /* =========================================================
-   FORMULAIRES
+   FORMULAIRE ÉTOILÉ - DESIGN MODERNE GLASSMORPHISM
    ========================================================= */
 
-.downloads, .rating, .comments {
-  margin-top: 1.5rem;
+.feedback-form,
+.rating,
+.comments form,
+.downloads form {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin: 2rem 0;
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(255,255,255,0.05) inset;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-form p {
+/* Labels élégants */
+.feedback-form label,
+.rating label,
+.comments label {
+  display: block;
+  font-weight: 600;
+  color: #2c3e50;
   margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
 }
 
-input[type="text"], select, textarea {
+/* SELECT ÉTOILES - ANIMÉ */
+.rating-group select,
+select[name="rating"] {
   width: 100%;
-  padding: 0.4rem;
-  border-radius: 0.25rem;
-  border: 1px solid #d1d5db;
-  font: inherit;
+  padding: 1.2rem 1.5rem;
+  font-size: 1.1rem;
+  border: 2px solid rgba(52,152,219,0.2);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpath stroke='%238B5CF6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19.92 11.62L12.56 10.23l2.39-7.38L14 2l-5.5 5.5-5.5-5.5.92 8.38L2 11.62l7.38 2.39L9.77 22l5.5-5.5 5.5 5.5-1.85-8.38z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 20px;
+  padding-right: 3rem;
 }
 
-textarea {
+.rating-group select:hover,
+select[name="rating"]:hover {
+  border-color: #6366f1;
+  box-shadow: 
+    0 12px 40px rgba(99,102,241,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  transform: translateY(-2px);
+}
+
+.rating-group select:focus,
+select[name="rating"]:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 
+    0 0 0 4px rgba(139,92,246,0.2),
+    0 20px 40px rgba(139,92,246,0.15);
+}
+
+/* TEXTAREA élégant */
+.field-group textarea,
+input[type="email"],
+input[type="text"] {
+  width: 100%;
+  min-height: 140px;
+  padding: 1.2rem 1.5rem;
+  border: 2px solid rgba(52,152,219,0.2);
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
   resize: vertical;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.form-info {
-  font-size: 0.85rem;
-  color: #555;
+.field-group textarea:hover,
+input[type="email"]:hover,
+input[type="text"]:hover {
+  border-color: #6366f1;
+  transform: translateY(-1px);
 }
+
+.field-group textarea:focus,
+input[type="email"]:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 
+    0 0 0 4px rgba(139,92,246,0.2),
+    0 20px 40px rgba(139,92,246,0.15);
+}
+
+/* BOUTON ENVOI - SPECTACULAIRE */
+.feedback-form button[type="submit"],
+button.btn-submit {
+  width: 100%;
+  padding: 1.4rem 2.5rem;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6366f1 50%, #4F46E5 100%);
+  color: white !important;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 12px 40px rgba(139,92,246,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.feedback-form button[type="submit"]:hover,
+button.btn-submit:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 20px 50px rgba(139,92,246,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.feedback-form button[type="submit"]:active,
+button.btn-submit:active {
+  transform: translateY(-2px);
+}
+
+/* Étoiles animées dans options */
+.rating-group select option:checked {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .feedback-form {
+    padding: 2rem;
+    margin: 1.5rem 1rem;
+  }
+}
+
 
 /* =========================================================
    PROFIL (PAGE À PROPOS)
