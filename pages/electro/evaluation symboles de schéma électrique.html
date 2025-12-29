@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Introduction à la schématisation - 1ère partie : le schéma électrique et électronique</title>
+    <meta name="description" content="Animation éducative 'Introduction à la schématisation - 1ère partie : le schéma électrique et électronique' - Jeux éducatifs pour enfants">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- fiche située dans pages/electrotechnique/ -->
   <link rel="stylesheet" href="../../style/style.css">
@@ -22,7 +23,22 @@
   gtag('js', new Date());
 
   gtag('config', 'G-RV84PP1P22');
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
 </script>
+
+  // Debug Google Analytics
+  window.addEventListener('load', function() {
+    if (typeof gtag !== 'undefined') {
+      console.log('✓ Google Analytics chargé');
+      gtag('event', 'test_event', {'debug_mode': true});
+    } else {
+      console.error('✗ Google Analytics non chargé');
+    }
+  });
 <!-- Fin Google Analytics -->
 
 </head>
@@ -49,7 +65,7 @@
   </div>
 </header>
 
-<main class="page-content">
+<main class="page-content" role="main">
   <section class="animation-detail">
     <h2>Introduction à la schématisation - 1ère partie : le schéma électrique et électronique</h2>
 
@@ -123,9 +139,7 @@
 
   <div class="field-group">
     <label for="email-symbole_elec">Votre e‑mail (facultatif)&nbsp;:</label>
-    <input type="email"
-           id="email-symbole_elec"
-           name="_replyto"
+    <input type="email" id="email-symbole_elec" name="_replyto" autocomplete="email"
            placeholder="prenom.nom@exemple.fr">
   </div>
 

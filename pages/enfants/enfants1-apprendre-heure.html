@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Apprendre à lire l'heure</title>
+    <meta name="description" content="Animation éducative 'Apprendre à lire l'heure' - Jeux éducatifs pour enfants">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- fiche dans pages/enfants/ -->
   <link rel="stylesheet" href="../../style/style.css">
@@ -22,7 +23,22 @@
   gtag('js', new Date());
 
   gtag('config', 'G-RV84PP1P22');
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
 </script>
+
+  // Debug Google Analytics
+  window.addEventListener('load', function() {
+    if (typeof gtag !== 'undefined') {
+      console.log('✓ Google Analytics chargé');
+      gtag('event', 'test_event', {'debug_mode': true});
+    } else {
+      console.error('✗ Google Analytics non chargé');
+    }
+  });
 <!-- Fin Google Analytics -->
 
 </head>
@@ -56,7 +72,7 @@
   </div>
 </header>
 
-<main class="page-content">
+<main class="page-content" role="main">
   <section class="animation-detail">
     <h2>Apprendre à lire l'heure</h2>
 
@@ -93,7 +109,7 @@
                 
       
         <div class="download-buttons">
-          <a href="../../media/exe/apprendre_heure.exe" class="btn" download>
+          <a href="../../media/swf/apprendre_heure.swf" class="btn" download>
             Télécharger au format SWF
           </a>
           <a href="../../media/exe/apprendre_heure.exe" class="btn" download>
@@ -133,9 +149,7 @@
 
   <div class="field-group">
     <label for="email-apprendre_heure">Votre e‑mail (facultatif)&nbsp;:</label>
-    <input type="email"
-           id="email-apprendre_heure"
-           name="_replyto"
+    <input type="email" id="email-apprendre_heure" name="_replyto" autocomplete="email"
            placeholder="prenom.nom@exemple.fr">
   </div>
 

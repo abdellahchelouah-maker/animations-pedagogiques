@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Les puissances en triphasé</title>
+    <meta name="description" content="Animation éducative 'Cours sur les puissances en triphasé' - Jeux éducatifs pour enfants">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- fiche située dans pages/physique/ -->
   <link rel="stylesheet" href="../../style/style.css">
@@ -22,7 +23,22 @@
   gtag('js', new Date());
 
   gtag('config', 'G-RV84PP1P22');
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
 </script>
+
+  // Debug Google Analytics
+  window.addEventListener('load', function() {
+    if (typeof gtag !== 'undefined') {
+      console.log('✓ Google Analytics chargé');
+      gtag('event', 'test_event', {'debug_mode': true});
+    } else {
+      console.error('✗ Google Analytics non chargé');
+    }
+  });
 <!-- Fin Google Analytics -->
 
 </head>
@@ -51,7 +67,7 @@
   </div>
 </header>
 
-<main class="page-content">
+<main class="page-content" role="main">
   <section class="animation-detail">
     <h2>Cours sur les puissances en triphasé</h2>
 
@@ -128,9 +144,7 @@
 
   <div class="field-group">
     <label for="email-cours sur les puissances en triphasé">Votre e‑mail (facultatif)&nbsp;:</label>
-    <input type="email"
-           id="email-cours sur les puissances en triphasé"
-           name="_replyto"
+    <input type="email" id="email-cours sur les puissances en triphasé" name="_replyto" autocomplete="email"
            placeholder="prenom.nom@exemple.fr">
   </div>
 

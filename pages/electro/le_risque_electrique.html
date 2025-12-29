@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>La sécurité électrique</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Animation éducative 'La sécurité électrique' - Jeux éducatifs pour enfants">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- fiche située dans pages/electrotechnique/ -->
 <link rel="stylesheet" href="../../style/style.css">
 <script>
@@ -22,7 +23,22 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
 gtag('config', 'G-RV84PP1P22');
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
 </script>
+
+  // Debug Google Analytics
+  window.addEventListener('load', function() {
+    if (typeof gtag !== 'undefined') {
+      console.log('✓ Google Analytics chargé');
+      gtag('event', 'test_event', {'debug_mode': true});
+    } else {
+      console.error('✗ Google Analytics non chargé');
+    }
+  });
 <!-- Fin Google Analytics -->
 
 </head>
@@ -50,7 +66,7 @@ gtag('config', 'G-RV84PP1P22');
 </div>
 </header>
 
-<main class="page-content">
+<main class="page-content" role="main">
 <section class="animation-detail">
 <h2>La sécurité électrique</h2>
 
@@ -125,9 +141,7 @@ La formation à la sécurité électrique est essentielle pour prévenir les dan
 
   <div class="field-group">
     <label for="email-le_risque_electrique">Votre e‑mail (facultatif)&nbsp;:</label>
-    <input type="email"
-           id="email-le_risque_electrique"
-           name="_replyto"
+    <input type="email" id="email-le_risque_electrique" name="_replyto" autocomplete="email"
            placeholder="prenom.nom@exemple.fr">
   </div>
 

@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Les tableaux de Karnaugh - principe de cette approche graphique des équations logiques</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Animation éducative 'Les tableaux de Karnaugh - principe de cette approche graphique des équations logiques' - Jeux éducatifs pour enfants">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- fiche située dans pages/automatisme/ -->
 <link rel="stylesheet" href="../../style/style.css">
 <script>
@@ -22,7 +23,22 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
 gtag('config', 'G-RV84PP1P22');
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
 </script>
+
+  // Debug Google Analytics
+  window.addEventListener('load', function() {
+    if (typeof gtag !== 'undefined') {
+      console.log('✓ Google Analytics chargé');
+      gtag('event', 'test_event', {'debug_mode': true});
+    } else {
+      console.error('✗ Google Analytics non chargé');
+    }
+  });
 <!-- Fin Google Analytics -->
 
 </head>
@@ -50,7 +66,7 @@ gtag('config', 'G-RV84PP1P22');
 </div>
 </header>
 
-<main class="page-content">
+<main class="page-content" role="main">
 <section class="animation-detail">
 <h2>Les tableaux de Karnaugh - principe de cette approche graphique des équations logiques</h2>
 
@@ -125,9 +141,7 @@ Cette méthode de simplification des équations logiques est une méthode graphi
 
   <div class="field-group">
     <label for="email-tableaux_karnaugh">Votre e‑mail (facultatif)&nbsp;:</label>
-    <input type="email"
-           id="email-tableaux_karnaugh"
-           name="_replyto"
+    <input type="email" id="email-tableaux_karnaugh" name="_replyto" autocomplete="email"
            placeholder="prenom.nom@exemple.fr">
   </div>
 
