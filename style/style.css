@@ -713,3 +713,140 @@ button.btn-submit:active {
     flex-wrap: wrap;
   }
 }
+
+/* ========================================================
+	Barre RESEAUX SOCIAUX
+   ======================================================== */
+/* Boutons réseaux sociaux avec SVG précis */
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eef2f7, #dfe6ee);
+  border: 1px solid #c9d3df;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.share-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-right: 6px;
+}
+
+/* bouton */
+.share-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* couleurs officielles */
+.share-btn.facebook { background: linear-gradient(180deg,#1877f2,#145db8); }
+.share-btn.x        { background: linear-gradient(180deg,#000000,#222222); }
+.share-btn.linkedin { background: linear-gradient(180deg,#0a66c2,#084f9a); }
+.share-btn.whatsapp { background: linear-gradient(180deg,#25d366,#1aa85a); }
+.share-btn.email    { background: linear-gradient(180deg,#6b7280,#4b5563); }
+
+/* SVG blanc et taille */
+.share-btn svg { width: 20px; height: 20px; fill: #ffffff; display: block; }
+
+/* Hover et focus */
+.share-btn:hover,
+.share-btn:focus {
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  filter: saturate(1.05);
+}
+
+/* Focus keyboard visible */
+.share-btn:focus {
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.12), 0 10px 24px rgba(0,0,0,0.18);
+  border: 2px solid rgba(255,255,255,0.06);
+}
+
+/* petite animation d'apparition */
+.share-btn { will-change: transform, box-shadow; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .share-bar { gap: 10px; padding: 10px; }
+  .share-btn { width: 40px; height: 40px; }
+  .share-btn svg { width: 18px; height: 18px; }
+}
+
+/* Pages concernées */
+.page-electro .card-media img,
+.page-electrotechnique .card-media img,
+.page-electronique .card-media img,
+.page-automatisme .card-media img,
+.page-physique .card-media img,
+.page-jeux-educatifs .card-media img,
+.page-enfants .card-media img {
+  width: 50%;        /* réduit l’image de moitié */
+  height: auto;      /* garde les proportions */
+  max-width: 100%;   /* évite les débordements */
+  display: block;
+  margin: 0 auto;    /* centre l’image */
+}
+
+@media (max-width: 640px) {
+  .animation-detail .card-media img.reduced-thumb {
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-electro .card-media img,
+  .page-electronique .card-media img,
+  .page-automatisme .card-media img,
+  .page-physique .card-media img,
+  .page-enfants .card-media img {
+    width: 100%;
+  }
+}
+
+:root {
+  --primary: #2563eb;
+  --secondary: #6b7280;
+  --bg-light: #f5f5f7;
+}
+
+/* Titre principal des fiches animation */
+.animation-detail h1.animation-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1f2933; /* cohérent avec ton thème */
+}
+
+/* Sous-titres des fiches animation */
+.animation-detail h2.animation-subtitle {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin: 1.8rem 0 1rem;
+  color: #2c3e50;
+}
+
+@media (max-width: 640px) {
+  .animation-detail h1.animation-title {
+    font-size: 1.6rem;
+  }
+
+  .animation-detail h2.animation-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
