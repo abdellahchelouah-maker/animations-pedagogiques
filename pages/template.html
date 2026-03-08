@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>{{TITRE_ANIMATION}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../../style/style.css">
+
+  <!-- Configuration Ruffle -->
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = { autoplay: "on", unmuteOverlay: "hidden" };
+  </script>
+  <script src="../../js/ruffle/ruffle.js"></script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV84PP1P22"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RV84PP1P22');
+  </script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="header-left">
+    <h1>{{CATEGORIE}}</h1>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="../../index.html" target="_top">Accueil</a></li>
+        <li><a href="../electrotechnique.html" target="_top">Électrotechnique</a></li>
+        <li><a href="../electronique.html" target="_top">Électronique</a></li>
+        <li><a href="../automatisme.html" target="_top">Automatisme</a></li>
+        <li><a href="../physique.html" target="_top">Physique</a></li>
+        <li><a href="../jeux-educatifs.html" target="_top">Jeux éducatifs</a></li>
+        <li><a href="../visual-basic.html" target="_top">Visual Basic</a></li>
+        <li><a href="../tpwks.html" target="_top">TP multimédia</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="header-right">
+    <img src="../../media/img/logo_site_creation.png" alt="Logo du site">
+  </div>
+</header>
+
+<main class="page-content">
+  <section class="animation-detail">
+    <h2>{{TITRE_ANIMATION}}</h2>
+
+    <article class="card">
+      <div class="card-media">
+        <img src="../../media/img/{{IMAGE_VIGNETTE}}" alt="">
+      </div>
+
+      <div class="card-body">
+        <p>{{DESCRIPTION}}</p>
+
+        <p>
+          <strong>Catégorie :</strong> {{CATEGORIE}} – 
+          <strong>Date :</strong> {{DATE}}<br>
+          <strong>Mots‑clés :</strong> {{MOTS_CLES}}
+        </p>
+
+        <div class="player-container">
+          <h3>Animation interactive</h3>
+
+          <object type="application/x-shockwave-flash"
+                  data="../../media/swf/{{FICHIER_SWF}}"
+                  width="800" height="600">
+            <param name="movie" value="../../media/swf/{{FICHIER_SWF}}">
+            <param name="quality" value="high">
+            <param name="wmode" value="opaque">
+            <p>Si l'animation ne se lance pas, vérifiez que JavaScript est activé.</p>
+          </object>
+
+          <!-- Barre de partage -->
+          {{BARRE_PARTAGE}}
+        </div>
+
+        <div class="download-buttons">
+          <a href="../../media/swf/{{FICHIER_SWF}}" class="btn" download>
+            Télécharger au format SWF
+          </a>
+          <a href="../../media/exe/{{FICHIER_EXE}}" class="btn" download>
+            Télécharger au format EXE
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="pedago-block">
+      <h3>Votre avis sur cette animation</h3>
+
+      <form action="https://formspree.io/f/mnjqavbo" method="POST" class="feedback-form">
+
+        <input type="hidden" name="_subject" value="Avis sur {{ID_ANIMATION}}">
+        <input type="hidden" name="animation" value="{{ID_ANIMATION}}">
+
+        <div class="rating-group">
+          <label for="note-{{ID_ANIMATION}}">Note :</label>
+          <select name="note-{{ID_ANIMATION}}" id="note-{{ID_ANIMATION}}" required>
+            <option value="5">⭐⭐⭐⭐⭐ – Excellent</option>
+            <option value="4">⭐⭐⭐⭐ – Très bien</option>
+            <option value="3">⭐⭐⭐ – Correct</option>
+            <option value="2">⭐⭐ – À améliorer</option>
+            <option value="1">⭐ – Insuffisant</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="commentaire-{{ID_ANIMATION}}">Commentaire :</label>
+          <textarea id="commentaire-{{ID_ANIMATION}}" name="commentaire-{{ID_ANIMATION}}" rows="4"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label for="email-{{ID_ANIMATION}}">Votre e‑mail (facultatif) :</label>
+          <input type="email" id="email-{{ID_ANIMATION}}" name="_replyto">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Envoyer mon avis</button>
+      </form>
+
+      <div class="legal-notice">
+        <details>
+          <summary>
+            <small>🔒 En cliquant "Envoyer", vous acceptez notre politique de confidentialité</small>
+          </summary>
+          <p>
+            Les données collectées sont utilisées uniquement pour améliorer nos animations pédagogiques.
+            Elles ne sont pas cédées à des tiers.
+          </p>
+        </details>
+      </div>
+    </article>
+
+    <p class="back-link">
+      <a href="../{{PAGE_CATEGORIE}}.html" target="_top">
+        &larr; Retour à la liste des animations de {{CATEGORIE}}
+      </a>
+    </p>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2025 – Abdellah CHELOUAH</p>
+</footer>
+
+<script src="../../js/script.js"></script>
+</body>
+</html>
